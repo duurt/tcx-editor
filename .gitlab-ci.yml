@@ -1,17 +1,10 @@
-variables:
-  NUGET_PATH: 'C:\Tools\Nuget\nuget.exe'
-  MSBUILD_PATH: '"C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\MSBuild\15.0\Bin\msbuild.exe"'
-
 stages:
   - build
-  - test
 
 build_job:
   tags:
-  - windows
+    - windows
   stage: build
-  only:
-    - branches
   script:
-    - '%NUGET_PATH% restore'
-    - '%MSBUILD_PATH% /p:Configuration=Release'
+    - 'C:\Tools\Nuget\nuget.exe restore'
+    - '"C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\MSBuild\15.0\Bin\msbuild.exe" /p:Configuration=Release'
