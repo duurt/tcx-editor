@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.28307.421
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TcxParser", "Source\TcxParser\TcxParser.csproj", "{924D77B0-0FE2-4FEC-9C2F-8FE92AB743C8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TcxParser.Tests", "Source\TcxParser.Tests\TcxParser.Tests.csproj", "{223A3C60-F5EE-45DD-81E6-4335C0DD3AD7}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{924D77B0-0FE2-4FEC-9C2F-8FE92AB743C8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{924D77B0-0FE2-4FEC-9C2F-8FE92AB743C8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{924D77B0-0FE2-4FEC-9C2F-8FE92AB743C8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{924D77B0-0FE2-4FEC-9C2F-8FE92AB743C8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{223A3C60-F5EE-45DD-81E6-4335C0DD3AD7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{223A3C60-F5EE-45DD-81E6-4335C0DD3AD7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{223A3C60-F5EE-45DD-81E6-4335C0DD3AD7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{223A3C60-F5EE-45DD-81E6-4335C0DD3AD7}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {60396A58-4128-43C6-A8DC-EA8BB5D0CDB6}
+	EndGlobalSection
+EndGlobal
