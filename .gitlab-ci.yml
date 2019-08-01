@@ -1,9 +1,15 @@
+variables:
+  NUGET_PATH: 'C:\Tools\Nuget\nuget.exe'
+  MSBUILD_PATH: 'C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\MSBuild\15.0\Bin\msbuild.exe'
+
 stages:
-- build
-  
+  - build
+  - test
+
 build_job:
   stage: build
-  tags:
-  - windows
+  only:
+    - branches
   script:
-  - echo hoi
+    - %NUGET_PATH% restore
+    - %MSBUILD_PATH% /p:Configuration=Release
