@@ -7,5 +7,5 @@ build_job:
   stage: build
   script:
     - 'C:\Tools\Nuget\nuget.exe restore'
-    - '"C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\MSBuild\15.0\Bin\msbuild.exe" /p:Configuration=Release'
+    - '"C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\MSBuild\15.0\Bin\msbuild.exe"'
     - 'packages\NUnit.ConsoleRunner.3.10.0\tools\nunit3-console.exe'
