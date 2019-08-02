@@ -12,5 +12,5 @@ build_job:
   stage: build
   script:
     - '& "$env:NUGET" restore'
-    - '& "$env:MSBUILD" /p:Configuration=Release /clp:ErrorsOnly'
+    - '& "$env:MSBUILD" /p:Configuration=Release /clp:WarningsOnly'
     - '& "$env:NUNIT" Source\TcxEditor.Core.Tests\bin\Release\TcxEditor.Core.Tests.dll Source\TcxParser.Tests\bin\Release\TcxParser.Tests.dll'
