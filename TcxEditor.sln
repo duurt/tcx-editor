@@ -11,6 +11,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TcxEditor.UI", "Source\TcxE
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TcxEditor.Core", "Source\TcxEditor.Core\TcxEditor.Core.csproj", "{50C00360-E2AA-4A91-AD50-83281B529CB4}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TcxEditor.Core.Tests", "Source\TcxEditor.Core.Tests\TcxEditor.Core.Tests.csproj", "{E262E061-B299-4CC7-BC69-BB861824372F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +35,10 @@ Global
 		{50C00360-E2AA-4A91-AD50-83281B529CB4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{50C00360-E2AA-4A91-AD50-83281B529CB4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{50C00360-E2AA-4A91-AD50-83281B529CB4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E262E061-B299-4CC7-BC69-BB861824372F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E262E061-B299-4CC7-BC69-BB861824372F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E262E061-B299-4CC7-BC69-BB861824372F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E262E061-B299-4CC7-BC69-BB861824372F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

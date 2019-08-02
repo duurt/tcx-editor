@@ -31,7 +31,7 @@ namespace TcxEditor.UI
 
             gMapControl1.MinZoom = 0;
             gMapControl1.MaxZoom = 100;
-            gMapControl1.Zoom = 10;
+            gMapControl1.Zoom = 20;
 
             Stream tcxStream = File.OpenRead(@"C:\Users\User\Downloads\Hunedbedroute.tcx");
             var serializer = new XmlSerializer(typeof(TrainingCenterDatabase_t));
@@ -49,14 +49,13 @@ namespace TcxEditor.UI
 
 
             GMapOverlay markerOverlay = gMapControl1.Overlays.First(o => o.Id.Equals("points"));
-            foreach(var point in parsedRoute.Courses[0].CoursePoint.Select(c => c.Position))
+            foreach(var point in parsedRoute.Courses[0].CoursePoint)
             {
                 GMarkerGoogle marker = new GMarkerGoogle(
-                    new PointLatLng(point.LatitudeDegrees, point.LongitudeDegrees),
+                    new PointLatLng(point.Position.LatitudeDegrees, point.Position.LongitudeDegrees),
                     GMarkerGoogleType.lightblue_pushpin);
                 markerOverlay.Markers.Add(marker);
-
-                marker.ToolTip = new GMapToolTip(marker);
+                marker.ToolTipText = $"{point.PointType}\n{point.Notes}";
             }
         }
     }
