@@ -1,3 +1,8 @@
+variables:  
+  NUGET: 'C:\Tools\Nuget\nuget.exe'
+  MSBUILD: 'C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\MSBuild\15.0\Bin\msbuild.exe'
+  NUNIT: packages\NUnit.ConsoleRunner.3.10.0\tools\nunit3-console.exe
+  
 stages:
   - build
 
@@ -6,6 +11,6 @@ build_job:
     - windows
   stage: build
   script:
-    - 'C:\Tools\Nuget\nuget.exe restore'
-    - '"C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\MSBuild\15.0\Bin\msbuild.exe" TcxEditor.sln' 
-    - 'packages\NUnit.ConsoleRunner.3.10.0\tools\nunit3-console.exe Source\TcxEditor.Core.Tests\bin\Release\TcxEditor.Core.Tests.dll Source\TcxParser.Tests\bin\Release\TcxParser.Tests.dll'
+    - '& "$env:NUGET" restore'
+    - '& "$env:MSBUILD"'
+    - '& "$env:NUNIT" Source\TcxEditor.Core.Tests\bin\Release\TcxEditor.Core.Tests.dll Source\TcxParser.Tests\bin\Release\TcxParser.Tests.dll'
