@@ -13,7 +13,7 @@ using System.Xml.Serialization;
 namespace TcxParser.Tests
 {
     [TestFixture]
-    public class Class1
+    public class SanityChecks
     {
         private static string _exeDir = Path.GetDirectoryName(Assembly.GetExecutingAssembly().GetName().CodeBase).Replace(@"file:\", "");
         private readonly string _pathTcx1 = Path.Combine(
