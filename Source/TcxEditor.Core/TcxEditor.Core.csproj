@@ -41,6 +41,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AddStartFinishCommand.cs" />
+    <Compile Include="AddStartFinishInput.cs" />
+    <Compile Include="AddStartFinishResponse.cs" />
     <Compile Include="Entities\CoursePoint.cs" />
     <Compile Include="Entities\Position.cs" />
     <Compile Include="Entities\Route.cs" />
@@ -52,6 +55,8 @@
     <Compile Include="OpenRouteInput.cs" />
     <Compile Include="OpenRouteResponse.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Exceptions\TcxCoreException.cs" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
