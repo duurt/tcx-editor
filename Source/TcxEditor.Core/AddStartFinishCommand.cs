@@ -12,6 +12,15 @@ namespace TcxEditor.Core
     {
         public AddStartFinishResponse Execute(AddStartFinishInput input)
         {
+            ValidateInput(input);
+            AddStartPoint(input.Route);
+            AddFinishPoint(input.Route);
+
+            return new AddStartFinishResponse(input.Route);
+        }
+
+        private static void ValidateInput(AddStartFinishInput input)
+        {
             if (input == null)
                 throw new ArgumentNullException(nameof(input));
 
@@ -19,18 +28,22 @@ namespace TcxEditor.Core
                 throw new TcxCoreException(
                     $"There must be at least 2 track points. " +
                     $"Found: {input.Route.TrackPoints.Count}");
+        }
 
-            input.Route.CoursePoints.Insert(0, new CoursePoint(
-                input.Route.TrackPoints[0].Lattitude,
-                input.Route.TrackPoints[0].Longitude)
-            { TimeStamp = input.Route.TrackPoints[0].TimeStamp });
+        private static void AddFinishPoint(Route route)
+        {
+            route.CoursePoints.Add(new CoursePoint(
+                route.TrackPoints.Last().Lattitude,
+                route.TrackPoints.Last().Longitude)
+                    { TimeStamp = route.TrackPoints.Last().TimeStamp });
+        }
 
-            input.Route.CoursePoints.Add(new CoursePoint(
-                input.Route.TrackPoints.Last().Lattitude,
-                input.Route.TrackPoints.Last().Longitude)
-            { TimeStamp = input.Route.TrackPoints.Last().TimeStamp });
-
-            return new AddStartFinishResponse(input.Route);
+        private static void AddStartPoint(Route input)
+        {
+            input.CoursePoints.Insert(0, new CoursePoint(
+                input.TrackPoints[0].Lattitude,
+                input.TrackPoints[0].Longitude)
+                    { TimeStamp = input.TrackPoints[0].TimeStamp });
         }
     }
 }
