@@ -28,6 +28,17 @@ namespace TcxEditor.Core
                 throw new TcxCoreException(
                     $"There must be at least 2 track points. " +
                     $"Found: {input.Route.TrackPoints.Count}");
+
+            if (input.Route.CoursePoints.Any())
+            {
+                if (input.Route.TrackPoints[0].TimeStamp == input.Route.CoursePoints[0].TimeStamp)
+                    throw new TcxCoreException(
+                        $"Start point is already present");
+
+                if (input.Route.TrackPoints.Last().TimeStamp == input.Route.CoursePoints.Last().TimeStamp)
+                    throw new TcxCoreException(
+                        $"Start point is already present");
+            }
         }
 
         private static void AddFinishPoint(Route route)
@@ -35,7 +46,7 @@ namespace TcxEditor.Core
             route.CoursePoints.Add(new CoursePoint(
                 route.TrackPoints.Last().Lattitude,
                 route.TrackPoints.Last().Longitude)
-                    { TimeStamp = route.TrackPoints.Last().TimeStamp });
+            { TimeStamp = route.TrackPoints.Last().TimeStamp });
         }
 
         private static void AddStartPoint(Route input)
@@ -43,7 +54,7 @@ namespace TcxEditor.Core
             input.CoursePoints.Insert(0, new CoursePoint(
                 input.TrackPoints[0].Lattitude,
                 input.TrackPoints[0].Longitude)
-                    { TimeStamp = input.TrackPoints[0].TimeStamp });
+            { TimeStamp = input.TrackPoints[0].TimeStamp });
         }
     }
 }
