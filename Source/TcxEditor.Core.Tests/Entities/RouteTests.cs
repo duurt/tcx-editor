@@ -18,5 +18,19 @@ namespace TcxEditor.Core.Tests.Entities
             route.CoursePoints.ShouldBeEmpty();
             route.TrackPoints.ShouldBeEmpty();
         }
+
+        [Test]
+        public void CoursePoint_constructor_creates_empty_string_for_notes()
+        {
+            var p = new CoursePoint(1,1);
+            p.Notes.ShouldBe("");
+        }
+
+        [Test]
+        public void CoursePoint_constructor_creates_type_undefined()
+        {
+            var p = new CoursePoint(1, 1);
+            p.Type.ShouldBe(CoursePoint.PointType.Undefined);
+        }
     }
 }

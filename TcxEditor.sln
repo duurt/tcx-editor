@@ -18,6 +18,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "CICD", "CICD", "{9FB0CD3E-9
 		.gitlab-ci.yml = .gitlab-ci.yml
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TcxParser.Infrastructure", "Source\TcxParser.Infrastructure\TcxParser.Infrastructure.csproj", "{A0BA74D7-0422-4F04-82A2-299227A0EB6D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -44,6 +46,10 @@ Global
 		{E262E061-B299-4CC7-BC69-BB861824372F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E262E061-B299-4CC7-BC69-BB861824372F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E262E061-B299-4CC7-BC69-BB861824372F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A0BA74D7-0422-4F04-82A2-299227A0EB6D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A0BA74D7-0422-4F04-82A2-299227A0EB6D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A0BA74D7-0422-4F04-82A2-299227A0EB6D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A0BA74D7-0422-4F04-82A2-299227A0EB6D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
