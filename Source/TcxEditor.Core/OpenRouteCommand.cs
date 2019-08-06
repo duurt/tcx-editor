@@ -8,7 +8,7 @@ using TcxEditor.Core.Interfaces;
 
 namespace TcxEditor.Core
 {
-    public class OpenRouteCommand
+    public class OpenRouteCommand : IOpenRouteCommand
     {
         private readonly IStreamCreator _streamCreator;
         private readonly ITcxParser _parser;
