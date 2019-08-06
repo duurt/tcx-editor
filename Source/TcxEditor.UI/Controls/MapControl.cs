@@ -15,6 +15,7 @@ using System.Xml.Serialization;
 using GMap.NET.WindowsForms.Markers;
 using TcxEditor.Core;
 using TcxEditor.Infrastructure;
+using TcxEditor.Core.Entities;
 
 namespace TcxEditor.UI
 {
@@ -34,30 +35,32 @@ namespace TcxEditor.UI
             gMapControl1.MinZoom = 0;
             gMapControl1.MaxZoom = 100;
             gMapControl1.Zoom = 3;
+        }
 
-            var opener = new OpenRouteCommand(new FileStreamCreator(), new TcxParserAdapter());
-            var openedRoute = opener.Execute(
-                new OpenRouteInput { Name = @"C:\Users\User\Downloads\Hunedbedroute.tcx" });
-
-            var route = new GMapRoute(
-                openedRoute.Route.TrackPoints.Select(
+        public void SetRoute(Route openedRoute)
+        {
+            var routeOnMap = new GMapRoute(
+                openedRoute.TrackPoints.Select(
                     t => new PointLatLng(
                         t.Lattitude,
                         t.Longitude)),
                 "someName");
 
-            route.Stroke = new Pen(Color.Red, 3);
-            gMapControl1.Overlays.First(o => o.Id.Equals("route")).Routes.Add(route);
+            routeOnMap.Stroke = new Pen(Color.Red, 3);
+            gMapControl1.Overlays.First(o => o.Id.Equals("route")).Routes.Add(routeOnMap);
 
             GMapOverlay markerOverlay = gMapControl1.Overlays.First(o => o.Id.Equals("points"));
-            foreach (var point in openedRoute.Route.CoursePoints)
+            foreach (var point in openedRoute.CoursePoints)
             {
                 GMarkerGoogle marker = new GMarkerGoogle(
                     new PointLatLng(point.Lattitude, point.Longitude),
-                    GMarkerGoogleType.lightblue_pushpin);
+                    new Bitmap(new MemoryStream(Convert.FromBase64String("iVBORw0KGgoAAAANSUhEUgAAAA8AAAAPCAMAAAAMCGV4AAAASFBMVEX///9ISEgGBgbBwcH39/dpaWmYmJjR0dH09PSBgYGJiYnV1dV4eHh+fn7FxcVSUlJgYGDl5eWjo6Pc3Nx5eXk4ODhfX18nJycGtpgYAAAAcklEQVQImUWPWxaAIAhER83MxNKe+99pKFTzAdzDAQaA5WKmHB1Egy9j2MN4+aHhtEaOtwfiOnFFM17NBCwFv8qCvLXCWtPSlkGpd87OiUC1s+lc6e0Lp0PnlXle9wvzfrlvWXJf/TWJv89/Ef/63yH/PeORA/kIj+u1AAAAAElFTkSuQmCC"))));
+                    
+                //    GMarkerGoogleType.lightblue_pushpin);
                 markerOverlay.Markers.Add(marker);
                 marker.ToolTipText = $"{point.Type}\n{point.Notes}";
             }
+
         }
     }
 }

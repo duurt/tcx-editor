@@ -19,11 +19,11 @@ namespace TcxEditor.Infrastructure
             var parsedRoute = new XmlParser().Parse(input);
 
             var result = new Route();
-            result.CoursePoints.AddRange(
-                parsedRoute.Courses[0].CoursePoint.Select(x => Map(x)));
-
             result.TrackPoints.AddRange(
                 parsedRoute.Courses[0].Track.Select(x => Map(x)));
+
+            result.CoursePoints.AddRange(
+                parsedRoute.Courses[0]?.CoursePoint.Select(x => Map(x)));
 
             return result;
         }
