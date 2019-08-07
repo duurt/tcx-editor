@@ -2,6 +2,7 @@
 {
     public class CoursePoint : TrackPoint
     {
+        public object Name { get; set; }
         public PointType Type { get; set; } = PointType.Undefined;
         public string Notes { get; set; } = "";
 

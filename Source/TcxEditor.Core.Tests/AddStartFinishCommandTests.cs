@@ -17,11 +17,20 @@ namespace TcxEditor.Core.Tests
         private double[] _lo = new double[] { 10, 20, 30, 40 };
         private DateTime[] _times = new DateTime[]
             {
-                _t0,
                 _t0.AddMinutes(1),
                 _t0.AddMinutes(2),
-                _t0.AddMinutes(3)
+                _t0.AddMinutes(3),
+                _t0.AddMinutes(4)
             };
+        private AddStartFinishInput _input;
+        private AddStartFinishCommand _sut;
+
+        [SetUp]
+        public void Set_up_the_tests()
+        {
+            _sut = GetAddStartFinishCommand();
+            _input = GetEmptyInput();
+        }
 
         private static AddStartFinishCommand GetAddStartFinishCommand()
         {
@@ -46,50 +55,36 @@ namespace TcxEditor.Core.Tests
         }
 
         [Test]
-        public void Constructor_can_be_called()
-        {
-            AddStartFinishCommand sut = GetAddStartFinishCommand();
-            sut.ShouldNotBeNull();
-        }
-
-        [Test]
         public void Execute_should_not_accept_null()
         {
-            var sut = GetAddStartFinishCommand();
             Assert.Throws<ArgumentNullException>(
-                () => sut.Execute(null));
+                () => _sut.Execute(null));
         }
 
         [Test]
         public void Execute_should_throw_error_when_ZERO_trackpoints()
         {
-            var sut = GetAddStartFinishCommand();
-            var input = new AddStartFinishInput(new Route());
-            input.Route.TrackPoints.Clear();
+            _input.Route.TrackPoints.Clear();
 
             Assert.Throws<TcxCoreException>(
-                () => sut.Execute(GetEmptyInput()));
+                () => _sut.Execute(GetEmptyInput()));
         }
 
         [Test]
         public void Execute_should_throw_error_when_ONE_trackpoint()
         {
-            var sut = GetAddStartFinishCommand();
-            var input = GetEmptyInput();
-            input.Route.TrackPoints.Add(new TrackPoint(1, 1));
+            _input.Route.TrackPoints.Add(new TrackPoint(1, 1));
 
             Assert.Throws<TcxCoreException>(
-                () => sut.Execute(input));
+                () => _sut.Execute(_input));
         }
 
         [Test]
         public void Execute_should_Add_start_point_when_no_course_points()
         {
-            var sut = GetAddStartFinishCommand();
-            var input = GetEmptyInput();
-            input.Route.TrackPoints.AddRange(Get4TrackPoints());
+            _input.Route.TrackPoints.AddRange(Get4TrackPoints());
 
-            var result = sut.Execute(input);
+            var result = _sut.Execute(_input);
 
             StartMustMatch1stTrackpoint(result);
         }
@@ -97,12 +92,10 @@ namespace TcxEditor.Core.Tests
         [Test]
         public void Execute_should_Add_start_point_when_few_course_points_present()
         {
-            var sut = GetAddStartFinishCommand();
-            var input = GetEmptyInput();
-            input.Route.TrackPoints.AddRange(Get4TrackPoints());
-            input.Route.CoursePoints.AddRange(Get2MiddleCoursePoints());
+            _input.Route.TrackPoints.AddRange(Get4TrackPoints());
+            _input.Route.CoursePoints.AddRange(Get2MiddleCoursePoints());
 
-            var result = sut.Execute(input);
+            var result = _sut.Execute(_input);
 
             StartMustMatch1stTrackpoint(result);
         }
@@ -110,11 +103,9 @@ namespace TcxEditor.Core.Tests
         [Test]
         public void Execute_should_Add_finish_point_when_no_course_points()
         {
-            var sut = GetAddStartFinishCommand();
-            var input = GetEmptyInput();
-            input.Route.TrackPoints.AddRange(Get4TrackPoints());
+            _input.Route.TrackPoints.AddRange(Get4TrackPoints());
 
-            var result = sut.Execute(input);
+            var result = _sut.Execute(_input);
 
             FinishMustMatchLastTrackpoint(result);
         }
@@ -122,14 +113,12 @@ namespace TcxEditor.Core.Tests
         [Test]
         public void Execute_should_Add_finish_point_when_few_course_points_present()
         {
-            var sut = GetAddStartFinishCommand();
-            var input = GetEmptyInput();
-            input.Route.TrackPoints
+            _input.Route.TrackPoints
                 .AddRange(Get4TrackPoints());
-            input.Route.CoursePoints
+            _input.Route.CoursePoints
                 .AddRange(Get2MiddleCoursePoints());
 
-            var result = sut.Execute(input);
+            var result = _sut.Execute(_input);
 
             FinishMustMatchLastTrackpoint(result);
         }
@@ -137,31 +126,42 @@ namespace TcxEditor.Core.Tests
         [Test]
         public void Execute_should_throw_error_when_start_point_already_exists()
         {
-            var sut = GetAddStartFinishCommand();
-            var input = GetEmptyInput();
-            input.Route.TrackPoints
+            _input.Route.TrackPoints
                 .AddRange(Get4TrackPoints());
-            input.Route.CoursePoints
+            _input.Route.CoursePoints
                 .Add(new CoursePoint(_la[0], _lo[0]) { TimeStamp = _times[0] });
 
             Assert.Throws<TcxCoreException>(
-                () =>  sut.Execute(input));
+                () =>  _sut.Execute(_input));
         }
 
         [Test]
         public void Execute_should_throw_error_when_finish_point_already_exists()
         {
-            var sut = GetAddStartFinishCommand();
-            var input = GetEmptyInput();
-            input.Route.TrackPoints
+            _input.Route.TrackPoints
                 .AddRange(Get4TrackPoints());
-            input.Route.CoursePoints
+            _input.Route.CoursePoints
                 .Add(new CoursePoint(_la.Last(), _lo.Last()) { TimeStamp = _times.Last() });
 
             Assert.Throws<TcxCoreException>(
-                () => sut.Execute(input));
+                () => _sut.Execute(_input));
         }
 
+        [Test]
+        public void Execute_should_Add_points_with_correct_name_type_description()
+        {
+            _input.Route.TrackPoints.AddRange(Get4TrackPoints());
+
+            var result = _sut.Execute(_input);
+
+            result.Route.CoursePoints.First().Name.ShouldBe("start");
+            result.Route.CoursePoints.First().Type.ShouldBe(CoursePoint.PointType.Generic);
+            result.Route.CoursePoints.First().Notes.ShouldBe("Go! Veel plezier!");
+        
+            result.Route.CoursePoints.Last().Name.ShouldBe("finish");
+            result.Route.CoursePoints.Last().Type.ShouldBe(CoursePoint.PointType.Generic);
+            result.Route.CoursePoints.Last().Notes.ShouldBe("Klaar! Goed gedaan!");
+        }
 
         private void StartMustMatch1stTrackpoint(AddStartFinishResponse result)
         {
