@@ -8,21 +8,27 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using TcxEditor.Core;
+using TcxEditor.Core.Entities;
 using TcxEditor.Core.Interfaces;
+using TcxEditor.UI.Interfaces;
 
 // This is the code for your desktop app.
 // Press Ctrl+F5 (or go to Debug > Start Without Debugging) to run your app.
 
 namespace TcxEditor.UI
 {
-    public partial class MainForm : Form
+    public partial class MainForm : Form, IRouteView
     {
-        private readonly IOpenRouteCommand _opener;
+        public event EventHandler<OpenRouteEventArgs> OpenFileEvent;
 
-        public MainForm(IOpenRouteCommand opener)
+        public MainForm()
         {
-            _opener = opener;
             InitializeComponent();
+        }
+
+        public void ShowRoute(Route route)
+        {
+            mapControl1.SetRoute(route);
         }
 
         private void btnOpenRoute_Click(object sender, EventArgs e)
@@ -31,9 +37,7 @@ namespace TcxEditor.UI
             {
                 if (dialog.ShowDialog() == DialogResult.OK)
                 {
-                    var result = _opener.Execute(new OpenRouteInput { Name = dialog.FileName });
-
-                    mapControl1.SetRoute(result.Route);
+                    OpenFileEvent?.Invoke(this, new OpenRouteEventArgs(dialog.FileName));
                 }
             }
         }
