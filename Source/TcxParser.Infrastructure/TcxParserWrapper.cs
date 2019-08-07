@@ -23,7 +23,8 @@ namespace TcxEditor.Infrastructure
                 parsedRoute.Courses[0].Track.Select(x => Map(x)));
 
             result.CoursePoints.AddRange(
-                parsedRoute.Courses[0]?.CoursePoint.Select(x => Map(x)));
+                parsedRoute.Courses[0].CoursePoint?.Select(x => Map(x)) 
+                ?? new CoursePoint[0]);
 
             return result;
         }
