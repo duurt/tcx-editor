@@ -11,5 +11,6 @@ namespace TcxEditor.UI.Interfaces
     {
         void ShowRoute(Route route);
         event EventHandler<OpenRouteEventArgs> OpenFileEvent;
+        event EventHandler<AddStartFinishEventargs> AddStartFinishEvent;
     }
 }

@@ -32,6 +32,7 @@ namespace TcxEditor.UI
             this.btnOpenRoute = new System.Windows.Forms.Button();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.btnAddStartFinish = new System.Windows.Forms.Button();
             this.tableLayoutPanel1.SuspendLayout();
             this.panel1.SuspendLayout();
             this.SuspendLayout();
@@ -48,7 +49,7 @@ namespace TcxEditor.UI
             // 
             this.btnOpenRoute.Location = new System.Drawing.Point(19, 31);
             this.btnOpenRoute.Name = "btnOpenRoute";
-            this.btnOpenRoute.Size = new System.Drawing.Size(75, 23);
+            this.btnOpenRoute.Size = new System.Drawing.Size(103, 23);
             this.btnOpenRoute.TabIndex = 1;
             this.btnOpenRoute.Text = "Open route file...";
             this.btnOpenRoute.UseVisualStyleBackColor = true;
@@ -71,12 +72,23 @@ namespace TcxEditor.UI
             // 
             // panel1
             // 
+            this.panel1.Controls.Add(this.btnAddStartFinish);
             this.panel1.Controls.Add(this.btnOpenRoute);
             this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel1.Location = new System.Drawing.Point(3, 3);
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(137, 525);
             this.panel1.TabIndex = 1;
+            // 
+            // btnAddStartFinish
+            // 
+            this.btnAddStartFinish.Location = new System.Drawing.Point(19, 61);
+            this.btnAddStartFinish.Name = "btnAddStartFinish";
+            this.btnAddStartFinish.Size = new System.Drawing.Size(103, 23);
+            this.btnAddStartFinish.TabIndex = 2;
+            this.btnAddStartFinish.Text = "Add Start + Finish";
+            this.btnAddStartFinish.UseVisualStyleBackColor = true;
+            this.btnAddStartFinish.Click += new System.EventHandler(this.btnAddStartFinish_Click);
             // 
             // MainForm
             // 
@@ -99,6 +111,7 @@ namespace TcxEditor.UI
         private System.Windows.Forms.Button btnOpenRoute;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
         private System.Windows.Forms.Panel panel1;
+        private System.Windows.Forms.Button btnAddStartFinish;
     }
 }
 

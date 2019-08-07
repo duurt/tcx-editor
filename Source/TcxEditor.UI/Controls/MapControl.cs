@@ -22,6 +22,8 @@ namespace TcxEditor.UI
     // todo: inject opener command
     public partial class MapControl : UserControl
     {
+        public Route CurrentRoute { get; internal set; }
+
         public MapControl()
         {
             InitializeComponent();
@@ -36,6 +38,7 @@ namespace TcxEditor.UI
             gMapControl1.MaxZoom = 100;
             gMapControl1.Zoom = 3;
         }
+
 
         public void SetRoute(Route openedRoute)
         {
@@ -61,6 +64,7 @@ namespace TcxEditor.UI
                 marker.ToolTipText = $"{point.Type}\n{point.Notes}";
             }
 
+            CurrentRoute = openedRoute;
         }
     }
 }
