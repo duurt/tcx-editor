@@ -41,20 +41,30 @@ namespace TcxEditor.Core
             }
         }
 
-        private static void AddFinishPoint(Route route)
-        {
-            route.CoursePoints.Add(new CoursePoint(
-                route.TrackPoints.Last().Lattitude,
-                route.TrackPoints.Last().Longitude)
-            { TimeStamp = route.TrackPoints.Last().TimeStamp });
-        }
-
         private static void AddStartPoint(Route input)
         {
             input.CoursePoints.Insert(0, new CoursePoint(
                 input.TrackPoints[0].Lattitude,
                 input.TrackPoints[0].Longitude)
-            { TimeStamp = input.TrackPoints[0].TimeStamp });
+            {
+                Name = "start",
+                Notes = "Go! Veel plezier!",
+                TimeStamp = input.TrackPoints[0].TimeStamp,
+                Type = CoursePoint.PointType.Generic
+            });
+        }
+
+        private static void AddFinishPoint(Route route)
+        {
+            route.CoursePoints.Add(new CoursePoint(
+                route.TrackPoints.Last().Lattitude,
+                route.TrackPoints.Last().Longitude)
+            {
+                Name = "finish",
+                Notes = "Klaar! Goed gedaan!",
+                TimeStamp = route.TrackPoints.Last().TimeStamp,
+                Type = CoursePoint.PointType.Generic
+            });
         }
     }
 }
