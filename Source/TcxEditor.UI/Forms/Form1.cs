@@ -20,6 +20,7 @@ namespace TcxEditor.UI
     public partial class MainForm : Form, IRouteView
     {
         public event EventHandler<OpenRouteEventArgs> OpenFileEvent;
+        public event EventHandler<AddStartFinishEventargs> AddStartFinishEvent;
 
         public MainForm()
         {
@@ -40,6 +41,11 @@ namespace TcxEditor.UI
                     OpenFileEvent?.Invoke(this, new OpenRouteEventArgs(dialog.FileName));
                 }
             }
+        }
+
+        private void btnAddStartFinish_Click(object sender, EventArgs e)
+        {
+            AddStartFinishEvent?.Invoke(this, new AddStartFinishEventargs(mapControl1.CurrentRoute));
         }
     }
 }

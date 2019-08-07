@@ -5,10 +5,11 @@ using System.Text;
 using System.Threading.Tasks;
 using TcxEditor.Core.Entities;
 using TcxEditor.Core.Exceptions;
+using TcxEditor.Core.Interfaces;
 
 namespace TcxEditor.Core
 {
-    public class AddStartFinishCommand
+    public class AddStartFinishCommand : IAddStartFinishCommand
     {
         public AddStartFinishResponse Execute(AddStartFinishInput input)
         {
