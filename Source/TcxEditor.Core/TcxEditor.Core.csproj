@@ -49,6 +49,8 @@
     <Compile Include="Entities\Route.cs" />
     <Compile Include="Entities\TrackPoint.cs" />
     <Compile Include="Interfaces\IAddStartFinishCommand.cs" />
+    <Compile Include="Interfaces\ISaveRouteCommand.cs" />
+    <Compile Include="Interfaces\IStreamSaver.cs" />
     <Compile Include="Interfaces\IOpenRouteCommand.cs" />
     <Compile Include="Interfaces\IStreamCreator.cs" />
     <Compile Include="Interfaces\ITcxParser.cs" />
@@ -57,6 +59,9 @@
     <Compile Include="OpenRouteResponse.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Exceptions\TcxCoreException.cs" />
+    <Compile Include="SaveRouteCommand.cs" />
+    <Compile Include="SaveRouteRequest.cs" />
+    <Compile Include="SaveRouteResponse.cs" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
