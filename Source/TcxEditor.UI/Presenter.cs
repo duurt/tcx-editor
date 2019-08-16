@@ -14,18 +14,29 @@ namespace TcxEditor.UI
         private readonly IRouteView _routeView;
         private readonly IOpenRouteCommand _opener;
         private readonly IAddStartFinishCommand _startFinishAdder;
+        private readonly ISaveRouteCommand _saver;
 
         public Presenter(
             IRouteView routeView, 
             IOpenRouteCommand opener,
-            IAddStartFinishCommand startFinishAdder) 
+            IAddStartFinishCommand startFinishAdder,
+            ISaveRouteCommand saver) 
         {
             _routeView = routeView;
             _opener = opener;
             _startFinishAdder = startFinishAdder;
+            _saver = saver;
 
             _routeView.OpenFileEvent += OnOpenFileEvent;
             _routeView.AddStartFinishEvent += OnAddStartFinishEvent;
+            _routeView.SaveRouteEvent += OnSaveRouteEvent;
+        }
+
+        private void OnSaveRouteEvent(object sender, SaveRouteEventargs e)
+        {
+            var result = _saver.Execute(new SaveRouteRequest(e.Route, e.Name));
+
+            _routeView.ShowRoute(result.Route);
         }
 
         private void OnAddStartFinishEvent(object sender, AddStartFinishEventargs e)

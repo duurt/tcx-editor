@@ -4,11 +4,12 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using TcxEditor.Core.Entities;
 
 namespace TcxEditor.Core.Interfaces
 {
-    public interface IStreamSaver
+    public interface IRouteSaver
     {
-        void Save(Stream data);
+        void SaveCoursePoints(List<CoursePoint> points, string name);
     }
 }

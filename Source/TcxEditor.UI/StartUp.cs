@@ -3,6 +3,7 @@ using TcxEditor.Core;
 using TcxEditor.Core.Interfaces;
 using TcxEditor.Infrastructure;
 using TcxEditor.UI.Interfaces;
+using TcxParser.Infrastructure;
 
 namespace TcxEditor.UI
 {
@@ -14,8 +15,11 @@ namespace TcxEditor.UI
 
             builder.RegisterType<OpenRouteCommand>().As<IOpenRouteCommand>();
             builder.RegisterType<AddStartFinishCommand>().As<IAddStartFinishCommand>();
+            builder.RegisterType<SaveRouteCommand>().As<ISaveRouteCommand>();
+
             builder.RegisterType<FileStreamCreator>().As<IStreamCreator>();
             builder.RegisterType<TcxParserAdapter>().As<ITcxParser>();
+            builder.RegisterType<RouteSaver>().As<IRouteSaver>();
 
             builder.RegisterType<MainForm>().As<IRouteView>().SingleInstance();
             builder.RegisterType<Presenter>().AsSelf().SingleInstance();

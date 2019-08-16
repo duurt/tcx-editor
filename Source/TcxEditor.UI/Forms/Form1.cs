@@ -19,8 +19,11 @@ namespace TcxEditor.UI
 {
     public partial class MainForm : Form, IRouteView
     {
+        private string _fileName;
+
         public event EventHandler<OpenRouteEventArgs> OpenFileEvent;
         public event EventHandler<AddStartFinishEventargs> AddStartFinishEvent;
+        public event EventHandler<SaveRouteEventargs> SaveRouteEvent;
 
         public MainForm()
         {
@@ -38,6 +41,7 @@ namespace TcxEditor.UI
             {
                 if (dialog.ShowDialog() == DialogResult.OK)
                 {
+                    _fileName = dialog.FileName;
                     OpenFileEvent?.Invoke(this, new OpenRouteEventArgs(dialog.FileName));
                 }
             }
@@ -46,6 +50,11 @@ namespace TcxEditor.UI
         private void btnAddStartFinish_Click(object sender, EventArgs e)
         {
             AddStartFinishEvent?.Invoke(this, new AddStartFinishEventargs(mapControl1.CurrentRoute));
+        }
+
+        private void btnSaveRoute_Click(object sender, EventArgs e)
+        {
+            SaveRouteEvent?.Invoke(this, new SaveRouteEventargs(mapControl1.CurrentRoute, _fileName));
         }
     }
 }

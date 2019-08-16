@@ -43,6 +43,7 @@
   <ItemGroup>
     <Compile Include="FileStreamCreator.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RouteSaver.cs" />
     <Compile Include="TcxParserWrapper.cs" />
   </ItemGroup>
   <ItemGroup>

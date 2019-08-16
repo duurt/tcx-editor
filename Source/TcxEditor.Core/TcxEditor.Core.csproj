@@ -50,7 +50,7 @@
     <Compile Include="Entities\TrackPoint.cs" />
     <Compile Include="Interfaces\IAddStartFinishCommand.cs" />
     <Compile Include="Interfaces\ISaveRouteCommand.cs" />
-    <Compile Include="Interfaces\IStreamSaver.cs" />
+    <Compile Include="Interfaces\IRouteSaver.cs" />
     <Compile Include="Interfaces\IOpenRouteCommand.cs" />
     <Compile Include="Interfaces\IStreamCreator.cs" />
     <Compile Include="Interfaces\ITcxParser.cs" />
