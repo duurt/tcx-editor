@@ -33,6 +33,7 @@ namespace TcxEditor.UI
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.panel1 = new System.Windows.Forms.Panel();
             this.btnAddStartFinish = new System.Windows.Forms.Button();
+            this.btnSaveRoute = new System.Windows.Forms.Button();
             this.tableLayoutPanel1.SuspendLayout();
             this.panel1.SuspendLayout();
             this.SuspendLayout();
@@ -72,6 +73,7 @@ namespace TcxEditor.UI
             // 
             // panel1
             // 
+            this.panel1.Controls.Add(this.btnSaveRoute);
             this.panel1.Controls.Add(this.btnAddStartFinish);
             this.panel1.Controls.Add(this.btnOpenRoute);
             this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -89,6 +91,16 @@ namespace TcxEditor.UI
             this.btnAddStartFinish.Text = "Add Start + Finish";
             this.btnAddStartFinish.UseVisualStyleBackColor = true;
             this.btnAddStartFinish.Click += new System.EventHandler(this.btnAddStartFinish_Click);
+            // 
+            // btnSaveRoute
+            // 
+            this.btnSaveRoute.Location = new System.Drawing.Point(19, 91);
+            this.btnSaveRoute.Name = "btnSaveRoute";
+            this.btnSaveRoute.Size = new System.Drawing.Size(103, 23);
+            this.btnSaveRoute.TabIndex = 3;
+            this.btnSaveRoute.Text = "Save Route";
+            this.btnSaveRoute.UseVisualStyleBackColor = true;
+            this.btnSaveRoute.Click += new System.EventHandler(this.btnSaveRoute_Click);
             // 
             // MainForm
             // 
@@ -112,6 +124,7 @@ namespace TcxEditor.UI
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.Button btnAddStartFinish;
+        private System.Windows.Forms.Button btnSaveRoute;
     }
 }
 

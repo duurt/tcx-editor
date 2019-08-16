@@ -55,6 +55,7 @@
     <Compile Include="Entities\RouteTests.cs" />
     <Compile Include="Entities\PositionTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SaveRouteCommandTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
