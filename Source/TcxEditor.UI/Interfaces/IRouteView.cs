@@ -16,6 +16,6 @@ namespace TcxEditor.UI.Interfaces
         event EventHandler<AddStartFinishEventargs> AddStartFinishEvent;
         event EventHandler<SaveRouteEventargs> SaveRouteEvent;
         event EventHandler<GetNearestEventArgs> GetNearestEvent;
-
+        event EventHandler<AddPointEventArgs> AddPointEvent;
     }
 }

@@ -67,6 +67,7 @@
       <DependentUpon>MapControl.cs</DependentUpon>
     </Compile>
     <Compile Include="Forms\SaveRouteEventargs.cs" />
+    <Compile Include="Interfaces\AddPointEventArgs.cs" />
     <Compile Include="Interfaces\AddStartFinishEventargs.cs" />
     <Compile Include="Interfaces\GetNearestEventArgs.cs" />
     <Compile Include="Interfaces\IRouteView.cs" />

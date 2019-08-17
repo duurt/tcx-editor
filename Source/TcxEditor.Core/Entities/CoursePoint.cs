@@ -12,22 +12,22 @@
         public enum PointType
         {
             Undefined = 0,
-            Generic,
-            Summit,
-            Valley,
-            Water,
-            Food,
-            Danger,
             Left,
             Right,
             Straight,
-            FirstAid,
+            Food,
+            Generic,
+            Sprint,
             ClimbCat4,
             ClimbCat3,
             ClimbCat2,
             ClimbCat1,
             ClimbCatHors,
-            Sprint,
+            Summit,
+            Valley,
+            Water,
+            Danger,
+            FirstAid,
         }
     }
 }

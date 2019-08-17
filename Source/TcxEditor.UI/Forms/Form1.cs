@@ -25,10 +25,13 @@ namespace TcxEditor.UI
         public event EventHandler<AddStartFinishEventargs> AddStartFinishEvent;
         public event EventHandler<SaveRouteEventargs> SaveRouteEvent;
         public event EventHandler<GetNearestEventArgs> GetNearestEvent;
+        public event EventHandler<AddPointEventArgs> AddPointEvent;
 
         public MainForm()
         {
             InitializeComponent();
+
+            cbPointType.DataSource = Enum.GetNames(typeof(CoursePoint.PointType));
             mapControl1.MapClickEvent += MapControl1_MapClickEvent;
         }
 
@@ -73,6 +76,29 @@ namespace TcxEditor.UI
         public void ShowPointToEdit(TrackPoint point)
         {
             mapControl1.ShowPointToEdit(point);
+        }
+
+        private void btnAddCoursePoint_Click(object sender, EventArgs e)
+        {
+            TrackPoint editedPoint = mapControl1.PointToEdit;
+
+            string selectedText = cbPointType.SelectedItem.ToString();
+            AddPointEvent?.Invoke(
+                this, 
+                new AddPointEventArgs
+                {
+                    Route = mapControl1.CurrentRoute,
+                    NewPoint = 
+                        new CoursePoint(editedPoint.Lattitude, editedPoint.Longitude)
+                        {
+                            TimeStamp = editedPoint.TimeStamp,
+                            Notes = tbPointNotes.Text,
+                            Type = (CoursePoint.PointType)Enum.Parse(
+                                typeof(CoursePoint.PointType),
+                                selectedText,
+                                true)
+                        }
+                });
         }
     }
 }

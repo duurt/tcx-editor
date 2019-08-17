@@ -19,10 +19,11 @@ using TcxEditor.Core.Entities;
 
 namespace TcxEditor.UI
 {
-    // todo: inject opener command
     public partial class MapControl : UserControl
     {
         public Route CurrentRoute { get; internal set; }
+        public TrackPoint PointToEdit { get; internal set; }
+
         public event EventHandler<MapClickEventArgs> MapClickEvent;
 
         public MapControl()
@@ -57,6 +58,9 @@ namespace TcxEditor.UI
 
         public void SetRoute(Route openedRoute)
         {
+            ClearCueMarkers();
+            ClearEditMarkers();
+
             var routeOnMap = new GMapRoute(
                 openedRoute.TrackPoints.Select(
                     t => new PointLatLng(
@@ -85,11 +89,27 @@ namespace TcxEditor.UI
 
         internal void ShowPointToEdit(TrackPoint point)
         {
+            ClearEditMarkers();
+
+            PointToEdit = point;
+            
             GMapOverlay editOverlay = gMapControl1.Overlays.First(o => o.Id.Equals("editPoints"));
             editOverlay.Markers.Add(
                 new GMarkerGoogle(
                     new PointLatLng(point.Lattitude, point.Longitude), 
                     GMarkerGoogleType.blue));
+        }
+
+        private void ClearCueMarkers()
+        {
+            GMapOverlay editOverlay = gMapControl1.Overlays.First(o => o.Id.Equals("points"));
+            editOverlay.Markers.Clear();
+        }
+
+        private void ClearEditMarkers()
+        {
+            GMapOverlay editOverlay = gMapControl1.Overlays.First(o => o.Id.Equals("editPoints"));
+            editOverlay.Markers.Clear();
         }
     }
 
