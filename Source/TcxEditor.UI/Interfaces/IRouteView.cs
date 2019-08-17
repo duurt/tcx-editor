@@ -10,7 +10,7 @@ namespace TcxEditor.UI.Interfaces
     public interface IRouteView
     {
         void ShowRoute(Route route);
-        void ShowPointToEdit(TrackPoint nearest);
+        void ShowPointToEdit(TrackPoint point);
 
         event EventHandler<OpenRouteEventArgs> OpenFileEvent;
         event EventHandler<AddStartFinishEventargs> AddStartFinishEvent;

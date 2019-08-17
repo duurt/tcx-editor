@@ -30,9 +30,15 @@ namespace TcxEditor.UI
         public MainForm()
         {
             InitializeComponent();
-
-            cbPointType.DataSource = Enum.GetNames(typeof(CoursePoint.PointType));
+            InitTypesComboBox();
             mapControl1.MapClickEvent += MapControl1_MapClickEvent;
+        }
+
+        private void InitTypesComboBox()
+        {
+            cbPointType.DataSource = Enum.GetNames(typeof(CoursePoint.PointType))
+                .Except(new[] { nameof(CoursePoint.PointType.Undefined) }).ToList();
+            cbPointType.SelectedItem = nameof(CoursePoint.PointType.Left);
         }
 
         private void MapControl1_MapClickEvent(object sender, MapClickEventArgs e)
@@ -44,11 +50,6 @@ namespace TcxEditor.UI
                     Route = mapControl1.CurrentRoute,
                     ReferencePoint = new Position(e.Lattitude, e.Longitude)
                 });
-        }
-
-        public void ShowRoute(Route route)
-        {
-            mapControl1.SetRoute(route);
         }
 
         private void btnOpenRoute_Click(object sender, EventArgs e)
@@ -73,32 +74,37 @@ namespace TcxEditor.UI
             SaveRouteEvent?.Invoke(this, new SaveRouteEventargs(mapControl1.CurrentRoute, _fileName));
         }
 
-        public void ShowPointToEdit(TrackPoint point)
-        {
-            mapControl1.ShowPointToEdit(point);
-        }
-
         private void btnAddCoursePoint_Click(object sender, EventArgs e)
         {
-            TrackPoint editedPoint = mapControl1.PointToEdit;
+            TrackPoint newPoint = mapControl1.PointToEdit;
 
-            string selectedText = cbPointType.SelectedItem.ToString();
             AddPointEvent?.Invoke(
                 this, 
                 new AddPointEventArgs
                 {
                     Route = mapControl1.CurrentRoute,
                     NewPoint = 
-                        new CoursePoint(editedPoint.Lattitude, editedPoint.Longitude)
+                        new CoursePoint(newPoint.Lattitude, newPoint.Longitude)
                         {
-                            TimeStamp = editedPoint.TimeStamp,
+                            TimeStamp = newPoint.TimeStamp,
                             Notes = tbPointNotes.Text,
                             Type = (CoursePoint.PointType)Enum.Parse(
                                 typeof(CoursePoint.PointType),
-                                selectedText,
+                                cbPointType.SelectedItem.ToString(),
                                 true)
                         }
                 });
+        }
+
+        public void ShowRoute(Route route)
+        {
+            mapControl1.SetRoute(route);
+        }
+
+        public void ShowPointToEdit(TrackPoint point)
+        {
+            mapControl1.ShowPointToEdit(point);
+            tbPointNotes.Focus();
         }
     }
 }
