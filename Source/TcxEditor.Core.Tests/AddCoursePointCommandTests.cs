@@ -51,7 +51,7 @@ namespace TcxEditor.Core.Tests
         }
 
         [Test]
-        public void Execute_Should_add_point()
+        public void Execute_Should_add_point_if_matching_trackpoint_exists()
         {
             double lat1 = 1;
             double lon1 = 2;
@@ -69,6 +69,26 @@ namespace TcxEditor.Core.Tests
             result.Route.CoursePoints.Count.ShouldBe(1);
             CoursePoint coursePoint = result.Route.CoursePoints.First();
             VerifyCoursePoint(coursePoint, lat1, lon1, t1);
+        }
+
+        [Test]
+        public void Execute_Should_throw_error_if_cp_already_exists_at_same_t_and_xy()
+        {
+            double lat1 = 1;
+            double lon1 = 2;
+            DateTime t1 = new DateTime(2019, 8, 16, 12, 45, 59);
+
+            var inputRoute = new Route();
+            inputRoute.TrackPoints.Add(GetTrackPoint(lat1, lon1, t1));
+            inputRoute.CoursePoints.Add(GetCoursePoint(lat1, lon1, t1));
+
+            Assert.Throws<TcxCoreException>(() =>
+                _sut.Execute(
+                    new AddCoursePointInput
+                    {
+                        Route = inputRoute,
+                        NewCoursePoint = GetCoursePoint(lat1, lon1, t1)
+                    }));
         }
 
         [Test]
