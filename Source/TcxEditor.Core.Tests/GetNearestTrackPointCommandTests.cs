@@ -94,6 +94,25 @@ namespace TcxEditor.Core.Tests
             result.Nearest.TimeStamp.ShouldBe(p1_nearest.TimeStamp);
         }
 
+        [Test]
+        public void Execute_Should_return_input_route()
+        {
+            TrackPoint trackPoint = new TrackPoint(2, 2)
+            {
+                TimeStamp = new DateTime(2019, 8, 16, 12, 45, 59)
+            };
+            Route inputRoute = new Route();
+            inputRoute.TrackPoints.Add(trackPoint);
+
+            var result = _sut.Execute(
+                new GetNearestTrackPointInput
+                {
+                    Route = inputRoute,
+                    ReferencePoint = new Position(1, 1)
+                });
+            result.Route.ShouldBeSameAs(inputRoute);
+        }
+
         private static void AssertNearestResult(GetNearestTrackPointResponse result, TrackPoint trackPoint)
         {
             result.Nearest.Lattitude.ShouldBe(trackPoint.Lattitude);

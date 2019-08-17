@@ -34,6 +34,7 @@ namespace TcxEditor.UI
                 new RectLatLng(53.2, 6.5, 0.2, 0.2));
             gMapControl1.Overlays.Add(new GMapOverlay("route"));
             gMapControl1.Overlays.Add(new GMapOverlay("points"));
+            gMapControl1.Overlays.Add(new GMapOverlay("editPoints"));
 
             gMapControl1.MinZoom = 0;
             gMapControl1.MaxZoom = 100;
@@ -75,12 +76,20 @@ namespace TcxEditor.UI
                     new PointLatLng(point.Lattitude, point.Longitude),
                     new Bitmap(new MemoryStream(Convert.FromBase64String("iVBORw0KGgoAAAANSUhEUgAAAA8AAAAPCAMAAAAMCGV4AAAASFBMVEX///9ISEgGBgbBwcH39/dpaWmYmJjR0dH09PSBgYGJiYnV1dV4eHh+fn7FxcVSUlJgYGDl5eWjo6Pc3Nx5eXk4ODhfX18nJycGtpgYAAAAcklEQVQImUWPWxaAIAhER83MxNKe+99pKFTzAdzDAQaA5WKmHB1Egy9j2MN4+aHhtEaOtwfiOnFFM17NBCwFv8qCvLXCWtPSlkGpd87OiUC1s+lc6e0Lp0PnlXle9wvzfrlvWXJf/TWJv89/Ef/63yH/PeORA/kIj+u1AAAAAElFTkSuQmCC"))));
                     
-                //    GMarkerGoogleType.lightblue_pushpin);
                 markerOverlay.Markers.Add(marker);
                 marker.ToolTipText = $"{point.Type}\n{point.Notes}";
             }
 
             CurrentRoute = openedRoute;
+        }
+
+        internal void ShowPointToEdit(TrackPoint point)
+        {
+            GMapOverlay editOverlay = gMapControl1.Overlays.First(o => o.Id.Equals("editPoints"));
+            editOverlay.Markers.Add(
+                new GMarkerGoogle(
+                    new PointLatLng(point.Lattitude, point.Longitude), 
+                    GMarkerGoogleType.blue));
         }
     }
 

@@ -16,6 +16,7 @@ namespace TcxEditor.UI
             builder.RegisterType<OpenRouteCommand>().As<IOpenRouteCommand>();
             builder.RegisterType<AddStartFinishCommand>().As<IAddStartFinishCommand>();
             builder.RegisterType<SaveRouteCommand>().As<ISaveRouteCommand>();
+            builder.RegisterType<GetNearestTrackPointCommand>().As<IGetNearestTrackPointCommand>();
 
             builder.RegisterType<FileStreamCreator>().As<IStreamCreator>();
             builder.RegisterType<TcxParserAdapter>().As<ITcxParser>();

@@ -24,6 +24,7 @@ namespace TcxEditor.UI
         public event EventHandler<OpenRouteEventArgs> OpenFileEvent;
         public event EventHandler<AddStartFinishEventargs> AddStartFinishEvent;
         public event EventHandler<SaveRouteEventargs> SaveRouteEvent;
+        public event EventHandler<GetNearestEventArgs> GetNearestEvent;
 
         public MainForm()
         {
@@ -33,7 +34,13 @@ namespace TcxEditor.UI
 
         private void MapControl1_MapClickEvent(object sender, MapClickEventArgs e)
         {
-            // wiring up with event in IRouteView comes later
+            GetNearestEvent?.Invoke(
+                this, 
+                new GetNearestEventArgs
+                {
+                    Route = mapControl1.CurrentRoute,
+                    ReferencePoint = new Position(e.Lattitude, e.Longitude)
+                });
         }
 
         public void ShowRoute(Route route)
@@ -61,6 +68,11 @@ namespace TcxEditor.UI
         private void btnSaveRoute_Click(object sender, EventArgs e)
         {
             SaveRouteEvent?.Invoke(this, new SaveRouteEventargs(mapControl1.CurrentRoute, _fileName));
+        }
+
+        public void ShowPointToEdit(TrackPoint point)
+        {
+            mapControl1.ShowPointToEdit(point);
         }
     }
 }

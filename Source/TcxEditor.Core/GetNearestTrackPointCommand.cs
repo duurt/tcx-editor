@@ -5,10 +5,11 @@ using System.Text;
 using System.Threading.Tasks;
 using TcxEditor.Core.Entities;
 using TcxEditor.Core.Exceptions;
+using TcxEditor.Core.Interfaces;
 
 namespace TcxEditor.Core
 {
-    public class GetNearestTrackPointCommand
+    public class GetNearestTrackPointCommand : IGetNearestTrackPointCommand
     {
         public GetNearestTrackPointResponse Execute(GetNearestTrackPointInput input)
         {
@@ -20,12 +21,12 @@ namespace TcxEditor.Core
             if(!input.Route.TrackPoints.Any())
                 throw new TcxCoreException("Fout!!");
 
-
             TrackPoint nearestPoint = GetNearest(input.Route.TrackPoints, input.ReferencePoint);
 
             return
                 new GetNearestTrackPointResponse
                 {
+                    Route = input.Route,
                     Nearest = nearestPoint
                 };
         }
