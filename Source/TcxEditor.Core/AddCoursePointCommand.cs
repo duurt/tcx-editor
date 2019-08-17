@@ -14,13 +14,7 @@ namespace TcxEditor.Core
         public AddCoursePointResponse Execute(AddCoursePointInput input)
         {
             Validate(input);
-
-            int index = input.Route.CoursePoints.FindIndex(
-                cp => cp.TimeStamp > input.NewCoursePoint.TimeStamp);
-
-            input.Route.CoursePoints.Insert(
-                index < 0 ? 0 : index,
-                input.NewCoursePoint);
+            AddNewPointToCoursePoints(input.Route.CoursePoints, input.NewCoursePoint);
 
             return
                 new AddCoursePointResponse
@@ -47,6 +41,16 @@ namespace TcxEditor.Core
                 tp.Lattitude == newCoursePoint.Lattitude
                 && tp.Longitude == newCoursePoint.Longitude
                 && tp.TimeStamp == newCoursePoint.TimeStamp;
+        }
+
+        private static void AddNewPointToCoursePoints(List<CoursePoint> coursePoints, CoursePoint newPoint)
+        {
+            int index = coursePoints.FindIndex(
+                cp => cp.TimeStamp > newPoint.TimeStamp);
+
+            coursePoints.Insert(
+                index < 0 ? 0 : index,
+                newPoint);
         }
     }
 }
