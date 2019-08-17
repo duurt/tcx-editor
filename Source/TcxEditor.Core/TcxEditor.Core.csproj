@@ -41,6 +41,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AddCoursePointCommand.cs" />
+    <Compile Include="AddCoursePointInput.cs" />
+    <Compile Include="AddCoursePointResponse.cs" />
     <Compile Include="AddStartFinishCommand.cs" />
     <Compile Include="AddStartFinishInput.cs" />
     <Compile Include="AddStartFinishResponse.cs" />
@@ -51,6 +54,7 @@
     <Compile Include="GetNearestTrackPointCommand.cs" />
     <Compile Include="GetNearestTrackPointInput.cs" />
     <Compile Include="GetNearestTrackPointResponse.cs" />
+    <Compile Include="Interfaces\IAddCoursePointCommand.cs" />
     <Compile Include="Interfaces\IAddStartFinishCommand.cs" />
     <Compile Include="Interfaces\IGetNearestTrackPointCommand.cs" />
     <Compile Include="Interfaces\ISaveRouteCommand.cs" />

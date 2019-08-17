@@ -51,6 +51,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AddCoursePointCommandTests.cs" />
     <Compile Include="AddStartFinishCommandTests.cs" />
     <Compile Include="Entities\RouteTests.cs" />
     <Compile Include="Entities\PositionTests.cs" />
