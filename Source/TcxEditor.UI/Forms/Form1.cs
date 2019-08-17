@@ -28,6 +28,12 @@ namespace TcxEditor.UI
         public MainForm()
         {
             InitializeComponent();
+            mapControl1.MapClickEvent += MapControl1_MapClickEvent;
+        }
+
+        private void MapControl1_MapClickEvent(object sender, MapClickEventArgs e)
+        {
+            // wiring up with event in IRouteView comes later
         }
 
         public void ShowRoute(Route route)

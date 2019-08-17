@@ -48,6 +48,9 @@
     <Compile Include="Entities\Position.cs" />
     <Compile Include="Entities\Route.cs" />
     <Compile Include="Entities\TrackPoint.cs" />
+    <Compile Include="GetNearestTrackPointCommand.cs" />
+    <Compile Include="GetNearestTrackPointInput.cs" />
+    <Compile Include="GetNearestTrackPointResponse.cs" />
     <Compile Include="Interfaces\IAddStartFinishCommand.cs" />
     <Compile Include="Interfaces\ISaveRouteCommand.cs" />
     <Compile Include="Interfaces\IRouteSaver.cs" />

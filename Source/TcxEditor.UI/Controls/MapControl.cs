@@ -23,6 +23,7 @@ namespace TcxEditor.UI
     public partial class MapControl : UserControl
     {
         public Route CurrentRoute { get; internal set; }
+        public event EventHandler<MapClickEventArgs> MapClickEvent;
 
         public MapControl()
         {
@@ -37,8 +38,21 @@ namespace TcxEditor.UI
             gMapControl1.MinZoom = 0;
             gMapControl1.MaxZoom = 100;
             gMapControl1.Zoom = 3;
+
+            gMapControl1.Click += OnMapClick;
         }
 
+        private void OnMapClick(object sender, EventArgs e)
+        {
+            var args = (MouseEventArgs)e;
+            if (args.Button != MouseButtons.Left)
+                return;
+
+            var latLon = gMapControl1.FromLocalToLatLng(args.X, args.Y);
+            MapClickEvent?.Invoke(
+                this, 
+                new MapClickEventArgs { Lattitude = latLon.Lat, Longitude = latLon.Lng});
+        }
 
         public void SetRoute(Route openedRoute)
         {
@@ -50,7 +64,9 @@ namespace TcxEditor.UI
                 "someName");
 
             routeOnMap.Stroke = new Pen(Color.Red, 3);
-            gMapControl1.Overlays.First(o => o.Id.Equals("route")).Routes.Add(routeOnMap);
+            GMapOverlay routeLayer = gMapControl1.Overlays.First(o => o.Id.Equals("route"));
+            routeLayer.Routes.Clear();
+            routeLayer.Routes.Add(routeOnMap);
 
             GMapOverlay markerOverlay = gMapControl1.Overlays.First(o => o.Id.Equals("points"));
             foreach (var point in openedRoute.CoursePoints)
@@ -66,5 +82,11 @@ namespace TcxEditor.UI
 
             CurrentRoute = openedRoute;
         }
+    }
+
+    public class MapClickEventArgs : EventArgs
+    {
+        public double Lattitude { get; set; }
+        public double Longitude { get; set; }
     }
 }
