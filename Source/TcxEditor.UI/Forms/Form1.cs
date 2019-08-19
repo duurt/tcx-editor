@@ -32,6 +32,18 @@ namespace TcxEditor.UI
             InitializeComponent();
             InitTypesComboBox();
             mapControl1.MapClickEvent += MapControl1_MapClickEvent;
+            KeyPreview = true;
+        }
+
+        protected override void OnKeyUp(KeyEventArgs e)
+        {
+            e.SuppressKeyPress = true;
+            if (e.KeyCode == Keys.Left)
+                RaiseAddPointEvent("Left", CoursePoint.PointType.Left);
+            else if (e.KeyCode == Keys.Right)
+                RaiseAddPointEvent("Right", CoursePoint.PointType.Right);
+            else if (e.KeyCode == Keys.Up)
+                RaiseAddPointEvent("Straight", CoursePoint.PointType.Straight);
         }
 
         private void InitTypesComboBox()
@@ -43,13 +55,14 @@ namespace TcxEditor.UI
 
         private void MapControl1_MapClickEvent(object sender, MapClickEventArgs e)
         {
-            GetNearestEvent?.Invoke(
-                this, 
-                new GetNearestEventArgs
-                {
-                    Route = mapControl1.CurrentRoute,
-                    ReferencePoint = new Position(e.Lattitude, e.Longitude)
-                });
+            if (mapControl1.CurrentRoute != null)
+                GetNearestEvent?.Invoke(
+                    this, 
+                    new GetNearestEventArgs
+                    {
+                        Route = mapControl1.CurrentRoute,
+                        ReferencePoint = new Position(e.Lattitude, e.Longitude)
+                    });
         }
 
         private void btnOpenRoute_Click(object sender, EventArgs e)
@@ -76,22 +89,32 @@ namespace TcxEditor.UI
 
         private void btnAddCoursePoint_Click(object sender, EventArgs e)
         {
-            TrackPoint newPoint = mapControl1.PointToEdit;
 
+            RaiseAddPointEvent(tbPointNotes.Text, GetSelectedPointType());
+        }
+
+        private CoursePoint.PointType GetSelectedPointType()
+        {
+            return (CoursePoint.PointType)Enum.Parse(
+                typeof(CoursePoint.PointType),
+                cbPointType.SelectedItem.ToString(),
+                true);
+        }
+
+        private void RaiseAddPointEvent(string notes, CoursePoint.PointType pointType)
+        {
+            TrackPoint newPoint = mapControl1.PointToEdit;
             AddPointEvent?.Invoke(
-                this, 
+                this,
                 new AddPointEventArgs
                 {
                     Route = mapControl1.CurrentRoute,
-                    NewPoint = 
+                    NewPoint =
                         new CoursePoint(newPoint.Lattitude, newPoint.Longitude)
                         {
                             TimeStamp = newPoint.TimeStamp,
-                            Notes = tbPointNotes.Text,
-                            Type = (CoursePoint.PointType)Enum.Parse(
-                                typeof(CoursePoint.PointType),
-                                cbPointType.SelectedItem.ToString(),
-                                true)
+                            Notes = notes,
+                            Type = pointType
                         }
                 });
         }

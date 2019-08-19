@@ -33,7 +33,7 @@ namespace TcxParser.Infrastructure
                         Notes = p.Notes
                     }).ToArray();
 
-                string outFilePath = @"c:\tmp\routes\Route_" + DateTime.Now.ToString("yyyyMMdd-HHmmss") + "tcx";
+                string outFilePath = @"c:\tmp\routes\Route_" + DateTime.Now.ToString("yyyyMMdd-HHmmss") + ".tcx";
                 using (var outFile = new FileStream(outFilePath, FileMode.CreateNew, FileAccess.ReadWrite))
                 {
                     new XmlSerializer(typeof(TrainingCenterDatabase_t)).Serialize(outFile, parsedFile);

@@ -91,6 +91,7 @@ namespace TcxEditor.Core.Tests
                     }));
         }
 
+        // todo: what if there is only one point, and the one added should be placed second?
         [Test]
         public void Execute_Should_insert_point_at_time_order()
         {
