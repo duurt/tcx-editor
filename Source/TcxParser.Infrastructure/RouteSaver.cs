@@ -50,6 +50,7 @@ namespace TcxParser.Infrastructure
                 case CoursePoint.PointType.Right: return CoursePointType_t.Right;
                 case CoursePoint.PointType.Straight: return CoursePointType_t.Straight;
                 case CoursePoint.PointType.Food: return CoursePointType_t.Food;
+                case CoursePoint.PointType.Summit: return CoursePointType_t.Summit;
                 case CoursePoint.PointType.Valley: return CoursePointType_t.Valley;
                 case CoursePoint.PointType.ClimbCat1: return CoursePointType_t.Item1stCategory;
                 case CoursePoint.PointType.ClimbCat2: return CoursePointType_t.Item2ndCategory;
