@@ -106,5 +106,15 @@ namespace TcxEditor.UI
             mapControl1.ShowPointToEdit(point);
             tbPointNotes.Focus();
         }
+
+        private void btnStepFwd_Click(object sender, EventArgs e)
+        {
+            mapControl1.StepForward();
+        }
+
+        private void btnStepBck_Click(object sender, EventArgs e)
+        {
+            mapControl1.StepBack();
+        }
     }
 }

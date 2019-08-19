@@ -87,6 +87,30 @@ namespace TcxEditor.UI
             CurrentRoute = openedRoute;
         }
 
+        internal void StepForward()
+        {
+            Step(1);
+        }
+
+        internal void StepBack()
+        {
+            Step(-1);
+        }
+
+        private void Step(int step)
+        {
+            int maxIndex = CurrentRoute.TrackPoints.Count - 1;
+
+            int index = CurrentRoute.TrackPoints.IndexOf(PointToEdit);
+            int nextIndex = index + step;
+
+            if (nextIndex < 0 || nextIndex > maxIndex)
+                return;
+
+            PointToEdit = CurrentRoute.TrackPoints[nextIndex];
+            ShowPointToEdit(PointToEdit);
+        }
+
         internal void ShowPointToEdit(TrackPoint point)
         {
             ClearEditMarkers();
