@@ -23,6 +23,7 @@ namespace TcxEditor.UI
     {
         public Route CurrentRoute { get; internal set; }
         public TrackPoint PointToEdit { get; internal set; }
+        public GMapMarker SelectedCoursePoint { get; private set; }
 
         public event EventHandler<MapClickEventArgs> MapClickEvent;
 
@@ -42,6 +43,23 @@ namespace TcxEditor.UI
             gMapControl1.Zoom = 3;
 
             gMapControl1.Click += OnMapClick;
+            gMapControl1.OnMarkerClick += OnMarkerClick;
+        }
+
+        private void OnMarkerClick(GMapMarker item, MouseEventArgs e)
+        {
+            if (!item.Overlay.Id.Equals("points"))
+                return;
+            // refactor; looks too much like show edit point
+            ClearEditMarkers();
+            SelectedCoursePoint = item;
+
+            GMapOverlay editOverlay = gMapControl1.Overlays.First(o => o.Id.Equals("editPoints"));
+            editOverlay.Markers.Add(
+                new GMarkerGoogle(
+                    new PointLatLng(item.Position.Lat, item.Position.Lng),
+                    GMarkerGoogleType.arrow));
+
         }
 
         private void OnMapClick(object sender, EventArgs e)
@@ -79,7 +97,7 @@ namespace TcxEditor.UI
                 GMarkerGoogle marker = new GMarkerGoogle(
                     new PointLatLng(point.Lattitude, point.Longitude),
                     new Bitmap(new MemoryStream(Convert.FromBase64String("iVBORw0KGgoAAAANSUhEUgAAAA8AAAAPCAMAAAAMCGV4AAAASFBMVEX///9ISEgGBgbBwcH39/dpaWmYmJjR0dH09PSBgYGJiYnV1dV4eHh+fn7FxcVSUlJgYGDl5eWjo6Pc3Nx5eXk4ODhfX18nJycGtpgYAAAAcklEQVQImUWPWxaAIAhER83MxNKe+99pKFTzAdzDAQaA5WKmHB1Egy9j2MN4+aHhtEaOtwfiOnFFM17NBCwFv8qCvLXCWtPSlkGpd87OiUC1s+lc6e0Lp0PnlXle9wvzfrlvWXJf/TWJv89/Ef/63yH/PeORA/kIj+u1AAAAAElFTkSuQmCC"))));
-                    
+                
                 markerOverlay.Markers.Add(marker);
                 marker.ToolTipText = $"{point.Type}\n{point.Notes}";
             }
@@ -87,15 +105,9 @@ namespace TcxEditor.UI
             CurrentRoute = openedRoute;
         }
 
-        internal void StepForward()
-        {
-            Step(1);
-        }
+        internal void StepForward() => Step(1);
 
-        internal void StepBack()
-        {
-            Step(-1);
-        }
+        internal void StepBack() => Step(-1);
 
         private void Step(int step)
         {
