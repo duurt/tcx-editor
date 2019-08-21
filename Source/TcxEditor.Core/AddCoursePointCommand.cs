@@ -35,22 +35,18 @@ namespace TcxEditor.Core
                 throw new TcxCoreException("The CoursePoint cannot be added, because there is no corresponding TrackPoint.");
         }
 
-        private bool AreCoinciding(TrackPoint tp, TrackPoint newCoursePoint)
+        private bool AreCoinciding(TrackPoint tp, TrackPoint newPoint)
         {
             return
-                tp.Lattitude == newCoursePoint.Lattitude
-                && tp.Longitude == newCoursePoint.Longitude
-                && tp.TimeStamp == newCoursePoint.TimeStamp;
+                tp.Lattitude == newPoint.Lattitude
+                && tp.Longitude == newPoint.Longitude
+                && tp.TimeStamp == newPoint.TimeStamp;
         }
 
         private static void AddNewPoint(CoursePoint newPoint, List<CoursePoint> coursePoints)
         {
-            int index = coursePoints.FindIndex(
-                cp => cp.TimeStamp > newPoint.TimeStamp);
-
-            coursePoints.Insert(
-                index < 0 ? 0 : index,
-                newPoint);
+            coursePoints.Add(newPoint);
+            coursePoints.Sort((x, y) => x.TimeStamp.CompareTo(y.TimeStamp));
         }
     }
 }

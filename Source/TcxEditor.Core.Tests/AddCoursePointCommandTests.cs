@@ -91,44 +91,67 @@ namespace TcxEditor.Core.Tests
                     }));
         }
 
-        // todo: what if there is only one point, and the one added should be placed second?
         [Test]
-        public void Execute_Should_insert_point_at_time_order()
+        public void Execute_Should_add_at_begin_if_CP_belongs_to_earlier_TP_than_other_CPs()
         {
-            double lat1 = 1;
-            double lon1 = 2;
-            DateTime t1 = new DateTime(2019, 8, 16, 12, 45, 59);
+            var inputRoute = new TestRouteBuilder()
+                .WithTrackPointCount(3)
+                .WithCoursePointsAt(1)
+                .Build();
 
-            double lat0 = lat1 - 0.1;
-            double lon0 = lon1 - 0.1;
-            DateTime t0 = t1.AddSeconds(-1);
-
-            double lat2 = lat1 + 0.1;
-            double lon2 = lat1 + 0.1;
-            DateTime t2 = t1.AddSeconds(1);
-
-
-            var inputRoute = new Route();
-            inputRoute.TrackPoints.Add(GetTrackPoint(lat0, lon0, t0));
-            inputRoute.TrackPoints.Add(GetTrackPoint(lat1, lon1, t1));
-            inputRoute.TrackPoints.Add(GetTrackPoint(lat2, lon2, t2));
-
-            inputRoute.CoursePoints.Add(GetCoursePoint(lat0, lon0, t0));
-            inputRoute.CoursePoints.Add(GetCoursePoint(lat2, lon2, t2));
-
-            var result =
-                _sut.Execute(
+            var result = _sut.Execute(
                 new AddCoursePointInput
                 {
                     Route = inputRoute,
-                    NewCoursePoint = GetCoursePoint(lat1, lon1, t1)
+                    NewCoursePoint = TestRouteBuilder.GetCoursePoint(0)
+                });
+
+            result.Route.CoursePoints.Count.ShouldBe(2);
+            result.Route.CoursePoints[0].TimeStamp.ShouldBe(TestRouteBuilder.GetTimeStamp(0));
+            result.Route.CoursePoints[1].TimeStamp.ShouldBe(TestRouteBuilder.GetTimeStamp(1));
+        }
+
+        [Test]
+        public void Execute_Should_add_at_end_if_CP_belongs_to_later_TP_than_other_CPs()
+        {
+            var inputRoute = new TestRouteBuilder()
+                .WithTrackPointCount(3)
+                .WithCoursePointsAt(0)
+                .Build();
+
+            var result = _sut.Execute(
+                new AddCoursePointInput
+                {
+                    Route = inputRoute,
+                    NewCoursePoint = TestRouteBuilder.GetCoursePoint(1)
+                });
+
+            result.Route.CoursePoints.Count.ShouldBe(2);
+            result.Route.CoursePoints[0].TimeStamp.ShouldBe(TestRouteBuilder.GetTimeStamp(0));
+            result.Route.CoursePoints[1].TimeStamp.ShouldBe(TestRouteBuilder.GetTimeStamp(1));
+        }
+
+        [Test]
+        public void Execute_Should_insert_point_at_time_order()
+        {
+            var inputRoute = new TestRouteBuilder()
+                .WithTrackPointCount(3)
+                .WithCoursePointsAt(0, 2)
+                .Build();
+
+            var result = _sut.Execute(
+                new AddCoursePointInput
+                {
+                    Route = inputRoute,
+                    NewCoursePoint = TestRouteBuilder.GetCoursePoint(1)
                 });
 
             result.Route.CoursePoints.Count.ShouldBe(3);
-            result.Route.CoursePoints[0].TimeStamp.ShouldBe(t0);
-            result.Route.CoursePoints[1].TimeStamp.ShouldBe(t1);
-            result.Route.CoursePoints[2].TimeStamp.ShouldBe(t2);
+            result.Route.CoursePoints[0].TimeStamp.ShouldBe(TestRouteBuilder.GetTimeStamp(0));
+            result.Route.CoursePoints[1].TimeStamp.ShouldBe(TestRouteBuilder.GetTimeStamp(1));
+            result.Route.CoursePoints[2].TimeStamp.ShouldBe(TestRouteBuilder.GetTimeStamp(2));
         }
+
 
         private static void VerifyCoursePoint(CoursePoint coursePoint, double lat1, double lon1, DateTime t1)
         {
