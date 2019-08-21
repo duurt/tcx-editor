@@ -24,15 +24,45 @@ namespace TcxEditor.UI
         public event EventHandler<OpenRouteEventArgs> OpenFileEvent;
         public event EventHandler<AddStartFinishEventargs> AddStartFinishEvent;
         public event EventHandler<SaveRouteEventargs> SaveRouteEvent;
+        public event EventHandler<GetNearestEventArgs> GetNearestEvent;
+        public event EventHandler<AddPointEventArgs> AddPointEvent;
 
         public MainForm()
         {
             InitializeComponent();
+            InitTypesComboBox();
+            mapControl1.MapClickEvent += MapControl1_MapClickEvent;
+            KeyPreview = true;
         }
 
-        public void ShowRoute(Route route)
+        protected override void OnKeyUp(KeyEventArgs e)
         {
-            mapControl1.SetRoute(route);
+            e.SuppressKeyPress = true;
+            if (e.KeyCode == Keys.Left)
+                RaiseAddPointEvent("Left", CoursePoint.PointType.Left);
+            else if (e.KeyCode == Keys.Right)
+                RaiseAddPointEvent("Right", CoursePoint.PointType.Right);
+            else if (e.KeyCode == Keys.Up)
+                RaiseAddPointEvent("Straight", CoursePoint.PointType.Straight);
+        }
+
+        private void InitTypesComboBox()
+        {
+            cbPointType.DataSource = Enum.GetNames(typeof(CoursePoint.PointType))
+                .Except(new[] { nameof(CoursePoint.PointType.Undefined) }).ToList();
+            cbPointType.SelectedItem = nameof(CoursePoint.PointType.Left);
+        }
+
+        private void MapControl1_MapClickEvent(object sender, MapClickEventArgs e)
+        {
+            if (mapControl1.CurrentRoute != null)
+                GetNearestEvent?.Invoke(
+                    this, 
+                    new GetNearestEventArgs
+                    {
+                        Route = mapControl1.CurrentRoute,
+                        ReferencePoint = new Position(e.Lattitude, e.Longitude)
+                    });
         }
 
         private void btnOpenRoute_Click(object sender, EventArgs e)
@@ -55,6 +85,59 @@ namespace TcxEditor.UI
         private void btnSaveRoute_Click(object sender, EventArgs e)
         {
             SaveRouteEvent?.Invoke(this, new SaveRouteEventargs(mapControl1.CurrentRoute, _fileName));
+        }
+
+        private void btnAddCoursePoint_Click(object sender, EventArgs e)
+        {
+
+            RaiseAddPointEvent(tbPointNotes.Text, GetSelectedPointType());
+        }
+
+        private CoursePoint.PointType GetSelectedPointType()
+        {
+            return (CoursePoint.PointType)Enum.Parse(
+                typeof(CoursePoint.PointType),
+                cbPointType.SelectedItem.ToString(),
+                true);
+        }
+
+        private void RaiseAddPointEvent(string notes, CoursePoint.PointType pointType)
+        {
+            TrackPoint newPoint = mapControl1.PointToEdit;
+            AddPointEvent?.Invoke(
+                this,
+                new AddPointEventArgs
+                {
+                    Route = mapControl1.CurrentRoute,
+                    NewPoint =
+                        new CoursePoint(newPoint.Lattitude, newPoint.Longitude)
+                        {
+                            TimeStamp = newPoint.TimeStamp,
+                            Notes = notes,
+                            Type = pointType
+                        }
+                });
+        }
+
+        public void ShowRoute(Route route)
+        {
+            mapControl1.SetRoute(route);
+        }
+
+        public void ShowPointToEdit(TrackPoint point)
+        {
+            mapControl1.ShowPointToEdit(point);
+            tbPointNotes.Focus();
+        }
+
+        private void btnStepFwd_Click(object sender, EventArgs e)
+        {
+            mapControl1.StepForward();
+        }
+
+        private void btnStepBck_Click(object sender, EventArgs e)
+        {
+            mapControl1.StepBack();
         }
     }
 }

@@ -33,7 +33,7 @@ namespace TcxParser.Infrastructure
                         Notes = p.Notes
                     }).ToArray();
 
-                string outFilePath = @"c:\tmp\routes\Route_" + DateTime.Now.ToString("yyyyMMdd-HHmmss") + "tcx";
+                string outFilePath = @"c:\tmp\routes\Route_" + DateTime.Now.ToString("yyyyMMdd-HHmmss") + ".tcx";
                 using (var outFile = new FileStream(outFilePath, FileMode.CreateNew, FileAccess.ReadWrite))
                 {
                     new XmlSerializer(typeof(TrainingCenterDatabase_t)).Serialize(outFile, parsedFile);
@@ -50,6 +50,7 @@ namespace TcxParser.Infrastructure
                 case CoursePoint.PointType.Right: return CoursePointType_t.Right;
                 case CoursePoint.PointType.Straight: return CoursePointType_t.Straight;
                 case CoursePoint.PointType.Food: return CoursePointType_t.Food;
+                case CoursePoint.PointType.Summit: return CoursePointType_t.Summit;
                 case CoursePoint.PointType.Valley: return CoursePointType_t.Valley;
                 case CoursePoint.PointType.ClimbCat1: return CoursePointType_t.Item1stCategory;
                 case CoursePoint.PointType.ClimbCat2: return CoursePointType_t.Item2ndCategory;
