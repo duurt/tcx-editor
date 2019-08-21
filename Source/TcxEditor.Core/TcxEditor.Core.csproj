@@ -47,6 +47,9 @@
     <Compile Include="AddStartFinishCommand.cs" />
     <Compile Include="AddStartFinishInput.cs" />
     <Compile Include="AddStartFinishResponse.cs" />
+    <Compile Include="DeleteCoursePointResponse.cs" />
+    <Compile Include="DeleteCoursePointInput.cs" />
+    <Compile Include="DeleteCoursePointCommand.cs" />
     <Compile Include="Entities\CoursePoint.cs" />
     <Compile Include="Entities\Position.cs" />
     <Compile Include="Entities\Route.cs" />
@@ -56,6 +59,7 @@
     <Compile Include="GetNearestTrackPointResponse.cs" />
     <Compile Include="Interfaces\IAddCoursePointCommand.cs" />
     <Compile Include="Interfaces\IAddStartFinishCommand.cs" />
+    <Compile Include="Interfaces\IDeleteCoursePointCommand.cs" />
     <Compile Include="Interfaces\IGetNearestTrackPointCommand.cs" />
     <Compile Include="Interfaces\ISaveRouteCommand.cs" />
     <Compile Include="Interfaces\IRouteSaver.cs" />
