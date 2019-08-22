@@ -59,7 +59,6 @@ namespace TcxEditor.UI
                 new GMarkerGoogle(
                     new PointLatLng(item.Position.Lat, item.Position.Lng),
                     GMarkerGoogleType.arrow));
-
         }
 
         private void OnMapClick(object sender, EventArgs e)
