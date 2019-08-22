@@ -17,6 +17,7 @@ namespace TcxEditor.UI
         private readonly ISaveRouteCommand _saver;
         private readonly IGetNearestTrackPointCommand _nearestFinder;
         private readonly IAddCoursePointCommand _pointAdder;
+        private readonly IDeleteCoursePointCommand _pointDeleter;
 
         public Presenter(
             IRouteView routeView, 
@@ -24,7 +25,8 @@ namespace TcxEditor.UI
             IAddStartFinishCommand startFinishAdder,
             ISaveRouteCommand saver,
             IGetNearestTrackPointCommand nearestFinder,
-            IAddCoursePointCommand pointAdder) 
+            IAddCoursePointCommand pointAdder,
+            IDeleteCoursePointCommand pointDeleter) 
         {
             _routeView = routeView;
             _opener = opener;
@@ -32,12 +34,28 @@ namespace TcxEditor.UI
             _saver = saver;
             _nearestFinder = nearestFinder;
             _pointAdder = pointAdder;
+            _pointDeleter = pointDeleter;
 
             _routeView.OpenFileEvent += OnOpenFileEvent;
             _routeView.AddStartFinishEvent += OnAddStartFinishEvent;
             _routeView.SaveRouteEvent += OnSaveRouteEvent;
             _routeView.GetNearestEvent += OnGetNearestEvent;
             _routeView.AddPointEvent += OnAddPointEvent;
+            _routeView.DeletePointEvent += OnDeletePointEvent;
+        }
+
+        private void OnDeletePointEvent(object sender, DeletePointEventArgs e)
+        {
+            var result = _pointDeleter.Execute(
+                new DeleteCoursePointInput
+                {
+                    Route = e.Route,
+                    TimeStamp = e.Route.CoursePoints.FirstOrDefault(
+                        p => p.Lattitude == e.Position.Lattitude 
+                        && p.Longitude == e.Position.Longitude).TimeStamp
+                });
+
+            _routeView.ShowRoute(result.Route);
         }
 
         private void OnAddPointEvent(object sender, AddPointEventArgs e)
