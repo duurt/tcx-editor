@@ -25,6 +25,7 @@ namespace TcxEditor.UI
             builder.RegisterType<RouteSaver>().As<IRouteSaver>();
 
             builder.RegisterType<MainForm>().As<IRouteView>().SingleInstance();
+            builder.RegisterType<MainForm>().As<IErrorView>().SingleInstance();
             builder.RegisterType<Presenter>().AsSelf().SingleInstance();
 
             return builder.Build();

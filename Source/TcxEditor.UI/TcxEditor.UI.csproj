@@ -66,6 +66,7 @@
     <Compile Include="Controls\MapControl.Designer.cs">
       <DependentUpon>MapControl.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\IErrorView.cs" />
     <Compile Include="Forms\SaveRouteEventargs.cs" />
     <Compile Include="Interfaces\AddPointEventArgs.cs" />
     <Compile Include="Interfaces\AddStartFinishEventargs.cs" />
