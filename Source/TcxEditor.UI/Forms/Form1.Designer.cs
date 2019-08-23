@@ -30,8 +30,11 @@ namespace TcxEditor.UI
         {
             this.btnOpenRoute = new System.Windows.Forms.Button();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
+            this.mapControl1 = new TcxEditor.UI.MapControl();
             this.panel1 = new System.Windows.Forms.Panel();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.btnStepBck = new System.Windows.Forms.Button();
+            this.btnStepFwd = new System.Windows.Forms.Button();
             this.btnAddCoursePoint = new System.Windows.Forms.Button();
             this.tbPointNotes = new System.Windows.Forms.TextBox();
             this.label2 = new System.Windows.Forms.Label();
@@ -39,9 +42,7 @@ namespace TcxEditor.UI
             this.cbPointType = new System.Windows.Forms.ComboBox();
             this.btnSaveRoute = new System.Windows.Forms.Button();
             this.btnAddStartFinish = new System.Windows.Forms.Button();
-            this.btnStepFwd = new System.Windows.Forms.Button();
-            this.mapControl1 = new TcxEditor.UI.MapControl();
-            this.btnStepBck = new System.Windows.Forms.Button();
+            this.btnDelete = new System.Windows.Forms.Button();
             this.tableLayoutPanel1.SuspendLayout();
             this.panel1.SuspendLayout();
             this.groupBox1.SuspendLayout();
@@ -72,6 +73,14 @@ namespace TcxEditor.UI
             this.tableLayoutPanel1.Size = new System.Drawing.Size(763, 531);
             this.tableLayoutPanel1.TabIndex = 2;
             // 
+            // mapControl1
+            // 
+            this.mapControl1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.mapControl1.Location = new System.Drawing.Point(146, 3);
+            this.mapControl1.Name = "mapControl1";
+            this.mapControl1.Size = new System.Drawing.Size(614, 525);
+            this.mapControl1.TabIndex = 0;
+            // 
             // panel1
             // 
             this.panel1.Controls.Add(this.groupBox1);
@@ -86,6 +95,7 @@ namespace TcxEditor.UI
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.btnDelete);
             this.groupBox1.Controls.Add(this.btnStepBck);
             this.groupBox1.Controls.Add(this.btnStepFwd);
             this.groupBox1.Controls.Add(this.btnAddCoursePoint);
@@ -99,6 +109,26 @@ namespace TcxEditor.UI
             this.groupBox1.TabIndex = 4;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Add Cue Sheet Point";
+            // 
+            // btnStepBck
+            // 
+            this.btnStepBck.Location = new System.Drawing.Point(10, 20);
+            this.btnStepBck.Name = "btnStepBck";
+            this.btnStepBck.Size = new System.Drawing.Size(56, 23);
+            this.btnStepBck.TabIndex = 6;
+            this.btnStepBck.Text = "<";
+            this.btnStepBck.UseVisualStyleBackColor = true;
+            this.btnStepBck.Click += new System.EventHandler(this.btnStepBck_Click);
+            // 
+            // btnStepFwd
+            // 
+            this.btnStepFwd.Location = new System.Drawing.Point(68, 20);
+            this.btnStepFwd.Name = "btnStepFwd";
+            this.btnStepFwd.Size = new System.Drawing.Size(56, 23);
+            this.btnStepFwd.TabIndex = 5;
+            this.btnStepFwd.Text = ">";
+            this.btnStepFwd.UseVisualStyleBackColor = true;
+            this.btnStepFwd.Click += new System.EventHandler(this.btnStepFwd_Click);
             // 
             // btnAddCoursePoint
             // 
@@ -163,33 +193,15 @@ namespace TcxEditor.UI
             this.btnAddStartFinish.UseVisualStyleBackColor = true;
             this.btnAddStartFinish.Click += new System.EventHandler(this.btnAddStartFinish_Click);
             // 
-            // btnStepFwd
+            // btnDelete
             // 
-            this.btnStepFwd.Location = new System.Drawing.Point(68, 20);
-            this.btnStepFwd.Name = "btnStepFwd";
-            this.btnStepFwd.Size = new System.Drawing.Size(56, 23);
-            this.btnStepFwd.TabIndex = 5;
-            this.btnStepFwd.Text = ">";
-            this.btnStepFwd.UseVisualStyleBackColor = true;
-            this.btnStepFwd.Click += new System.EventHandler(this.btnStepFwd_Click);
-            // 
-            // mapControl1
-            // 
-            this.mapControl1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.mapControl1.Location = new System.Drawing.Point(146, 3);
-            this.mapControl1.Name = "mapControl1";
-            this.mapControl1.Size = new System.Drawing.Size(614, 525);
-            this.mapControl1.TabIndex = 0;
-            // 
-            // btnStepBck
-            // 
-            this.btnStepBck.Location = new System.Drawing.Point(10, 20);
-            this.btnStepBck.Name = "btnStepBck";
-            this.btnStepBck.Size = new System.Drawing.Size(56, 23);
-            this.btnStepBck.TabIndex = 6;
-            this.btnStepBck.Text = "<";
-            this.btnStepBck.UseVisualStyleBackColor = true;
-            this.btnStepBck.Click += new System.EventHandler(this.btnStepBck_Click);
+            this.btnDelete.Location = new System.Drawing.Point(15, 210);
+            this.btnDelete.Name = "btnDelete";
+            this.btnDelete.Size = new System.Drawing.Size(103, 23);
+            this.btnDelete.TabIndex = 7;
+            this.btnDelete.Text = "Remove point";
+            this.btnDelete.UseVisualStyleBackColor = true;
+            this.btnDelete.Click += new System.EventHandler(this.btnDelete_Click);
             // 
             // MainForm
             // 
@@ -224,6 +236,7 @@ namespace TcxEditor.UI
         private System.Windows.Forms.ComboBox cbPointType;
         private System.Windows.Forms.Button btnStepFwd;
         private System.Windows.Forms.Button btnStepBck;
+        private System.Windows.Forms.Button btnDelete;
     }
 }
 

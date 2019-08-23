@@ -26,6 +26,7 @@ namespace TcxEditor.UI
         public event EventHandler<SaveRouteEventargs> SaveRouteEvent;
         public event EventHandler<GetNearestEventArgs> GetNearestEvent;
         public event EventHandler<AddPointEventArgs> AddPointEvent;
+        public event EventHandler<DeletePointEventArgs> DeletePointEvent;
 
         public MainForm()
         {
@@ -138,6 +139,20 @@ namespace TcxEditor.UI
         private void btnStepBck_Click(object sender, EventArgs e)
         {
             mapControl1.StepBack();
+        }
+
+        private void btnDelete_Click(object sender, EventArgs e)
+        {
+            DeletePointEvent?.Invoke(
+                this,
+                new DeletePointEventArgs
+                {
+                    Route = mapControl1.CurrentRoute,
+                    Position = 
+                        new Position(
+                            mapControl1.SelectedCoursePoint.Position.Lat, 
+                            mapControl1.SelectedCoursePoint.Position.Lng)
+                });
         }
     }
 }
