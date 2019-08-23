@@ -17,7 +17,7 @@ using TcxEditor.UI.Interfaces;
 
 namespace TcxEditor.UI
 {
-    public partial class MainForm : Form, IRouteView
+    public partial class MainForm : Form, IRouteView, IErrorView
     {
         private string _fileName;
 
@@ -153,6 +153,11 @@ namespace TcxEditor.UI
                             mapControl1.SelectedCoursePoint.Position.Lat, 
                             mapControl1.SelectedCoursePoint.Position.Lng)
                 });
+        }
+
+        public void ShowErrorMessage(string msg)
+        {
+            MessageBox.Show(msg, "Fout");
         }
     }
 }
