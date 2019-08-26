@@ -24,8 +24,12 @@ namespace TcxEditor.UI
             builder.RegisterType<TcxParserAdapter>().As<ITcxParser>();
             builder.RegisterType<RouteSaver>().As<IRouteSaver>();
 
-            builder.RegisterType<MainForm>().As<IRouteView>().SingleInstance();
-            builder.RegisterType<MainForm>().As<IErrorView>().SingleInstance();
+            builder.RegisterType<MainForm>()
+                    .As<IRouteView>()
+                    .As<IErrorView>()
+                    .As<IGuiStateSetter>()
+                .SingleInstance();
+
             builder.RegisterType<Presenter>().AsSelf().SingleInstance();
 
             return builder.Build();

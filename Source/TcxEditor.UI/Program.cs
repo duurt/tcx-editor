@@ -20,8 +20,9 @@ namespace TcxEditor.UI
                 Application.EnableVisualStyles();
                 Application.SetCompatibleTextRenderingDefault(false);
 
+                var form = scope.Resolve<IRouteView>() as Form;
                 scope.Resolve<Presenter>();
-                Application.Run(scope.Resolve<IRouteView>() as Form);
+                Application.Run(form);
             }
         }
     }

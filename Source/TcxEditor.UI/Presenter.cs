@@ -14,6 +14,7 @@ namespace TcxEditor.UI
     {
         private readonly IRouteView _routeView;
         private readonly IErrorView _errorView;
+        private readonly IGuiStateSetter _guiControls;
         private readonly IOpenRouteCommand _opener;
         private readonly IAddStartFinishCommand _startFinishAdder;
         private readonly ISaveRouteCommand _saver;
@@ -24,6 +25,7 @@ namespace TcxEditor.UI
         public Presenter(
             IRouteView routeView,
             IErrorView errorView,
+            IGuiStateSetter guiControls,
             IOpenRouteCommand opener,
             IAddStartFinishCommand startFinishAdder,
             ISaveRouteCommand saver,
@@ -33,6 +35,7 @@ namespace TcxEditor.UI
         {
             _routeView = routeView;
             _errorView = errorView;
+            _guiControls = guiControls;
 
             _opener = opener;
             _startFinishAdder = startFinishAdder;
@@ -47,6 +50,14 @@ namespace TcxEditor.UI
             _routeView.GetNearestEvent += OnGetNearestEvent;
             _routeView.AddPointEvent += OnAddPointEvent;
             _routeView.DeletePointEvent += OnDeletePointEvent;
+
+            _guiControls.Apply(new GuiState
+            {
+                SaveEnabled = false,
+                AddCoursePoint = false,
+                DeleteCoursePoint = false, 
+                ScrollRoute = false
+            });
         }
 
         private void OnDeletePointEvent(object sender, DeletePointEventArgs e)
@@ -63,6 +74,18 @@ namespace TcxEditor.UI
                     });
 
                 _routeView.ShowRoute(result.Route);
+                _routeView.ShowPointToEdit(
+                    result.Route.TrackPoints.First(
+                        p => p.Lattitude == e.Position.Lattitude 
+                        && p.Longitude == e.Position.Longitude));
+
+                _guiControls.Apply(new GuiState
+                {
+                    SaveEnabled = true,
+                    AddCoursePoint = true,
+                    DeleteCoursePoint = false,
+                    ScrollRoute = true
+                });
             });
         }
 
@@ -78,6 +101,17 @@ namespace TcxEditor.UI
                     });
 
                 _routeView.ShowRoute(result.Route);
+                _routeView.ShowPointToEdit(
+                    result.Route.TrackPoints.First(
+                        p => p.TimeStamp == e.NewPoint.TimeStamp));
+
+                _guiControls.Apply(new GuiState
+                {
+                    SaveEnabled = true,
+                    AddCoursePoint = false,
+                    DeleteCoursePoint = true,
+                    ScrollRoute = true
+                });
             });
         }
 
@@ -94,6 +128,15 @@ namespace TcxEditor.UI
 
                 _routeView.ShowRoute(result.Route);
                 _routeView.ShowPointToEdit(result.Nearest);
+
+                _guiControls.Apply(new GuiState
+                {
+                    SaveEnabled = true,
+                    AddCoursePoint = true,
+                    // todo: make smarter: only if it is coursepoint
+                    DeleteCoursePoint = true,
+                    ScrollRoute = true
+                });
             });
         }
 
@@ -123,6 +166,14 @@ namespace TcxEditor.UI
             {
                 var result = _opener.Execute(new OpenRouteInput { Name = e.Name });
                 _routeView.ShowRoute(result.Route);
+
+                _guiControls.Apply(new GuiState
+                {
+                    SaveEnabled = true,
+                    AddCoursePoint = false,
+                    DeleteCoursePoint = false,
+                    ScrollRoute = false
+                });
             });
         }
 

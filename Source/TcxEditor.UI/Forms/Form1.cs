@@ -17,7 +17,7 @@ using TcxEditor.UI.Interfaces;
 
 namespace TcxEditor.UI
 {
-    public partial class MainForm : Form, IRouteView, IErrorView
+    public partial class MainForm : Form, IRouteView, IErrorView, IGuiStateSetter
     {
         private string _fileName;
 
@@ -34,6 +34,8 @@ namespace TcxEditor.UI
             InitTypesComboBox();
             mapControl1.MapClickEvent += MapControl1_MapClickEvent;
             KeyPreview = true;
+
+            //_guiStateMachine = new GuiStateMachine(this);
         }
 
         protected override void OnKeyUp(KeyEventArgs e)
@@ -64,6 +66,8 @@ namespace TcxEditor.UI
                         Route = mapControl1.CurrentRoute,
                         ReferencePoint = new Position(e.Lattitude, e.Longitude)
                     });
+
+           // _guiStateMachine.TrackPointSelected();
         }
 
         private void btnOpenRoute_Click(object sender, EventArgs e)
@@ -76,6 +80,8 @@ namespace TcxEditor.UI
                     OpenFileEvent?.Invoke(this, new OpenRouteEventArgs(dialog.FileName));
                 }
             }
+
+           // _guiStateMachine.RouteOpened();
         }
 
         private void btnAddStartFinish_Click(object sender, EventArgs e)
@@ -92,6 +98,7 @@ namespace TcxEditor.UI
         {
 
             RaiseAddPointEvent(tbPointNotes.Text, GetSelectedPointType());
+           // _guiStateMachine.CoursePointSelected();
         }
 
         private CoursePoint.PointType GetSelectedPointType()
@@ -159,5 +166,25 @@ namespace TcxEditor.UI
         {
             MessageBox.Show(msg, "Fout");
         }
+
+        public void Apply(GuiState state)
+        {
+            btnAddStartFinish.Enabled = state.AddCoursePoint;
+            btnAddCoursePoint.Enabled = state.AddCoursePoint;
+            btnDelete.Enabled = state.DeleteCoursePoint;
+
+            btnSaveRoute.Enabled = state.SaveEnabled;
+
+            btnStepFwd.Enabled = state.ScrollRoute;
+            btnStepBck.Enabled = state.ScrollRoute;
+        }
+    }
+
+    public class GuiState
+    {
+        public bool SaveEnabled { get; set; }
+        public bool AddCoursePoint { get; set; }
+        public bool DeleteCoursePoint { get; set; }
+        public bool ScrollRoute { get; internal set; }
     }
 }

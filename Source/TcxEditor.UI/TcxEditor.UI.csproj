@@ -67,6 +67,7 @@
       <DependentUpon>MapControl.cs</DependentUpon>
     </Compile>
     <Compile Include="Forms\IErrorView.cs" />
+    <Compile Include="Forms\IGuiControls.cs" />
     <Compile Include="Forms\SaveRouteEventargs.cs" />
     <Compile Include="Interfaces\AddPointEventArgs.cs" />
     <Compile Include="Interfaces\AddStartFinishEventargs.cs" />
@@ -78,6 +79,8 @@
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="StartUp.cs" />
+    <Compile Include="StateMachine\GuiStateMachine.cs" />
+    <Compile Include="StateMachine\IGuiState.cs" />
     <EmbeddedResource Include="Forms\Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>
     </EmbeddedResource>
