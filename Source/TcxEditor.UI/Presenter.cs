@@ -134,7 +134,7 @@ namespace TcxEditor.UI
                     SaveEnabled = true,
                     AddCoursePoint = true,
                     // todo: make smarter: only if it is coursepoint
-                    DeleteCoursePoint = true,
+                    DeleteCoursePoint = false,
                     ScrollRoute = true
                 });
             });

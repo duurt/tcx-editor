@@ -34,8 +34,6 @@ namespace TcxEditor.UI
             InitTypesComboBox();
             mapControl1.MapClickEvent += MapControl1_MapClickEvent;
             KeyPreview = true;
-
-            //_guiStateMachine = new GuiStateMachine(this);
         }
 
         protected override void OnKeyUp(KeyEventArgs e)
@@ -169,14 +167,15 @@ namespace TcxEditor.UI
 
         public void Apply(GuiState state)
         {
+            routeDirectionsGroup.Enabled = state.AddCoursePoint || state.DeleteCoursePoint;
+
             btnAddStartFinish.Enabled = state.AddCoursePoint;
             btnAddCoursePoint.Enabled = state.AddCoursePoint;
             btnDelete.Enabled = state.DeleteCoursePoint;
 
             btnSaveRoute.Enabled = state.SaveEnabled;
 
-            btnStepFwd.Enabled = state.ScrollRoute;
-            btnStepBck.Enabled = state.ScrollRoute;
+            grbRouteScrolling.Enabled = state.ScrollRoute;
         }
     }
 
