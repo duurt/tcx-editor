@@ -23,9 +23,9 @@ namespace TcxEditor.UI
     {
         public Route CurrentRoute { get; internal set; }
         public TrackPoint PointToEdit { get; internal set; }
-        public GMapMarker SelectedCoursePoint { get; private set; }
 
         public event EventHandler<MapClickEventArgs> MapClickEvent;
+        public event EventHandler<MarkerClickEventArgs> MarkerClickEvent;
 
         public MapControl()
         {
@@ -50,15 +50,10 @@ namespace TcxEditor.UI
         {
             if (!item.Overlay.Id.Equals("points"))
                 return;
-            // refactor; looks too much like show edit point
-            ClearEditMarkers();
-            SelectedCoursePoint = item;
 
-            GMapOverlay editOverlay = gMapControl1.Overlays.First(o => o.Id.Equals("editPoints"));
-            editOverlay.Markers.Add(
-                new GMarkerGoogle(
-                    new PointLatLng(item.Position.Lat, item.Position.Lng),
-                    GMarkerGoogleType.arrow));
+            MarkerClickEvent?.Invoke(
+                this,
+                new MarkerClickEventArgs(new Position(item.Position.Lat, item.Position.Lng)));
         }
 
         private void OnMapClick(object sender, EventArgs e)
@@ -69,8 +64,8 @@ namespace TcxEditor.UI
 
             var latLon = gMapControl1.FromLocalToLatLng(args.X, args.Y);
             MapClickEvent?.Invoke(
-                this, 
-                new MapClickEventArgs { Lattitude = latLon.Lat, Longitude = latLon.Lng});
+                this,
+                new MapClickEventArgs { Lattitude = latLon.Lat, Longitude = latLon.Lng });
         }
 
         public void SetRoute(Route openedRoute)
@@ -96,7 +91,7 @@ namespace TcxEditor.UI
                 GMarkerGoogle marker = new GMarkerGoogle(
                     new PointLatLng(point.Lattitude, point.Longitude),
                     new Bitmap(new MemoryStream(Convert.FromBase64String("iVBORw0KGgoAAAANSUhEUgAAAA8AAAAPCAMAAAAMCGV4AAAASFBMVEX///9ISEgGBgbBwcH39/dpaWmYmJjR0dH09PSBgYGJiYnV1dV4eHh+fn7FxcVSUlJgYGDl5eWjo6Pc3Nx5eXk4ODhfX18nJycGtpgYAAAAcklEQVQImUWPWxaAIAhER83MxNKe+99pKFTzAdzDAQaA5WKmHB1Egy9j2MN4+aHhtEaOtwfiOnFFM17NBCwFv8qCvLXCWtPSlkGpd87OiUC1s+lc6e0Lp0PnlXle9wvzfrlvWXJf/TWJv89/Ef/63yH/PeORA/kIj+u1AAAAAElFTkSuQmCC"))));
-                
+
                 markerOverlay.Markers.Add(marker);
                 marker.ToolTipText = $"{point.Type}\n{point.Notes}";
             }
@@ -119,7 +114,11 @@ namespace TcxEditor.UI
                 return;
 
             PointToEdit = CurrentRoute.TrackPoints[nextIndex];
-            ShowPointToEdit(PointToEdit);
+
+            if (CurrentRoute.CoursePoints.Any(p => p.Lattitude == PointToEdit.Lattitude && p.Longitude == PointToEdit.Longitude))
+                SetEditCoursePointMarker(PointToEdit);
+            else
+                ShowPointToEdit(PointToEdit);
         }
 
         internal void ShowPointToEdit(TrackPoint point)
@@ -127,11 +126,11 @@ namespace TcxEditor.UI
             ClearEditMarkers();
 
             PointToEdit = point;
-            
+
             GMapOverlay editOverlay = gMapControl1.Overlays.First(o => o.Id.Equals("editPoints"));
             editOverlay.Markers.Add(
                 new GMarkerGoogle(
-                    new PointLatLng(point.Lattitude, point.Longitude), 
+                    new PointLatLng(point.Lattitude, point.Longitude),
                     GMarkerGoogleType.blue));
         }
 
@@ -145,6 +144,27 @@ namespace TcxEditor.UI
         {
             GMapOverlay editOverlay = gMapControl1.Overlays.First(o => o.Id.Equals("editPoints"));
             editOverlay.Markers.Clear();
+        }
+
+        internal void SetEditCoursePointMarker(Position position)
+        {
+            ClearEditMarkers();
+
+            GMapOverlay editOverlay = gMapControl1.Overlays.First(o => o.Id.Equals("editPoints"));
+            editOverlay.Markers.Add(
+                new GMarkerGoogle(
+                    new PointLatLng(position.Lattitude, position.Longitude),
+                    GMarkerGoogleType.arrow)); ;
+        }
+    }
+
+    public class MarkerClickEventArgs
+    {
+        public Position position { get; }
+
+        public MarkerClickEventArgs(Position position)
+        {
+            this.position = position;
         }
     }
 

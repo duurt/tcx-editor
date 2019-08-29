@@ -27,6 +27,7 @@ namespace TcxEditor.UI
         public event EventHandler<GetNearestEventArgs> GetNearestEvent;
         public event EventHandler<AddPointEventArgs> AddPointEvent;
         public event EventHandler<DeletePointEventArgs> DeletePointEvent;
+        public event EventHandler<SelectCoursePointEventArgs> SelectCoursePointEvent;
 
         public MainForm()
         {
@@ -64,8 +65,6 @@ namespace TcxEditor.UI
                         Route = mapControl1.CurrentRoute,
                         ReferencePoint = new Position(e.Lattitude, e.Longitude)
                     });
-
-           // _guiStateMachine.TrackPointSelected();
         }
 
         private void btnOpenRoute_Click(object sender, EventArgs e)
@@ -78,8 +77,6 @@ namespace TcxEditor.UI
                     OpenFileEvent?.Invoke(this, new OpenRouteEventArgs(dialog.FileName));
                 }
             }
-
-           // _guiStateMachine.RouteOpened();
         }
 
         private void btnAddStartFinish_Click(object sender, EventArgs e)
@@ -96,7 +93,6 @@ namespace TcxEditor.UI
         {
 
             RaiseAddPointEvent(tbPointNotes.Text, GetSelectedPointType());
-           // _guiStateMachine.CoursePointSelected();
         }
 
         private CoursePoint.PointType GetSelectedPointType()
@@ -153,10 +149,6 @@ namespace TcxEditor.UI
                 new DeletePointEventArgs
                 {
                     Route = mapControl1.CurrentRoute,
-                    Position = 
-                        new Position(
-                            mapControl1.SelectedCoursePoint.Position.Lat, 
-                            mapControl1.SelectedCoursePoint.Position.Lng)
                 });
         }
 
@@ -176,6 +168,11 @@ namespace TcxEditor.UI
             btnSaveRoute.Enabled = state.SaveEnabled;
 
             grbRouteScrolling.Enabled = state.ScrollRoute;
+        }
+
+        public void ShowEditCoursePointMarker(Position position)
+        {
+            mapControl1.SetEditCoursePointMarker(position);
         }
     }
 

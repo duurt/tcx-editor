@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using TcxEditor.Core;
+using TcxEditor.Core.Entities;
 using TcxEditor.Core.Exceptions;
 using TcxEditor.Core.Interfaces;
 using TcxEditor.UI.Interfaces;
@@ -21,6 +22,9 @@ namespace TcxEditor.UI
         private readonly IGetNearestTrackPointCommand _nearestFinder;
         private readonly IAddCoursePointCommand _pointAdder;
         private readonly IDeleteCoursePointCommand _pointDeleter;
+
+        private Route _route = null;
+        private Position _selectedCoursePoint = null;
 
         public Presenter(
             IRouteView routeView,
@@ -50,6 +54,7 @@ namespace TcxEditor.UI
             _routeView.GetNearestEvent += OnGetNearestEvent;
             _routeView.AddPointEvent += OnAddPointEvent;
             _routeView.DeletePointEvent += OnDeletePointEvent;
+            _routeView.SelectCoursePointEvent += OnSelectCoursePointEvent;
 
             _guiControls.Apply(new GuiState
             {
@@ -57,6 +62,20 @@ namespace TcxEditor.UI
                 AddCoursePoint = false,
                 DeleteCoursePoint = false, 
                 ScrollRoute = false
+            });
+        }
+
+        private void OnSelectCoursePointEvent(object sender, SelectCoursePointEventArgs e)
+        {
+            _selectedCoursePoint = e.Position;
+            _routeView.ShowEditCoursePointMarker(e.Position);
+
+            _guiControls.Apply(new GuiState
+            {
+                SaveEnabled = true,
+                AddCoursePoint = false,
+                DeleteCoursePoint = true,
+                ScrollRoute = true
             });
         }
 
@@ -68,16 +87,18 @@ namespace TcxEditor.UI
                     new DeleteCoursePointInput
                     {
                         Route = e.Route,
-                        TimeStamp = e.Route.CoursePoints.FirstOrDefault(
-                            p => p.Lattitude == e.Position.Lattitude
-                            && p.Longitude == e.Position.Longitude).TimeStamp
+                        TimeStamp = GetTimeStampSelectedCoursePoint(e)
                     });
+
+                _route = result.Route;
 
                 _routeView.ShowRoute(result.Route);
                 _routeView.ShowPointToEdit(
                     result.Route.TrackPoints.First(
-                        p => p.Lattitude == e.Position.Lattitude 
-                        && p.Longitude == e.Position.Longitude));
+                        p => p.Lattitude == _selectedCoursePoint.Lattitude
+                        && p.Longitude == _selectedCoursePoint.Longitude));
+
+                _selectedCoursePoint = null;
 
                 _guiControls.Apply(new GuiState
                 {
@@ -87,6 +108,13 @@ namespace TcxEditor.UI
                     ScrollRoute = true
                 });
             });
+        }
+
+        private DateTime GetTimeStampSelectedCoursePoint(DeletePointEventArgs e)
+        {
+            return e.Route.CoursePoints.FirstOrDefault(
+                p => p.Lattitude == _selectedCoursePoint.Lattitude
+                && p.Longitude == _selectedCoursePoint.Longitude).TimeStamp;
         }
 
         private void OnAddPointEvent(object sender, AddPointEventArgs e)
@@ -99,9 +127,11 @@ namespace TcxEditor.UI
                         Route = e.Route,
                         NewCoursePoint = e.NewPoint
                     });
+                _route = result.Route;
+                _selectedCoursePoint = e.NewPoint;
 
                 _routeView.ShowRoute(result.Route);
-                _routeView.ShowPointToEdit(
+                _routeView.ShowEditCoursePointMarker(
                     result.Route.TrackPoints.First(
                         p => p.TimeStamp == e.NewPoint.TimeStamp));
 
@@ -125,6 +155,7 @@ namespace TcxEditor.UI
                         Route = e.Route,
                         ReferencePoint = e.ReferencePoint
                     });
+                _route = result.Route;
 
                 _routeView.ShowRoute(result.Route);
                 _routeView.ShowPointToEdit(result.Nearest);
@@ -145,6 +176,7 @@ namespace TcxEditor.UI
             TryCatch(() =>
             {
                 var result = _saver.Execute(new SaveRouteRequest(e.Route, e.Name));
+                _route = result.Route;
 
                 _routeView.ShowRoute(result.Route);
             });
@@ -155,7 +187,7 @@ namespace TcxEditor.UI
             TryCatch(() =>
             {
                 var result = _startFinishAdder.Execute(new AddStartFinishInput(e.Route));
-
+                _route = result.Route;
                 _routeView.ShowRoute(result.Route);
             });
         }
@@ -165,6 +197,8 @@ namespace TcxEditor.UI
             TryCatch(() =>
             {
                 var result = _opener.Execute(new OpenRouteInput { Name = e.Name });
+                _route = result.Route;
+                
                 _routeView.ShowRoute(result.Route);
 
                 _guiControls.Apply(new GuiState

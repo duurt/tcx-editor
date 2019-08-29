@@ -75,6 +75,7 @@
     <Compile Include="Interfaces\GetNearestEventArgs.cs" />
     <Compile Include="Interfaces\IRouteView.cs" />
     <Compile Include="Interfaces\OpenRouteEventArgs.cs" />
+    <Compile Include="Interfaces\SelectCoursePointEventArgs.cs" />
     <Compile Include="Presenter.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
