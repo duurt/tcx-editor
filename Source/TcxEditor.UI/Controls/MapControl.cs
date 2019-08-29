@@ -25,7 +25,7 @@ namespace TcxEditor.UI
         public TrackPoint PointToEdit { get; internal set; }
 
         public event EventHandler<MapClickEventArgs> MapClickEvent;
-        public event EventHandler<MarkerClickEventArgs> MarkerClickEvent;
+        public event EventHandler<CoursePointSelectEventArgs> CoursePointSelectEvent;
 
         public MapControl()
         {
@@ -51,9 +51,9 @@ namespace TcxEditor.UI
             if (!item.Overlay.Id.Equals("points"))
                 return;
 
-            MarkerClickEvent?.Invoke(
+            CoursePointSelectEvent?.Invoke(
                 this,
-                new MarkerClickEventArgs(new Position(item.Position.Lat, item.Position.Lng)));
+                new CoursePointSelectEventArgs(new Position(item.Position.Lat, item.Position.Lng)));
         }
 
         private void OnMapClick(object sender, EventArgs e)
@@ -116,7 +116,8 @@ namespace TcxEditor.UI
             PointToEdit = CurrentRoute.TrackPoints[nextIndex];
 
             if (CurrentRoute.CoursePoints.Any(p => p.Lattitude == PointToEdit.Lattitude && p.Longitude == PointToEdit.Longitude))
-                SetEditCoursePointMarker(PointToEdit);
+                CoursePointSelectEvent?.Invoke(this, new CoursePointSelectEventArgs(PointToEdit));
+            //SetEditCoursePointMarker(PointToEdit);
             else
                 ShowPointToEdit(PointToEdit);
         }
@@ -158,11 +159,11 @@ namespace TcxEditor.UI
         }
     }
 
-    public class MarkerClickEventArgs
+    public class CoursePointSelectEventArgs
     {
         public Position position { get; }
 
-        public MarkerClickEventArgs(Position position)
+        public CoursePointSelectEventArgs(Position position)
         {
             this.position = position;
         }

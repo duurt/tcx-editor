@@ -34,7 +34,13 @@ namespace TcxEditor.UI
             InitializeComponent();
             InitTypesComboBox();
             mapControl1.MapClickEvent += MapControl1_MapClickEvent;
+            mapControl1.CoursePointSelectEvent += OnMarkerClick;
             KeyPreview = true;
+        }
+
+        private void OnMarkerClick(object sender, CoursePointSelectEventArgs e)
+        {
+            SelectCoursePointEvent?.Invoke(this, new SelectCoursePointEventArgs(e.position));
         }
 
         protected override void OnKeyUp(KeyEventArgs e)
