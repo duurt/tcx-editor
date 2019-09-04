@@ -25,7 +25,8 @@ namespace TcxEditor.UI
         public TrackPoint PointToEdit { get; internal set; }
 
         public event EventHandler<MapClickEventArgs> MapClickEvent;
-        public event EventHandler<CoursePointSelectEventArgs> CoursePointSelectEvent;
+        public event EventHandler<PointSelectEventArgs> CoursePointSelectEvent;
+        public event EventHandler<PointSelectEventArgs> TrackPointSelectEvent;
 
         public MapControl()
         {
@@ -53,7 +54,7 @@ namespace TcxEditor.UI
 
             CoursePointSelectEvent?.Invoke(
                 this,
-                new CoursePointSelectEventArgs(new Position(item.Position.Lat, item.Position.Lng)));
+                new PointSelectEventArgs(new Position(item.Position.Lat, item.Position.Lng)));
         }
 
         private void OnMapClick(object sender, EventArgs e)
@@ -116,10 +117,10 @@ namespace TcxEditor.UI
             PointToEdit = CurrentRoute.TrackPoints[nextIndex];
 
             if (CurrentRoute.CoursePoints.Any(p => p.Lattitude == PointToEdit.Lattitude && p.Longitude == PointToEdit.Longitude))
-                CoursePointSelectEvent?.Invoke(this, new CoursePointSelectEventArgs(PointToEdit));
-            //SetEditCoursePointMarker(PointToEdit);
+                CoursePointSelectEvent?.Invoke(this, new PointSelectEventArgs(PointToEdit));
             else
-                ShowPointToEdit(PointToEdit);
+                TrackPointSelectEvent?.Invoke(this, new PointSelectEventArgs(PointToEdit));
+            //ShowPointToEdit(PointToEdit);
         }
 
         internal void ShowPointToEdit(TrackPoint point)
@@ -159,13 +160,13 @@ namespace TcxEditor.UI
         }
     }
 
-    public class CoursePointSelectEventArgs
+    public class PointSelectEventArgs
     {
-        public Position position { get; }
+        public Position _point { get; }
 
-        public CoursePointSelectEventArgs(Position position)
+        public PointSelectEventArgs(Position point)
         {
-            this.position = position;
+            _point = point;
         }
     }
 

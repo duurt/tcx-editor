@@ -11,7 +11,8 @@ namespace TcxEditor.UI.Interfaces
     {
         void ShowRoute(Route route);
         void ShowPointToEdit(TrackPoint point);
-        void ShowEditCoursePointMarker(Position position);
+        void ShowEditTrackPointMarker(TrackPoint position);
+        void ShowEditCoursePointMarker(TrackPoint position);
 
         event EventHandler<OpenRouteEventArgs> OpenFileEvent;
         event EventHandler<AddStartFinishEventargs> AddStartFinishEvent;
@@ -19,6 +20,7 @@ namespace TcxEditor.UI.Interfaces
         event EventHandler<GetNearestEventArgs> GetNearestEvent;
         event EventHandler<AddPointEventArgs> AddPointEvent;
         event EventHandler<DeletePointEventArgs> DeletePointEvent;
-        event EventHandler<SelectCoursePointEventArgs> SelectCoursePointEvent;
+        event EventHandler<SelectPointEventArgs> SelectTrackPointEvent;
+        event EventHandler<SelectPointEventArgs> SelectCoursePointEvent;
     }
 }

@@ -27,20 +27,27 @@ namespace TcxEditor.UI
         public event EventHandler<GetNearestEventArgs> GetNearestEvent;
         public event EventHandler<AddPointEventArgs> AddPointEvent;
         public event EventHandler<DeletePointEventArgs> DeletePointEvent;
-        public event EventHandler<SelectCoursePointEventArgs> SelectCoursePointEvent;
+        public event EventHandler<SelectPointEventArgs> SelectTrackPointEvent;
+        public event EventHandler<SelectPointEventArgs> SelectCoursePointEvent;
 
         public MainForm()
         {
             InitializeComponent();
             InitTypesComboBox();
             mapControl1.MapClickEvent += MapControl1_MapClickEvent;
-            mapControl1.CoursePointSelectEvent += OnMarkerClick;
+            mapControl1.TrackPointSelectEvent += OnTrackPointClick;
+            mapControl1.CoursePointSelectEvent += OnCoursePointClick;
             KeyPreview = true;
         }
 
-        private void OnMarkerClick(object sender, CoursePointSelectEventArgs e)
+        private void OnTrackPointClick(object sender, PointSelectEventArgs e)
         {
-            SelectCoursePointEvent?.Invoke(this, new SelectCoursePointEventArgs(e.position));
+            SelectTrackPointEvent?.Invoke(this, new SelectPointEventArgs(e._point));
+        }
+
+        private void OnCoursePointClick(object sender, PointSelectEventArgs e)
+        {
+            SelectCoursePointEvent?.Invoke(this, new SelectPointEventArgs(e._point));
         }
 
         protected override void OnKeyUp(KeyEventArgs e)
@@ -176,9 +183,14 @@ namespace TcxEditor.UI
             grbRouteScrolling.Enabled = state.ScrollRoute;
         }
 
-        public void ShowEditCoursePointMarker(Position position)
+        public void ShowEditCoursePointMarker(TrackPoint position)
         {
             mapControl1.SetEditCoursePointMarker(position);
+        }
+
+        public void ShowEditTrackPointMarker(TrackPoint position)
+        {
+            mapControl1.ShowPointToEdit(position);
         }
     }
 

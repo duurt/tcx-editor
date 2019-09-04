@@ -2,11 +2,11 @@
 
 namespace TcxEditor.UI.Interfaces
 {
-    public class SelectCoursePointEventArgs
+    public class SelectPointEventArgs
     {
         public Position Position { get; set; }
 
-        public SelectCoursePointEventArgs(Position position)
+        public SelectPointEventArgs(Position position)
         {
             Position = position;
         }

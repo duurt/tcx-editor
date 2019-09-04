@@ -24,6 +24,8 @@ namespace TcxEditor.UI
         private readonly IDeleteCoursePointCommand _pointDeleter;
 
         private Route _route = null;
+        // todo: this must be trackpoint (includes timestamp: needed to distinghuish between overlapping parts of route)
+        // todo: same for all event args that pass positions...
         private Position _selectedCoursePoint = null;
 
         public Presenter(
@@ -55,6 +57,7 @@ namespace TcxEditor.UI
             _routeView.AddPointEvent += OnAddPointEvent;
             _routeView.DeletePointEvent += OnDeletePointEvent;
             _routeView.SelectCoursePointEvent += OnSelectCoursePointEvent;
+            _routeView.SelectTrackPointEvent += OnSelectTrackPointEvent;
 
             _guiControls.Apply(new GuiState
             {
@@ -65,10 +68,27 @@ namespace TcxEditor.UI
             });
         }
 
-        private void OnSelectCoursePointEvent(object sender, SelectCoursePointEventArgs e)
+        private void OnSelectTrackPointEvent(object sender, SelectPointEventArgs e)
         {
             _selectedCoursePoint = e.Position;
-            _routeView.ShowEditCoursePointMarker(e.Position);
+            _routeView.ShowEditTrackPointMarker(
+                _route.TrackPoints.First(
+                    p => p.Lattitude == e.Position.Lattitude && p.Longitude == e.Position.Longitude));
+
+            _guiControls.Apply(new GuiState
+            {
+                SaveEnabled = true,
+                AddCoursePoint = true,
+                DeleteCoursePoint = false,
+                ScrollRoute = true
+            });
+        }
+
+        private void OnSelectCoursePointEvent(object sender, SelectPointEventArgs e)
+        {
+            _selectedCoursePoint = e.Position;
+            _routeView.ShowEditCoursePointMarker(_route.CoursePoints.First(
+                    p => p.Lattitude == e.Position.Lattitude && p.Longitude == e.Position.Longitude));
 
             _guiControls.Apply(new GuiState
             {
