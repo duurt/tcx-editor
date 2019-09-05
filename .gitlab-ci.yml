@@ -25,4 +25,4 @@ deploy_job:
     - windows
   stage: deploy
   script: 
-    - '& Copy-Item -Path Source\TcxEditor.UI\bin\Release -Destination "C:\tmp\tcx" -Recurses'
+    - '& Copy-Item -Path Source\TcxEditor.UI\bin\Release -Destination "C:\tmp\tcx" -Recurse'
