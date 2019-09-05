@@ -66,6 +66,7 @@
     <Compile Include="Interfaces\IOpenRouteCommand.cs" />
     <Compile Include="Interfaces\IStreamCreator.cs" />
     <Compile Include="Interfaces\ITcxParser.cs" />
+    <Compile Include="Interfaces\TcxEditorCommand.cs" />
     <Compile Include="OpenRouteCommand.cs" />
     <Compile Include="OpenRouteInput.cs" />
     <Compile Include="OpenRouteResponse.cs" />

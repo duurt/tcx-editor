@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace TcxEditor.Core.Interfaces
 {
     public interface IGetNearestTrackPointCommand
+        : ITcxEditorCommand<GetNearestTrackPointInput, GetNearestTrackPointResponse>
     {
-        GetNearestTrackPointResponse Execute(GetNearestTrackPointInput input);
     }
 }

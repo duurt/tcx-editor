@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace TcxEditor.Core.Interfaces
 {
     public interface IOpenRouteCommand
+        : ITcxEditorCommand<OpenRouteInput, OpenRouteResponse>
     {
-        OpenRouteResponse Execute(OpenRouteInput input);
     }
 }

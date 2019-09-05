@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 
 namespace TcxEditor.Core.Interfaces
 {
-    public interface ISaveRouteCommand
-        : ITcxEditorCommand<SaveRouteRequest, SaveRouteResponse>
+    public interface ITcxEditorCommand<TIn, TOut>
     {
+        TOut Execute(TIn input);
     }
 }
