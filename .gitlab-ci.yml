@@ -5,6 +5,7 @@ variables:
   
 stages:
   - build
+  - deploy
 
 build_job:
   tags:
@@ -14,3 +15,14 @@ build_job:
     - '& "$env:NUGET" restore'
     - '& "$env:MSBUILD" /p:Configuration=Release /clp:WarningsOnly /m'
     - '& "$env:NUNIT" Source\TcxEditor.Core.Tests\bin\Release\TcxEditor.Core.Tests.dll Source\TcxParser.Tests\bin\Release\TcxParser.Tests.dll Source\TcxEditor.UI.Tests\bin\Release\TcxEditor.UI.Tests.dll'
+    artifacts:
+    paths:
+    - Source\TcxEditor.UI\bin\Release
+    expire_in: 1 week
+
+deploy_job:
+  tags:
+    -windows
+  stage: deploy
+  script: 
+    - '& Copy-Item -Path Source\TcxEditor.UI\bin\Release -Destination "C:\tmp\tcx" -Recurses'
