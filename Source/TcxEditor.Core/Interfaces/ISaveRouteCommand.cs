@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace TcxEditor.Core.Interfaces
 {
     public interface ISaveRouteCommand
-        : ITcxEditorCommand<SaveRouteRequest, SaveRouteResponse>
+        : ITcxEditorCommand<SaveRouteInput, SaveRouteResponse>
     {
     }
 }

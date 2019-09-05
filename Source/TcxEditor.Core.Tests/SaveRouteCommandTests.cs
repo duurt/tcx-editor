@@ -41,14 +41,14 @@ namespace TcxEditor.Core.Tests
         public void Execute_with_null_Route_throws_error()
         {
             Assert.Throws<ArgumentNullException>(
-                () => _sut.Execute(new SaveRouteRequest(null, "name")));
+                () => _sut.Execute(new SaveRouteInput(null, "name")));
         }
 
         [Test]
         public void Execute_with_ZERO_points_does_not_call_Saver_and_returns_input()
         {
             Route routeInput = new Route();
-            var result = _sut.Execute(new SaveRouteRequest(routeInput, "name"));
+            var result = _sut.Execute(new SaveRouteInput(routeInput, "name"));
 
             result.Route.ShouldBeSameAs(routeInput);
             _saverSpy.CallCount.ShouldBe(0);
@@ -60,7 +60,7 @@ namespace TcxEditor.Core.Tests
             Route routeInput = new Route();
             routeInput.CoursePoints.Add(new CoursePoint (1,1));
 
-            var result = _sut.Execute(new SaveRouteRequest(routeInput, "name"));
+            var result = _sut.Execute(new SaveRouteInput(routeInput, "name"));
 
             result.Route.ShouldBeSameAs(routeInput);
             _saverSpy.Name.ShouldBe("name");

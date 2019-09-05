@@ -195,7 +195,7 @@ namespace TcxEditor.UI
         {
             TryCatch(() =>
             {
-                var result = _saver.Execute(new SaveRouteRequest(e.Route, e.Name));
+                var result = _saver.Execute(new SaveRouteInput(e.Route, e.Name));
                 _route = result.Route;
 
                 _routeView.ShowRoute(result.Route);

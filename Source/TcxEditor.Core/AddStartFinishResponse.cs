@@ -1,8 +1,9 @@
 ﻿using TcxEditor.Core.Entities;
+using TcxEditor.Core.Interfaces;
 
 namespace TcxEditor.Core
 {
-    public class AddStartFinishResponse
+    public class AddStartFinishResponse : IOutput
     {
         public Route Route { get; set; }
 
