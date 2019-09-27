@@ -47,6 +47,8 @@
     <Compile Include="AddStartFinishCommand.cs" />
     <Compile Include="AddStartFinishInput.cs" />
     <Compile Include="AddStartFinishResponse.cs" />
+    <Compile Include="Exceptions\CommandNotFoundException.cs" />
+    <Compile Include="CommandRunner.cs" />
     <Compile Include="DeleteCoursePointResponse.cs" />
     <Compile Include="DeleteCoursePointInput.cs" />
     <Compile Include="DeleteCoursePointCommand.cs" />
