@@ -30,44 +30,76 @@ namespace TcxEditor.UI.Tests
         }
 
         [Test]
-        public void Execute_should_execute_command()
+        public void Execute_should_pass_input_to_command()
         {
-            string stringToBeUpdatedByCommand = "";
-            var sut = new CommandRunner(new ITcxEditorCommand[] {
-                    new CommandA { Action = () => stringToBeUpdatedByCommand += "yes!"} });
+            CommandA commandASpy = new CommandA();
+            var sut = new CommandRunner(
+                new ITcxEditorCommand[] { commandASpy });
 
-            sut.Execute(new InputA());
+            InputA input = new InputA();
+            sut.Execute(input);
 
-            stringToBeUpdatedByCommand.ShouldBe("yes!");
+            commandASpy.LastInput.ShouldBeSameAs(input);
+        }
+
+        [Test]
+        public void Execute_should_return_response_of_command()
+        {
+            var sut = new CommandRunner(
+                new ITcxEditorCommand[] { new CommandA() });
+
+            var result = sut.Execute(new InputA()) as OutputA;
+
+            result.Val.ShouldBe("A1");
+        }
+
+        [Test]
+        public void Execute_should_work_multiple_times_with_multiple_commands()
+        {
+            var sut = new CommandRunner(
+                new ITcxEditorCommand[] { new CommandA(), new CommandB() });
+
+            var result1 = sut.Execute(new InputB()) as OutputB;
+            var result2 = sut.Execute(new InputA()) as OutputA;
+            var result3 = sut.Execute(new InputA()) as OutputA;
+            var result4 = sut.Execute(new InputB()) as OutputB;
+            var result5 = sut.Execute(new InputB()) as OutputB;
+
+            result1.Val.ShouldBe("B1");
+            result2.Val.ShouldBe("A1");
+            result3.Val.ShouldBe("A2");
+            result4.Val.ShouldBe("B2");
+            result5.Val.ShouldBe("B3");
         }
     }
 
     public interface ICommandA : ITcxEditorCommand<InputA, OutputA> { }
     public class InputA : IInput { }
-    public class OutputA : IOutput { }
+    public class OutputA : IOutput { public string Val { get; set; } }
     public interface ICommandB : ITcxEditorCommand<InputB, OutputB> { }
     public class InputB : IInput { }
-    public class OutputB : IOutput { }
+    public class OutputB : IOutput { public string Val { get; set; } }
 
     public class CommandA : ICommandA
     {
-        public Action Action { get; set; }
+        private int _callCount = 1;
+        public InputA LastInput { get; private set; }
 
         public OutputA Execute(InputA input)
         {
-            Action.Invoke();
-            return null;
+            LastInput = input;
+
+            return new OutputA{ Val = "A" + _callCount++ };
         }
     }
 
-    public class CommandB : ICommandA
+    public class CommandB : ICommandB
     {
-        public Action Action { get; set; }
+        private int _callCount = 1;
 
-        public OutputA Execute(InputA input)
+        public OutputB Execute(InputB input)
         {
-            Action.Invoke();
-            return null;
+            return new OutputB { Val = "B" + _callCount++ };
         }
     }
 
@@ -85,7 +117,7 @@ namespace TcxEditor.UI.Tests
 
         public IOutput Execute(IInput input)
         {
-            var command = GetCommand(input)
+            var command = GetCapableCommand(input)
                 ?? throw new CommandNotFoundException(
                     $"There is no command found that can handle input of type {input.GetType().Name}");
             
@@ -98,7 +130,7 @@ namespace TcxEditor.UI.Tests
                 .Invoke(command, new[] { input });
         }
 
-        private ITcxEditorCommand GetCommand(IInput input)
+        private ITcxEditorCommand GetCapableCommand(IInput input)
         {
             return _commands.FirstOrDefault(
                 c => CommandCanHandle(input, c));
