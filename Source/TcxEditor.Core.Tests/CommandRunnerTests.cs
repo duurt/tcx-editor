@@ -9,7 +9,7 @@ using TcxEditor.Core;
 using TcxEditor.Core.Exceptions;
 using TcxEditor.Core.Interfaces;
 
-namespace TcxEditor.UI.Tests
+namespace TcxEditor.Core.Tests
 {
     public class CommandRunnerTests
     {
@@ -17,7 +17,7 @@ namespace TcxEditor.UI.Tests
         public void Constructor_should_throw_error_with_null_or_empty_argument()
         {
             Assert.Throws<ArgumentNullException>(
-                () =>  new CommandRunner(null));
+                () => new CommandRunner(null));
             Assert.Throws<ArgumentException>(
                 () => new CommandRunner(new ITcxEditorCommand[0]));
         }
@@ -91,7 +91,7 @@ namespace TcxEditor.UI.Tests
         {
             LastInput = input;
 
-            return new OutputA{ Val = "A" + _callCount++ };
+            return new OutputA { Val = "A" + _callCount++ };
         }
     }
 

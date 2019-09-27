@@ -53,6 +53,7 @@
   <ItemGroup>
     <Compile Include="AddCoursePointCommandTests.cs" />
     <Compile Include="AddStartFinishCommandTests.cs" />
+    <Compile Include="CommandRunnerTests.cs" />
     <Compile Include="DeleteCoursePointCommandTests.cs" />
     <Compile Include="Entities\RouteTests.cs" />
     <Compile Include="Entities\PositionTests.cs" />
