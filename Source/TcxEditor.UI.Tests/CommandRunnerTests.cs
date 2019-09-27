@@ -26,20 +26,20 @@ namespace TcxEditor.UI.Tests
             var sut = new CommandRunner(new ITcxEditorCommand[] { new CommandA() });
 
             Assert.Throws<CommandNotFoundException>(
-                () => sut.Resolve(new InputB()));
+                () => sut.Execute(new InputB()));
         }
 
-        //[Test]
-        //public void Execute_should_execute_command()
-        //{
-        //    string proofOfRunningA = "...";
-        //    var sut = new CommandRunner(new ITcxEditorCommand[] { 
-        //            new CommandA { Action = () => proofOfRunningA += "yes!"} });
+        [Test]
+        public void Execute_should_execute_command()
+        {
+            string stringToBeUpdatedByCommand = "";
+            var sut = new CommandRunner(new ITcxEditorCommand[] {
+                    new CommandA { Action = () => stringToBeUpdatedByCommand += "yes!"} });
 
-        //    sut.Resolve(new InputA());
+            sut.Execute(new InputA());
 
-        //    proofOfRunningA.ShouldBe("...yes!");
-        //}
+            stringToBeUpdatedByCommand.ShouldBe("yes!");
+        }
     }
 
     public interface ICommandA : ITcxEditorCommand<InputA, OutputA> { }
@@ -83,13 +83,19 @@ namespace TcxEditor.UI.Tests
                 throw new ArgumentException("There must be at least 1 command provided.");
         }
 
-        public IOutput Resolve(IInput input)
+        public IOutput Execute(IInput input)
         {
             var command = GetCommand(input)
                 ?? throw new CommandNotFoundException(
                     $"There is no command found that can handle input of type {input.GetType().Name}");
+            
+            return Run(command, input);
+        }
 
-            return null;// command.Resolve(input);
+        private static IOutput Run(ITcxEditorCommand command, IInput input)
+        {
+            return (IOutput)Enumerable.First<System.Reflection.MethodInfo>((System.Reflection.MethodInfo[])command.GetType().GetMethods(), m => m.Name.Equals(nameof(Core.Interfaces.ITcxEditorCommand<IInput, IOutput>.Execute)))
+                .Invoke(command, new[] { input });
         }
 
         private ITcxEditorCommand GetCommand(IInput input)
