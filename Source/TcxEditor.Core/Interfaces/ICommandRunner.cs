@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 
 namespace TcxEditor.Core.Interfaces
 {
-    public interface IAddCoursePointCommand : 
-        ITcxEditorCommand<AddCoursePointInput, AddCoursePointResponse>
+    public interface ICommandRunner
     {
+        IOutput Execute(IInput input);
     }
 }

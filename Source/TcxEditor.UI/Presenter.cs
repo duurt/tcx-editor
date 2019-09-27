@@ -16,12 +16,7 @@ namespace TcxEditor.UI
         private readonly IRouteView _routeView;
         private readonly IErrorView _errorView;
         private readonly IGuiStateSetter _guiControls;
-        private readonly IOpenRouteCommand _opener;
-        private readonly IAddStartFinishCommand _startFinishAdder;
-        private readonly ISaveRouteCommand _saver;
-        private readonly IGetNearestTrackPointCommand _nearestFinder;
-        private readonly IAddCoursePointCommand _pointAdder;
-        private readonly IDeleteCoursePointCommand _pointDeleter;
+        private readonly ICommandRunner _commandRunner;
 
         private Route _route = null;
         // todo: this must be trackpoint (includes timestamp: needed to distinghuish between overlapping parts of route)
@@ -32,24 +27,20 @@ namespace TcxEditor.UI
             IRouteView routeView,
             IErrorView errorView,
             IGuiStateSetter guiControls,
-            IOpenRouteCommand opener,
-            IAddStartFinishCommand startFinishAdder,
-            ISaveRouteCommand saver,
-            IGetNearestTrackPointCommand nearestFinder,
-            IAddCoursePointCommand pointAdder,
-            IDeleteCoursePointCommand pointDeleter)
+            ICommandRunner commandRunner
+            )
         {
             _routeView = routeView;
             _errorView = errorView;
             _guiControls = guiControls;
+            _commandRunner = commandRunner;
 
-            _opener = opener;
-            _startFinishAdder = startFinishAdder;
-            _saver = saver;
-            _nearestFinder = nearestFinder;
-            _pointAdder = pointAdder;
-            _pointDeleter = pointDeleter;
+            HookupEvents();
+            InitializeGuiState();
+        }
 
+        private void HookupEvents()
+        {
             _routeView.OpenFileEvent += OnOpenFileEvent;
             _routeView.AddStartFinishEvent += OnAddStartFinishEvent;
             _routeView.SaveRouteEvent += OnSaveRouteEvent;
@@ -58,12 +49,15 @@ namespace TcxEditor.UI
             _routeView.DeletePointEvent += OnDeletePointEvent;
             _routeView.SelectCoursePointEvent += OnSelectCoursePointEvent;
             _routeView.SelectTrackPointEvent += OnSelectTrackPointEvent;
+        }
 
+        private void InitializeGuiState()
+        {
             _guiControls.Apply(new GuiState
             {
                 SaveEnabled = false,
                 AddCoursePoint = false,
-                DeleteCoursePoint = false, 
+                DeleteCoursePoint = false,
                 ScrollRoute = false
             });
         }
@@ -103,12 +97,12 @@ namespace TcxEditor.UI
         {
             TryCatch(() =>
             {
-                var result = _pointDeleter.Execute(
+                var result = _commandRunner.Execute(
                     new DeleteCoursePointInput
                     {
                         Route = e.Route,
                         TimeStamp = GetTimeStampSelectedCoursePoint(e)
-                    });
+                    }) as DeleteCoursePointResponse;
 
                 _route = result.Route;
 
@@ -141,12 +135,12 @@ namespace TcxEditor.UI
         {
             TryCatch(() =>
             {
-                var result = _pointAdder.Execute(
+                var result = _commandRunner.Execute(
                     new AddCoursePointInput
                     {
                         Route = e.Route,
                         NewCoursePoint = e.NewPoint
-                    });
+                    }) as AddCoursePointResponse;
                 _route = result.Route;
                 _selectedCoursePoint = e.NewPoint;
 
@@ -169,12 +163,12 @@ namespace TcxEditor.UI
         {
             TryCatch(() =>
             {
-                var result = _nearestFinder.Execute(
+                var result = _commandRunner.Execute(
                     new GetNearestTrackPointInput
                     {
                         Route = e.Route,
                         ReferencePoint = e.ReferencePoint
-                    });
+                    }) as GetNearestTrackPointResponse;
                 _route = result.Route;
 
                 _routeView.ShowRoute(result.Route);
@@ -195,7 +189,8 @@ namespace TcxEditor.UI
         {
             TryCatch(() =>
             {
-                var result = _saver.Execute(new SaveRouteInput(e.Route, e.Name));
+                var result = _commandRunner.Execute(new SaveRouteInput(e.Route, e.Name))
+                    as SaveRouteResponse;
                 _route = result.Route;
 
                 _routeView.ShowRoute(result.Route);
@@ -206,7 +201,8 @@ namespace TcxEditor.UI
         {
             TryCatch(() =>
             {
-                var result = _startFinishAdder.Execute(new AddStartFinishInput(e.Route));
+                var result = _commandRunner.Execute(new AddStartFinishInput(e.Route))
+                    as AddStartFinishResponse;
                 _route = result.Route;
                 _routeView.ShowRoute(result.Route);
             });
@@ -216,7 +212,8 @@ namespace TcxEditor.UI
         {
             TryCatch(() =>
             {
-                var result = _opener.Execute(new OpenRouteInput { Name = e.Name });
+                var result = _commandRunner.Execute(new OpenRouteInput { Name = e.Name })
+                    as OpenRouteResponse;
                 _route = result.Route;
                 
                 _routeView.ShowRoute(result.Route);

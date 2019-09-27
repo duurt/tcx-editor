@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using TcxEditor.Core.Exceptions;
@@ -8,7 +9,7 @@ using TcxEditor.Core.Interfaces;
 
 namespace TcxEditor.Core
 {
-    public class CommandRunner
+    public class CommandRunner : ICommandRunner
     {
         private readonly IEnumerable<ITcxEditorCommand> _commands;
 
@@ -31,8 +32,18 @@ namespace TcxEditor.Core
 
         private static IOutput Run(ITcxEditorCommand command, IInput input)
         {
-            return (IOutput)Enumerable.First<System.Reflection.MethodInfo>((System.Reflection.MethodInfo[])command.GetType().GetMethods(), m => m.Name.Equals(nameof(Core.Interfaces.ITcxEditorCommand<IInput, IOutput>.Execute)))
-                .Invoke(command, new[] { input });
+            try
+            {
+                return (IOutput)Enumerable.First<System.Reflection.MethodInfo>((System.Reflection.MethodInfo[])command.GetType().GetMethods(), m => m.Name.Equals(nameof(Core.Interfaces.ITcxEditorCommand<IInput, IOutput>.Execute)))
+                    .Invoke(command, new[] { input });
+            }
+            catch (TargetInvocationException e)
+            {
+                if (e.InnerException is TcxCoreException)
+                    throw e.InnerException;
+                else
+                    throw;
+            }
         }
 
         private ITcxEditorCommand GetCapableCommand(IInput input)
