@@ -21,6 +21,7 @@ build_job:
     expire_in: 1 week
 
 deploy_job:
+  when: manual
   tags:
     - windows
   stage: deploy
