@@ -142,7 +142,6 @@ namespace TcxEditor.UI
         public void ShowPointToEdit(TrackPoint point)
         {
             mapControl1.ShowPointToEdit(point);
-            tbPointNotes.Focus();
         }
 
         private void btnStepFwd_Click(object sender, EventArgs e)
