@@ -34,7 +34,8 @@ namespace TcxEditor.Core
         {
             try
             {
-                return (IOutput)Enumerable.First<System.Reflection.MethodInfo>((System.Reflection.MethodInfo[])command.GetType().GetMethods(), m => m.Name.Equals(nameof(Core.Interfaces.ITcxEditorCommand<IInput, IOutput>.Execute)))
+                return (IOutput)Enumerable
+                    .First(command.GetType().GetMethods(), m => m.Name.Equals(nameof(ITcxEditorCommand<IInput, IOutput>.Execute)))
                     .Invoke(command, new[] { input });
             }
             catch (TargetInvocationException e)

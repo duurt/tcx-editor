@@ -121,7 +121,6 @@ namespace TcxEditor.UI
                 CoursePointSelectEvent?.Invoke(this, new PointSelectEventArgs(PointToEdit.TimeStamp));
             else
                 TrackPointSelectEvent?.Invoke(this, new PointSelectEventArgs(PointToEdit.TimeStamp));
-            //ShowPointToEdit(PointToEdit);
         }
 
         internal void ShowPointToEdit(TrackPoint point)
@@ -157,7 +156,7 @@ namespace TcxEditor.UI
             editOverlay.Markers.Add(
                 new GMarkerGoogle(
                     new PointLatLng(position.Lattitude, position.Longitude),
-                    GMarkerGoogleType.arrow)); ;
+                    GMarkerGoogleType.arrow));
         }
     }
 

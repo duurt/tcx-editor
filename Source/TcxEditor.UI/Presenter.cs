@@ -19,8 +19,6 @@ namespace TcxEditor.UI
         private readonly ICommandRunner _commandRunner;
 
         private Route _route = null;
-        // todo: this must be trackpoint (includes timestamp: needed to distinghuish between overlapping parts of route)
-        // todo: same for all event args that pass positions...
         private DateTime _selectedTimeStamp;
 
         public Presenter(
@@ -120,12 +118,6 @@ namespace TcxEditor.UI
                 });
             });
         }
-
-        //private DateTime GetTimeStampSelectedCoursePoint(DeletePointEventArgs e)
-        //{
-        //    return e.Route.CoursePoints.FirstOrDefault(
-        //        p => p.TimeStamp == _selectedTimeStamp).TimeStamp;
-        //}
 
         private void OnAddPointEvent(object sender, AddPointEventArgs e)
         {

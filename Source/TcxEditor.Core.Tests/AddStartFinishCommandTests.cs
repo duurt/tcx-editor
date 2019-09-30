@@ -13,9 +13,9 @@ namespace TcxEditor.Core.Tests
     public class AddStartFinishCommandTests
     {
         private static DateTime _t0 = new DateTime(2019, 8, 5, 12, 45, 59);
-        private double[] _la = new double[] { 1, 2, 3, 4 };
-        private double[] _lo = new double[] { 10, 20, 30, 40 };
-        private DateTime[] _times = new DateTime[]
+        private readonly double[] _la = new double[] { 1, 2, 3, 4 };
+        private readonly double[] _lo = new double[] { 10, 20, 30, 40 };
+        private readonly DateTime[] _times = new DateTime[]
             {
                 _t0.AddMinutes(1),
                 _t0.AddMinutes(2),
