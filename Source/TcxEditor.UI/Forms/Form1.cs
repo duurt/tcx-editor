@@ -42,12 +42,12 @@ namespace TcxEditor.UI
 
         private void OnTrackPointClick(object sender, PointSelectEventArgs e)
         {
-            SelectTrackPointEvent?.Invoke(this, new SelectPointEventArgs(e._point));
+            SelectTrackPointEvent?.Invoke(this, new SelectPointEventArgs(e._timeStamp));
         }
 
         private void OnCoursePointClick(object sender, PointSelectEventArgs e)
         {
-            SelectCoursePointEvent?.Invoke(this, new SelectPointEventArgs(e._point));
+            SelectCoursePointEvent?.Invoke(this, new SelectPointEventArgs(e._timeStamp));
         }
 
         protected override void OnKeyUp(KeyEventArgs e)

@@ -21,7 +21,7 @@ namespace TcxEditor.UI
         private Route _route = null;
         // todo: this must be trackpoint (includes timestamp: needed to distinghuish between overlapping parts of route)
         // todo: same for all event args that pass positions...
-        private Position _selectedCoursePoint = null;
+        private DateTime _selectedTimeStamp;
 
         public Presenter(
             IRouteView routeView,
@@ -64,10 +64,10 @@ namespace TcxEditor.UI
 
         private void OnSelectTrackPointEvent(object sender, SelectPointEventArgs e)
         {
-            _selectedCoursePoint = e.Position;
+            _selectedTimeStamp = e.TimeStamp;
             _routeView.ShowEditTrackPointMarker(
                 _route.TrackPoints.First(
-                    p => p.Lattitude == e.Position.Lattitude && p.Longitude == e.Position.Longitude));
+                    p => p.TimeStamp == e.TimeStamp));
 
             _guiControls.Apply(new GuiState
             {
@@ -80,9 +80,9 @@ namespace TcxEditor.UI
 
         private void OnSelectCoursePointEvent(object sender, SelectPointEventArgs e)
         {
-            _selectedCoursePoint = e.Position;
+            _selectedTimeStamp = e.TimeStamp;
             _routeView.ShowEditCoursePointMarker(_route.CoursePoints.First(
-                    p => p.Lattitude == e.Position.Lattitude && p.Longitude == e.Position.Longitude));
+                    p => p.TimeStamp == e.TimeStamp));
 
             _guiControls.Apply(new GuiState
             {
@@ -101,7 +101,7 @@ namespace TcxEditor.UI
                     new DeleteCoursePointInput
                     {
                         Route = e.Route,
-                        TimeStamp = GetTimeStampSelectedCoursePoint(e)
+                        TimeStamp = _selectedTimeStamp
                     }) as DeleteCoursePointResponse;
 
                 _route = result.Route;
@@ -109,10 +109,7 @@ namespace TcxEditor.UI
                 _routeView.ShowRoute(result.Route);
                 _routeView.ShowPointToEdit(
                     result.Route.TrackPoints.First(
-                        p => p.Lattitude == _selectedCoursePoint.Lattitude
-                        && p.Longitude == _selectedCoursePoint.Longitude));
-
-                _selectedCoursePoint = null;
+                        p => p.TimeStamp == _selectedTimeStamp));
 
                 _guiControls.Apply(new GuiState
                 {
@@ -124,12 +121,11 @@ namespace TcxEditor.UI
             });
         }
 
-        private DateTime GetTimeStampSelectedCoursePoint(DeletePointEventArgs e)
-        {
-            return e.Route.CoursePoints.FirstOrDefault(
-                p => p.Lattitude == _selectedCoursePoint.Lattitude
-                && p.Longitude == _selectedCoursePoint.Longitude).TimeStamp;
-        }
+        //private DateTime GetTimeStampSelectedCoursePoint(DeletePointEventArgs e)
+        //{
+        //    return e.Route.CoursePoints.FirstOrDefault(
+        //        p => p.TimeStamp == _selectedTimeStamp).TimeStamp;
+        //}
 
         private void OnAddPointEvent(object sender, AddPointEventArgs e)
         {
@@ -142,7 +138,7 @@ namespace TcxEditor.UI
                         NewCoursePoint = e.NewPoint
                     }) as AddCoursePointResponse;
                 _route = result.Route;
-                _selectedCoursePoint = e.NewPoint;
+                _selectedTimeStamp = e.NewPoint.TimeStamp;
 
                 _routeView.ShowRoute(result.Route);
                 _routeView.ShowEditCoursePointMarker(

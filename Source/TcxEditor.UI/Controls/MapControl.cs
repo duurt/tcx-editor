@@ -54,7 +54,7 @@ namespace TcxEditor.UI
 
             CoursePointSelectEvent?.Invoke(
                 this,
-                new PointSelectEventArgs(new Position(item.Position.Lat, item.Position.Lng)));
+                new PointSelectEventArgs((DateTime)item.Tag));
         }
 
         private void OnMapClick(object sender, EventArgs e)
@@ -95,6 +95,7 @@ namespace TcxEditor.UI
 
                 markerOverlay.Markers.Add(marker);
                 marker.ToolTipText = $"{point.Type}\n{point.Notes}";
+                marker.Tag = point.TimeStamp;
             }
 
             CurrentRoute = openedRoute;
@@ -117,9 +118,9 @@ namespace TcxEditor.UI
             PointToEdit = CurrentRoute.TrackPoints[nextIndex];
 
             if (CurrentRoute.CoursePoints.Any(p => p.Lattitude == PointToEdit.Lattitude && p.Longitude == PointToEdit.Longitude))
-                CoursePointSelectEvent?.Invoke(this, new PointSelectEventArgs(PointToEdit));
+                CoursePointSelectEvent?.Invoke(this, new PointSelectEventArgs(PointToEdit.TimeStamp));
             else
-                TrackPointSelectEvent?.Invoke(this, new PointSelectEventArgs(PointToEdit));
+                TrackPointSelectEvent?.Invoke(this, new PointSelectEventArgs(PointToEdit.TimeStamp));
             //ShowPointToEdit(PointToEdit);
         }
 
@@ -133,7 +134,7 @@ namespace TcxEditor.UI
             editOverlay.Markers.Add(
                 new GMarkerGoogle(
                     new PointLatLng(point.Lattitude, point.Longitude),
-                    GMarkerGoogleType.blue));
+                    GMarkerGoogleType.blue){ Tag = point.TimeStamp });
         }
 
         private void ClearCueMarkers()
@@ -162,11 +163,11 @@ namespace TcxEditor.UI
 
     public class PointSelectEventArgs
     {
-        public Position _point { get; }
+        public DateTime _timeStamp { get; }
 
-        public PointSelectEventArgs(Position point)
+        public PointSelectEventArgs(DateTime timeStamp)
         {
-            _point = point;
+            _timeStamp = timeStamp;
         }
     }
 

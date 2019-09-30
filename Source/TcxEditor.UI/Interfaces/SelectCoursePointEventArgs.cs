@@ -1,14 +1,15 @@
-﻿using TcxEditor.Core.Entities;
+﻿using System;
+using TcxEditor.Core.Entities;
 
 namespace TcxEditor.UI.Interfaces
 {
     public class SelectPointEventArgs
     {
-        public Position Position { get; set; }
+        public DateTime TimeStamp { get; set; }
 
-        public SelectPointEventArgs(Position position)
+        public SelectPointEventArgs(DateTime timeStamp)
         {
-            Position = position;
+            TimeStamp = timeStamp;
         }
     }
 }
