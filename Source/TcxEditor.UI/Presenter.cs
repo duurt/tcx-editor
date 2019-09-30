@@ -162,12 +162,13 @@ namespace TcxEditor.UI
                 _routeView.ShowRoute(result.Route);
                 _routeView.ShowPointToEdit(result.Nearest);
 
+                bool nearestIsCoursePoint = _route.CoursePoints.Any(p => p.TimeStamp == result.Nearest.TimeStamp);
+                
                 _guiControls.Apply(new GuiState
                 {
                     SaveEnabled = true,
-                    AddCoursePoint = true,
-                    // todo: make smarter: only if it is coursepoint
-                    DeleteCoursePoint = false,
+                    AddCoursePoint = !nearestIsCoursePoint,
+                    DeleteCoursePoint = nearestIsCoursePoint,
                     ScrollRoute = true
                 });
             });
