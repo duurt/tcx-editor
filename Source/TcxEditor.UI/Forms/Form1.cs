@@ -27,7 +27,6 @@ namespace TcxEditor.UI
         public event EventHandler<GetNearestEventArgs> GetNearestEvent;
         public event EventHandler<AddPointEventArgs> AddPointEvent;
         public event EventHandler<DeletePointEventArgs> DeletePointEvent;
-        public event EventHandler<SelectPointEventArgs> SelectTrackPointEvent;
         public event EventHandler<SelectPointEventArgs> SelectCoursePointEvent;
         public event EventHandler<StepEventArgs> StepEvent;
 
@@ -141,17 +140,11 @@ namespace TcxEditor.UI
 
         private void btnStepFwd_Click(object sender, EventArgs e)
         {
-            // todo: remove this line
-            //mapControl1.StepForward();
-
             StepEvent?.Invoke(this, new StepEventArgs(1));
         }
 
         private void btnStepBck_Click(object sender, EventArgs e)
         {
-            // todo: remove this line
-            //mapControl1.StepBack();
-
             StepEvent?.Invoke(this, new StepEventArgs(-1));
         }
 

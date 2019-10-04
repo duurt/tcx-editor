@@ -50,7 +50,6 @@ namespace TcxEditor.UI
             _routeView.AddPointEvent += OnAddPointEvent;
             _routeView.DeletePointEvent += OnDeletePointEvent;
             _routeView.SelectCoursePointEvent += OnSelectCoursePointEvent;
-            _routeView.SelectTrackPointEvent += OnSelectTrackPointEvent;
             _routeView.StepEvent += OnStepEvent;
         }
 
@@ -62,22 +61,6 @@ namespace TcxEditor.UI
                 AddCoursePoint = false,
                 DeleteCoursePoint = false,
                 ScrollRoute = false
-            });
-        }
-
-        private void OnSelectTrackPointEvent(object sender, SelectPointEventArgs e)
-        {
-            _selectedTimeStamp = e.TimeStamp;
-            _routeView.ShowEditTrackPointMarker(
-                _route.TrackPoints.First(
-                    p => p.TimeStamp == e.TimeStamp));
-
-            _guiControls.Apply(new GuiState
-            {
-                SaveEnabled = true,
-                AddCoursePoint = true,
-                DeleteCoursePoint = false,
-                ScrollRoute = true
             });
         }
 
