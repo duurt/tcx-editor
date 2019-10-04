@@ -29,20 +29,15 @@ namespace TcxEditor.UI
         public event EventHandler<DeletePointEventArgs> DeletePointEvent;
         public event EventHandler<SelectPointEventArgs> SelectTrackPointEvent;
         public event EventHandler<SelectPointEventArgs> SelectCoursePointEvent;
+        public event EventHandler<StepEventArgs> StepEvent;
 
         public MainForm()
         {
             InitializeComponent();
             InitTypesComboBox();
             mapControl1.MapClickEvent += MapControl1_MapClickEvent;
-            mapControl1.TrackPointSelectEvent += OnTrackPointClick;
             mapControl1.CoursePointSelectEvent += OnCoursePointClick;
             KeyPreview = true;
-        }
-
-        private void OnTrackPointClick(object sender, PointSelectEventArgs e)
-        {
-            SelectTrackPointEvent?.Invoke(this, new SelectPointEventArgs(e._timeStamp));
         }
 
         private void OnCoursePointClick(object sender, PointSelectEventArgs e)
@@ -146,12 +141,18 @@ namespace TcxEditor.UI
 
         private void btnStepFwd_Click(object sender, EventArgs e)
         {
-            mapControl1.StepForward();
+            // todo: remove this line
+            //mapControl1.StepForward();
+
+            StepEvent?.Invoke(this, new StepEventArgs(1));
         }
 
         private void btnStepBck_Click(object sender, EventArgs e)
         {
-            mapControl1.StepBack();
+            // todo: remove this line
+            //mapControl1.StepBack();
+
+            StepEvent?.Invoke(this, new StepEventArgs(-1));
         }
 
         private void btnDelete_Click(object sender, EventArgs e)

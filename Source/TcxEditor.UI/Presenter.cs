@@ -9,6 +9,10 @@ using TcxEditor.Core.Exceptions;
 using TcxEditor.Core.Interfaces;
 using TcxEditor.UI.Interfaces;
 
+
+// todo: unit tests..? Eventually the presenter will hold the state, and the actual GUI is 
+// just showing stuff. I think a selfshunt test class implementing the view interface(s) 
+// will be a nice way.
 namespace TcxEditor.UI
 {
     public class Presenter
@@ -47,6 +51,7 @@ namespace TcxEditor.UI
             _routeView.DeletePointEvent += OnDeletePointEvent;
             _routeView.SelectCoursePointEvent += OnSelectCoursePointEvent;
             _routeView.SelectTrackPointEvent += OnSelectTrackPointEvent;
+            _routeView.StepEvent += OnStepEvent;
         }
 
         private void InitializeGuiState()
@@ -158,20 +163,39 @@ namespace TcxEditor.UI
                         ReferencePoint = e.ReferencePoint
                     }) as GetNearestTrackPointResponse;
                 _route = result.Route;
+                _selectedTimeStamp = result.Nearest.TimeStamp;
 
                 _routeView.ShowRoute(result.Route);
-                _routeView.ShowPointToEdit(result.Nearest);
-
-                bool nearestIsCoursePoint = _route.CoursePoints.Any(p => p.TimeStamp == result.Nearest.TimeStamp);
-                
-                _guiControls.Apply(new GuiState
-                {
-                    SaveEnabled = true,
-                    AddCoursePoint = !nearestIsCoursePoint,
-                    DeleteCoursePoint = nearestIsCoursePoint,
-                    ScrollRoute = true
-                });
+                UpdateMarkerInView(_selectedTimeStamp);
             });
+        }
+
+        private void UpdateMarkerInView(DateTime timeStamp)
+        {
+            bool hasCoursePoint = CoursePointExists(timeStamp);
+
+            if (hasCoursePoint)
+                _routeView.ShowEditCoursePointMarker(GetTrackPoint(timeStamp));
+            else
+                _routeView.ShowPointToEdit(GetTrackPoint(timeStamp));
+
+            _guiControls.Apply(new GuiState
+            {
+                SaveEnabled = true,
+                AddCoursePoint = !hasCoursePoint,
+                DeleteCoursePoint = hasCoursePoint,
+                ScrollRoute = true
+            });
+        }
+
+        private TrackPoint GetTrackPoint(DateTime timeStamp)
+        {
+            return _route.TrackPoints.First(p => p.TimeStamp == timeStamp);
+        }
+
+        private bool CoursePointExists(DateTime t)
+        {
+            return _route.CoursePoints.Any(p => p.TimeStamp == t);
         }
 
         private void OnSaveRouteEvent(object sender, SaveRouteEventargs e)
@@ -193,6 +217,8 @@ namespace TcxEditor.UI
                 var result = _commandRunner.Execute(new AddStartFinishInput(e.Route))
                     as AddStartFinishResponse;
                 _route = result.Route;
+                // todo: should we update, or should the form NOT remove the markers every time?
+                UpdateMarkerInView(_selectedTimeStamp);
                 _routeView.ShowRoute(result.Route);
             });
         }
@@ -204,7 +230,7 @@ namespace TcxEditor.UI
                 var result = _commandRunner.Execute(new OpenRouteInput { Name = e.Name })
                     as OpenRouteResponse;
                 _route = result.Route;
-                
+
                 _routeView.ShowRoute(result.Route);
 
                 _guiControls.Apply(new GuiState
@@ -227,6 +253,22 @@ namespace TcxEditor.UI
             {
                 _errorView.ShowErrorMessage(ex.Message);
             }
+        }
+
+        private void OnStepEvent(object sender, StepEventArgs e)
+        {
+            int step = e.Step;
+
+            int maxIndex = _route.TrackPoints.Count - 1;
+
+            int index = _route.TrackPoints.FindIndex(p => p.TimeStamp == _selectedTimeStamp);
+            int nextIndex = index + step;
+
+            if (nextIndex < 0 || nextIndex > maxIndex)
+                return;
+
+            _selectedTimeStamp = _route.TrackPoints[nextIndex].TimeStamp;
+            UpdateMarkerInView(_selectedTimeStamp);
         }
     }
 }

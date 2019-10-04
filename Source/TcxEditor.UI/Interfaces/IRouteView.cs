@@ -22,5 +22,6 @@ namespace TcxEditor.UI.Interfaces
         event EventHandler<DeletePointEventArgs> DeletePointEvent;
         event EventHandler<SelectPointEventArgs> SelectTrackPointEvent;
         event EventHandler<SelectPointEventArgs> SelectCoursePointEvent;
+        event EventHandler<StepEventArgs> StepEvent;
     }
 }

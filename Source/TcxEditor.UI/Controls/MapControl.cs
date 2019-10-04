@@ -1,20 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Drawing;
-using System.Data;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
+﻿using GMap.NET;
 using GMap.NET.MapProviders;
-using GMap.NET;
 using GMap.NET.WindowsForms;
-using System.IO;
-using System.Xml.Serialization;
 using GMap.NET.WindowsForms.Markers;
-using TcxEditor.Core;
-using TcxEditor.Infrastructure;
+using System;
+using System.Data;
+using System.Drawing;
+using System.IO;
+using System.Linq;
+using System.Windows.Forms;
 using TcxEditor.Core.Entities;
 
 namespace TcxEditor.UI
@@ -26,8 +19,7 @@ namespace TcxEditor.UI
 
         public event EventHandler<MapClickEventArgs> MapClickEvent;
         public event EventHandler<PointSelectEventArgs> CoursePointSelectEvent;
-        public event EventHandler<PointSelectEventArgs> TrackPointSelectEvent;
-
+        
         public MapControl()
         {
             InitializeComponent();
@@ -99,28 +91,6 @@ namespace TcxEditor.UI
             }
 
             CurrentRoute = openedRoute;
-        }
-
-        internal void StepForward() => Step(1);
-
-        internal void StepBack() => Step(-1);
-
-        private void Step(int step)
-        {
-            int maxIndex = CurrentRoute.TrackPoints.Count - 1;
-
-            int index = CurrentRoute.TrackPoints.IndexOf(PointToEdit);
-            int nextIndex = index + step;
-
-            if (nextIndex < 0 || nextIndex > maxIndex)
-                return;
-
-            PointToEdit = CurrentRoute.TrackPoints[nextIndex];
-
-            if (CurrentRoute.CoursePoints.Any(p => p.Lattitude == PointToEdit.Lattitude && p.Longitude == PointToEdit.Longitude))
-                CoursePointSelectEvent?.Invoke(this, new PointSelectEventArgs(PointToEdit.TimeStamp));
-            else
-                TrackPointSelectEvent?.Invoke(this, new PointSelectEventArgs(PointToEdit.TimeStamp));
         }
 
         internal void ShowPointToEdit(TrackPoint point)
