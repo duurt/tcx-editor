@@ -14,9 +14,6 @@ namespace TcxEditor.UI
 {
     public partial class MapControl : UserControl
     {
-        public Route CurrentRoute { get; internal set; }
-        public TrackPoint PointToEdit { get; internal set; }
-
         public event EventHandler<MapClickEventArgs> MapClickEvent;
         public event EventHandler<PointSelectEventArgs> CoursePointSelectEvent;
         
@@ -89,15 +86,11 @@ namespace TcxEditor.UI
                 marker.ToolTipText = $"{point.Type}\n{point.Notes}";
                 marker.Tag = point.TimeStamp;
             }
-
-            CurrentRoute = openedRoute;
         }
 
         internal void ShowPointToEdit(TrackPoint point)
         {
             ClearEditMarkers();
-
-            PointToEdit = point;
 
             GMapOverlay editOverlay = gMapControl1.Overlays.First(o => o.Id.Equals("editPoints"));
             editOverlay.Markers.Add(

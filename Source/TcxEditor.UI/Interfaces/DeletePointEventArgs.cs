@@ -3,8 +3,8 @@ using TcxEditor.Core.Entities;
 
 namespace TcxEditor.UI.Interfaces
 {
+    // todo: no longer needed...
     public class DeletePointEventArgs
     {
-        public Route Route { get; set; }
     }
 }

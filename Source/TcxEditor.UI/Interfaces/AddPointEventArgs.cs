@@ -4,8 +4,8 @@ namespace TcxEditor.UI.Interfaces
 {
     public class AddPointEventArgs
     {
-        // todo: check consistency in GUI: am i using entities every where?
-        public CoursePoint NewPoint { get; set; }
-        public Route Route { get; internal set; }
+        public string Name { get; set; }
+        public string Notes { get; set; }
+        public CoursePoint.PointType PointType { get; set; }
     }
 }

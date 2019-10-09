@@ -15,7 +15,7 @@ namespace TcxEditor.UI.Interfaces
         void ShowEditCoursePointMarker(TrackPoint position);
 
         event EventHandler<OpenRouteEventArgs> OpenFileEvent;
-        event EventHandler<AddStartFinishEventargs> AddStartFinishEvent;
+        event EventHandler<AddStartFinishEventArgs> AddStartFinishEvent;
         event EventHandler<SaveRouteEventargs> SaveRouteEvent;
         event EventHandler<GetNearestEventArgs> GetNearestEvent;
         event EventHandler<AddPointEventArgs> AddPointEvent;

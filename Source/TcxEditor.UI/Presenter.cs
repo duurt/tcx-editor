@@ -67,7 +67,8 @@ namespace TcxEditor.UI
         private void OnSelectCoursePointEvent(object sender, SelectPointEventArgs e)
         {
             _selectedTimeStamp = e.TimeStamp;
-            _routeView.ShowEditCoursePointMarker(_route.CoursePoints.First(
+            _routeView.ShowEditCoursePointMarker(
+                _route.CoursePoints.First(
                     p => p.TimeStamp == e.TimeStamp));
 
             _guiControls.Apply(new GuiState
@@ -86,7 +87,7 @@ namespace TcxEditor.UI
                 var result = _commandRunner.Execute(
                     new DeleteCoursePointInput
                     {
-                        Route = e.Route,
+                        Route = _route,
                         TimeStamp = _selectedTimeStamp
                     }) as DeleteCoursePointResponse;
 
@@ -114,16 +115,22 @@ namespace TcxEditor.UI
                 var result = _commandRunner.Execute(
                     new AddCoursePointInput
                     {
-                        Route = e.Route,
-                        NewCoursePoint = e.NewPoint
+                        Route = _route,
+                        NewCoursePoint = new CoursePoint(
+                            GetTrackPoint(_selectedTimeStamp).Lattitude, GetTrackPoint(_selectedTimeStamp).Longitude)
+                        {
+                            Name = e.Name,
+                            Notes = e.Notes,
+                            TimeStamp = _selectedTimeStamp,
+                            Type = e.PointType
+                        }
                     }) as AddCoursePointResponse;
                 _route = result.Route;
-                _selectedTimeStamp = e.NewPoint.TimeStamp;
 
                 _routeView.ShowRoute(result.Route);
                 _routeView.ShowEditCoursePointMarker(
                     result.Route.TrackPoints.First(
-                        p => p.TimeStamp == e.NewPoint.TimeStamp));
+                        p => p.TimeStamp == _selectedTimeStamp));
 
                 _guiControls.Apply(new GuiState
                 {
@@ -142,7 +149,7 @@ namespace TcxEditor.UI
                 var result = _commandRunner.Execute(
                     new GetNearestTrackPointInput
                     {
-                        Route = e.Route,
+                        Route = _route,
                         ReferencePoint = e.ReferencePoint
                     }) as GetNearestTrackPointResponse;
                 _route = result.Route;
@@ -193,11 +200,11 @@ namespace TcxEditor.UI
             });
         }
 
-        private void OnAddStartFinishEvent(object sender, AddStartFinishEventargs e)
+        private void OnAddStartFinishEvent(object sender, AddStartFinishEventArgs e)
         {
             TryCatch(() =>
             {
-                var result = _commandRunner.Execute(new AddStartFinishInput(e.Route))
+                var result = _commandRunner.Execute(new AddStartFinishInput(_route))
                     as AddStartFinishResponse;
                 _route = result.Route;
                 // todo: should we update, or should the form NOT remove the markers every time?

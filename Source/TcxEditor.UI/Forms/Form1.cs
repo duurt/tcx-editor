@@ -22,7 +22,7 @@ namespace TcxEditor.UI
         private string _fileName;
 
         public event EventHandler<OpenRouteEventArgs> OpenFileEvent;
-        public event EventHandler<AddStartFinishEventargs> AddStartFinishEvent;
+        public event EventHandler<AddStartFinishEventArgs> AddStartFinishEvent;
         public event EventHandler<SaveRouteEventargs> SaveRouteEvent;
         public event EventHandler<GetNearestEventArgs> GetNearestEvent;
         public event EventHandler<AddPointEventArgs> AddPointEvent;
@@ -64,14 +64,12 @@ namespace TcxEditor.UI
 
         private void MapControl1_MapClickEvent(object sender, MapClickEventArgs e)
         {
-            if (mapControl1.CurrentRoute != null)
-                GetNearestEvent?.Invoke(
-                    this, 
-                    new GetNearestEventArgs
-                    {
-                        Route = mapControl1.CurrentRoute,
-                        ReferencePoint = new Position(e.Lattitude, e.Longitude)
-                    });
+            GetNearestEvent?.Invoke(
+                this,
+                new GetNearestEventArgs
+                {
+                    ReferencePoint = new Position(e.Lattitude, e.Longitude)
+                });
         }
 
         private void btnOpenRoute_Click(object sender, EventArgs e)
@@ -88,12 +86,14 @@ namespace TcxEditor.UI
 
         private void btnAddStartFinish_Click(object sender, EventArgs e)
         {
-            AddStartFinishEvent?.Invoke(this, new AddStartFinishEventargs(mapControl1.CurrentRoute));
+            AddStartFinishEvent?.Invoke(this, new AddStartFinishEventArgs());
         }
 
         private void btnSaveRoute_Click(object sender, EventArgs e)
         {
-            SaveRouteEvent?.Invoke(this, new SaveRouteEventargs(mapControl1.CurrentRoute, _fileName));
+            // todo: get name from dialog
+            SaveRouteEvent?.Invoke(this, new SaveRouteEventargs(
+                "this file name parameter is ignored at the moment..."));
         }
 
         private void btnAddCoursePoint_Click(object sender, EventArgs e)
@@ -112,19 +112,13 @@ namespace TcxEditor.UI
 
         private void RaiseAddPointEvent(string notes, CoursePoint.PointType pointType)
         {
-            TrackPoint newPoint = mapControl1.PointToEdit;
             AddPointEvent?.Invoke(
                 this,
                 new AddPointEventArgs
                 {
-                    Route = mapControl1.CurrentRoute,
-                    NewPoint =
-                        new CoursePoint(newPoint.Lattitude, newPoint.Longitude)
-                        {
-                            TimeStamp = newPoint.TimeStamp,
-                            Notes = notes,
-                            Type = pointType
-                        }
+                    Name = pointType.ToString(),
+                    Notes = notes,
+                    PointType = pointType,
                 });
         }
 
@@ -152,10 +146,7 @@ namespace TcxEditor.UI
         {
             DeletePointEvent?.Invoke(
                 this,
-                new DeletePointEventArgs
-                {
-                    Route = mapControl1.CurrentRoute,
-                });
+                new DeletePointEventArgs());
         }
 
         public void ShowErrorMessage(string msg)
