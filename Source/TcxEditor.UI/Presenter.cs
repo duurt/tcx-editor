@@ -80,7 +80,7 @@ namespace TcxEditor.UI
             });
         }
 
-        private void OnDeletePointEvent(object sender, DeletePointEventArgs e)
+        private void OnDeletePointEvent(object sender, EventArgs e)
         {
             TryCatch(() =>
             {

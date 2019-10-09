@@ -19,7 +19,7 @@ namespace TcxEditor.UI.Interfaces
         event EventHandler<SaveRouteEventargs> SaveRouteEvent;
         event EventHandler<GetNearestEventArgs> GetNearestEvent;
         event EventHandler<AddPointEventArgs> AddPointEvent;
-        event EventHandler<DeletePointEventArgs> DeletePointEvent;
+        event EventHandler DeletePointEvent;
         event EventHandler<SelectPointEventArgs> SelectCoursePointEvent;
         event EventHandler<StepEventArgs> StepEvent;
     }

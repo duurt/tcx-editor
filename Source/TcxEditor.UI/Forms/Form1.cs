@@ -26,7 +26,7 @@ namespace TcxEditor.UI
         public event EventHandler<SaveRouteEventargs> SaveRouteEvent;
         public event EventHandler<GetNearestEventArgs> GetNearestEvent;
         public event EventHandler<AddPointEventArgs> AddPointEvent;
-        public event EventHandler<DeletePointEventArgs> DeletePointEvent;
+        public event EventHandler DeletePointEvent;
         public event EventHandler<SelectPointEventArgs> SelectCoursePointEvent;
         public event EventHandler<StepEventArgs> StepEvent;
 
@@ -98,7 +98,6 @@ namespace TcxEditor.UI
 
         private void btnAddCoursePoint_Click(object sender, EventArgs e)
         {
-
             RaiseAddPointEvent(tbPointNotes.Text, GetSelectedPointType());
         }
 
@@ -146,7 +145,7 @@ namespace TcxEditor.UI
         {
             DeletePointEvent?.Invoke(
                 this,
-                new DeletePointEventArgs());
+                EventArgs.Empty);
         }
 
         public void ShowErrorMessage(string msg)
