@@ -51,11 +51,21 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DummyTests.cs" />
+    <Compile Include="PresenterTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\TcxEditor.Core\TcxEditor.Core.csproj">
+      <Project>{50c00360-e2aa-4a91-ad50-83281b529cb4}</Project>
+      <Name>TcxEditor.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\TcxEditor.UI\TcxEditor.UI.csproj">
+      <Project>{d50b84f2-a733-414d-bbf7-c6ec9852abdf}</Project>
+      <Name>TcxEditor.UI</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
