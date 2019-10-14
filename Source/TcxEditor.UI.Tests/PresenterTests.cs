@@ -66,6 +66,36 @@ namespace TcxEditor.UI.Tests
             OpenRouteInput commandInput = (_commandSpy.LastCall as OpenRouteInput);
             commandInput.Name.ShouldBe("some file name");
         }
+
+        [Test]
+        public void OpenFileEvent_updates_gui_state()
+        {
+            _commandSpy.SetResponse(
+                new OpenRouteResponse { Route = new Route() });
+
+            OpenFileEvent.Invoke(
+                this,
+                new OpenRouteEventArgs("some file name"));
+
+            GuiState.AddCoursePoint.ShouldBe(false);
+            GuiState.SaveEnabled.ShouldBe(true);
+            GuiState.ScrollRoute.ShouldBe(false);
+            GuiState.DeleteCoursePoint.ShouldBe(false);
+        }
+
+        [Test]
+        public void OpenFileEvent_shows_route_in_GUI()
+        {
+            Route testRoute = new Route();
+            _commandSpy.SetResponse(
+                new OpenRouteResponse { Route = testRoute });
+
+            OpenFileEvent.Invoke(
+                this,
+                new OpenRouteEventArgs("some file name"));
+
+            _route.ShouldBeSameAs(testRoute);
+        }
     }
 
     internal class CommandRunnerSpy : ICommandRunner
