@@ -36,7 +36,7 @@ namespace TcxParser.Infrastructure
                         Notes = p.Notes
                     }).ToArray();
 
-                using (var outFile = new FileStream(destinationPath, FileMode.CreateNew, FileAccess.ReadWrite))
+                using (var outFile = new FileStream(destinationPath, FileMode.OpenOrCreate, FileAccess.ReadWrite))
                 {
                     new XmlSerializer(typeof(TrainingCenterDatabase_t)).Serialize(outFile, parsedFile);
                 }
