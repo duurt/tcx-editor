@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using TcxEditor.Core.Interfaces;
 
-namespace TcxEditor.Infrastructure
+namespace TcxEditor.Parser.Infrastructure
 {
     public class FileStreamCreator : IStreamCreator
     {

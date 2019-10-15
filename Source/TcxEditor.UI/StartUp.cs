@@ -3,9 +3,8 @@ using System.Linq;
 using System.Reflection;
 using TcxEditor.Core;
 using TcxEditor.Core.Interfaces;
-using TcxEditor.Infrastructure;
+using TcxEditor.Parser.Infrastructure;
 using TcxEditor.UI.Interfaces;
-using TcxParser.Infrastructure;
 
 namespace TcxEditor.UI
 {

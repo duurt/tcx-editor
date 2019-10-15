@@ -7,10 +7,9 @@ using System.Threading.Tasks;
 using Duurt.TcxParser.Xsd.Generated;
 using TcxEditor.Core.Entities;
 using TcxEditor.Core.Interfaces;
-using TcxParser;
 
 // todo: write unit tests
-namespace TcxEditor.Infrastructure
+namespace TcxEditor.Parser.Infrastructure
 {
     public class TcxParserAdapter : ITcxParser
     {

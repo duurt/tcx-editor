@@ -51,9 +51,9 @@
       <Project>{50C00360-E2AA-4A91-AD50-83281B529CB4}</Project>
       <Name>TcxEditor.Core</Name>
     </ProjectReference>
-    <ProjectReference Include="..\TcxParser\TcxParser.csproj">
+    <ProjectReference Include="..\TcxParser\TcxEditor.Parser.csproj">
       <Project>{924d77b0-0fe2-4fec-9c2f-8fe92ab743c8}</Project>
-      <Name>TcxParser</Name>
+      <Name>TcxEditor.Parser</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

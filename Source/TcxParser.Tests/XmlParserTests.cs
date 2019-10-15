@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace TcxParser.Tests
+namespace TcxEditor.Parser.Tests
 {
     [TestFixture]
     public class XmlParserTests
