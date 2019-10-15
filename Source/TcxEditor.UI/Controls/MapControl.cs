@@ -3,6 +3,7 @@ using GMap.NET.MapProviders;
 using GMap.NET.WindowsForms;
 using GMap.NET.WindowsForms.Markers;
 using System;
+using System.Configuration;
 using System.Data;
 using System.Drawing;
 using System.IO;
@@ -20,20 +21,26 @@ namespace TcxEditor.UI
         public MapControl()
         {
             InitializeComponent();
-            gMapControl1.MapProvider = GoogleMapProvider.Instance;
             GMaps.Instance.Mode = AccessMode.ServerOnly;
-            gMapControl1.SetZoomToFitRect(
-                new RectLatLng(53.2, 6.5, 0.2, 0.2));
+            gMapControl1.MapProvider = GoogleMapProvider.Instance;
+           
             gMapControl1.Overlays.Add(new GMapOverlay("route"));
             gMapControl1.Overlays.Add(new GMapOverlay("points"));
             gMapControl1.Overlays.Add(new GMapOverlay("editPoints"));
 
             gMapControl1.MinZoom = 0;
             gMapControl1.MaxZoom = 100;
-            gMapControl1.Zoom = 3;
+            gMapControl1.Zoom = 10;
 
             gMapControl1.Click += OnMapClick;
             gMapControl1.OnMarkerClick += OnMarkerClick;
+        }
+
+        public void SetPosition(string location)
+        {
+            gMapControl1.MapProvider = OpenCycleLandscapeMapProvider.Instance;
+            gMapControl1.SetPositionByKeywords(location);
+            gMapControl1.MapProvider = GoogleMapProvider.Instance;
         }
 
         private void OnMarkerClick(GMapMarker item, MouseEventArgs e)
