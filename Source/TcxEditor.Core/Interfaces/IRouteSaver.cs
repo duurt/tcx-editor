@@ -10,6 +10,9 @@ namespace TcxEditor.Core.Interfaces
 {
     public interface IRouteSaver
     {
-        void SaveCoursePoints(List<CoursePoint> points, string name);
+        void SaveCoursePoints(
+            List<CoursePoint> points, 
+            string sourcePath, 
+            string destinationPath);
     }
 }

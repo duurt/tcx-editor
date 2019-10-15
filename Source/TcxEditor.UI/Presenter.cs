@@ -21,6 +21,7 @@ namespace TcxEditor.UI
         private readonly IErrorView _errorView;
         private readonly IGuiStateSetter _guiControls;
         private readonly ICommandRunner _commandRunner;
+        private string _openedRoutePath;
 
         private Route _route = null;
         private DateTime _selectedTimeStamp;
@@ -190,10 +191,13 @@ namespace TcxEditor.UI
 
         private void OnSaveRouteEvent(object sender, SaveRouteEventargs e)
         {
+            // todo: check that route is not null? 
+            // How about explcitily working with states..?
             TryCatch(() =>
             {
-                var result = _commandRunner.Execute(new SaveRouteInput(e.Route, e.Name))
-                    as SaveRouteResponse;
+                var result = _commandRunner.Execute(
+                    new SaveRouteInput(_route, _openedRoutePath, e.DestinationPath))
+                        as SaveRouteResponse;
                 _route = result.Route;
 
                 _routeView.ShowRoute(result.Route);
@@ -219,6 +223,7 @@ namespace TcxEditor.UI
             {
                 var result = _commandRunner.Execute(new OpenRouteInput { Name = e.Name })
                     as OpenRouteResponse;
+                _openedRoutePath = e.Name;
                 _route = result.Route;
 
                 _routeView.ShowRoute(result.Route);

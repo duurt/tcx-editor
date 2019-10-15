@@ -11,12 +11,14 @@ namespace TcxEditor.Core
     public class SaveRouteInput : IInput
     {
         public Route Route { get; set; }
-        public string Name { get; }
+        public string SourceName { get; }
+        public string DestinationPath { get; }
 
-        public SaveRouteInput(Route route, string name)
+        public SaveRouteInput(Route route, string sourcepPath, string destinationPath)
         {
             Route = route;
-            Name = name;
+            SourceName = sourcepPath;
+            DestinationPath = destinationPath;
         }
     }
 }
