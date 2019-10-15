@@ -22,7 +22,7 @@ namespace TcxEditor.UI
         private string _fileName;
 
         public event EventHandler<OpenRouteEventArgs> OpenFileEvent;
-        public event EventHandler<AddStartFinishEventArgs> AddStartFinishEvent;
+        public event EventHandler AddStartFinishEvent;
         public event EventHandler<SaveRouteEventargs> SaveRouteEvent;
         public event EventHandler<GetNearestEventArgs> GetNearestEvent;
         public event EventHandler<AddPointEventArgs> AddPointEvent;
@@ -86,7 +86,7 @@ namespace TcxEditor.UI
 
         private void btnAddStartFinish_Click(object sender, EventArgs e)
         {
-            AddStartFinishEvent?.Invoke(this, new AddStartFinishEventArgs());
+            AddStartFinishEvent?.Invoke(this, EventArgs.Empty);
         }
 
         private void btnSaveRoute_Click(object sender, EventArgs e)

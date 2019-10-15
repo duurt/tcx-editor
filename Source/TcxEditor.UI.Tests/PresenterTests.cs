@@ -7,61 +7,41 @@ using System.Text;
 using System.Threading.Tasks;
 using TcxEditor.Core;
 using TcxEditor.Core.Entities;
-using TcxEditor.Core.Interfaces;
 using TcxEditor.UI.Interfaces;
 
 namespace TcxEditor.UI.Tests
 {
+
+    // Todo: these tests were created after Presenter was written; not yet complete
     public partial class PresenterTests
     {
+        private GuiStub _gui;
         private CommandRunnerSpy _commandSpy;
-        private Presenter _sut;
 
-        public PresenterTests()
+        [SetUp]
+        public void InitializePresenter()
         {
-            // todo: the tests class IS the GUI stub, but is created only once. 
-            // Be careful with tear down! 
-            // Perhaps the self shunt form here is not so good... 
-            InitializePresenter();
-        }
-
-        private void InitializePresenter()
-        {
+            _gui = new GuiStub();
             _commandSpy = new CommandRunnerSpy();
-            _sut = new Presenter(this, this, this, _commandSpy);
+            // Note: the tests NEVER interact with the presenter directly,
+            // but only through the GuiStub. So simply wiring everything up here 
+            // is enough. 
+            new Presenter(_gui, _gui, _gui, _commandSpy);
         }
         
         [Test]
-        public void Ctor_hooks_up_all_UI_events()
-        {
-            OpenFileEvent.ShouldNotBeNull();
-            AddStartFinishEvent.ShouldNotBeNull();
-            SaveRouteEvent.ShouldNotBeNull();
-            GetNearestEvent.ShouldNotBeNull();
-            AddPointEvent.ShouldNotBeNull();
-            DeletePointEvent.ShouldNotBeNull();
-            SelectCoursePointEvent.ShouldNotBeNull();
-            StepEvent.ShouldNotBeNull();
-        }
-
-        [Test]
         public void Ctor_sets_initial_GUI_state()
         {
-            GuiState.AddCoursePoint.ShouldBe(false);
-            GuiState.SaveEnabled.ShouldBe(false);
-            GuiState.ScrollRoute.ShouldBe(false);
-            GuiState.DeleteCoursePoint.ShouldBe(false);
+            _gui.GuiState.AddCoursePoint.ShouldBe(false);
+            _gui.GuiState.SaveEnabled.ShouldBe(false);
+            _gui.GuiState.ScrollRoute.ShouldBe(false);
+            _gui.GuiState.DeleteCoursePoint.ShouldBe(false);
         }
 
         [Test]
         public void OpenFileEvent_calls_CommandRunner()
         {
-            _commandSpy.SetResponse(
-                new OpenRouteResponse{ Route = new Route() });
-
-            OpenFileEvent.Invoke(
-                this, 
-                new OpenRouteEventArgs("some file name"));
+            OpenRoute();
 
             OpenRouteInput commandInput = (_commandSpy.LastCall as OpenRouteInput);
             commandInput.Name.ShouldBe("some file name");
@@ -70,93 +50,93 @@ namespace TcxEditor.UI.Tests
         [Test]
         public void OpenFileEvent_updates_gui_state()
         {
-            _commandSpy.SetResponse(
-                new OpenRouteResponse { Route = new Route() });
+            OpenRoute();
 
-            OpenFileEvent.Invoke(
-                this,
-                new OpenRouteEventArgs("some file name"));
-
-            GuiState.AddCoursePoint.ShouldBe(false);
-            GuiState.SaveEnabled.ShouldBe(true);
-            GuiState.ScrollRoute.ShouldBe(false);
-            GuiState.DeleteCoursePoint.ShouldBe(false);
+            _gui.GuiState.AddCoursePoint.ShouldBe(false);
+            _gui.GuiState.SaveEnabled.ShouldBe(true);
+            _gui.GuiState.ScrollRoute.ShouldBe(false);
+            _gui.GuiState.DeleteCoursePoint.ShouldBe(false);
         }
 
         [Test]
         public void OpenFileEvent_shows_route_in_GUI()
         {
-            Route testRoute = new Route();
+            Route testRoute = GetDefaultRoute();
             _commandSpy.SetResponse(
                 new OpenRouteResponse { Route = testRoute });
 
-            OpenFileEvent.Invoke(
-                this,
+            _gui.ClickOpenFile(
                 new OpenRouteEventArgs("some file name"));
 
-            _route.ShouldBeSameAs(testRoute);
+            _gui.Route.ShouldBeSameAs(testRoute);
         }
-    }
-
-    internal class CommandRunnerSpy : ICommandRunner
-    {
-        private IOutput _response;
-        public IInput LastCall { get; private set; }
-
-        public IOutput Execute(IInput input)
+        
+        [Test]
+        public void AddStartFinishEvent_calls_CommandRunner()
         {
-            LastCall = input;
-            return _response;
+            OpenRoute();
+            SelectATrackPoint();
+
+            int routeId = _gui.Route.GetHashCode();
+            _commandSpy.SetResponse(
+                new AddStartFinishResponse(GetDefaultRoute()));
+            
+            _gui.ClickAddStartFinish();
+
+            AddStartFinishInput commandInput = (_commandSpy.LastCall as AddStartFinishInput);
+            commandInput.Route.GetHashCode().ShouldBe(routeId);
         }
 
-        internal void SetResponse(IOutput openRouteResponse)
+        [Test]
+        public void AddStartFinishEvent_updates_GUI_state()
         {
-            _response = openRouteResponse;
+            OpenRoute();
+            SelectATrackPoint();
+
+            _commandSpy.SetResponse(
+                new AddStartFinishResponse(GetDefaultRoute()));
+
+            _gui.ClickAddStartFinish();
+
+            _gui.GuiState.AddCoursePoint.ShouldBe(true);
+            _gui.GuiState.SaveEnabled.ShouldBe(true);
+            _gui.GuiState.ScrollRoute.ShouldBe(true);
+            _gui.GuiState.DeleteCoursePoint.ShouldBe(false);
         }
-    }
 
-    public partial class PresenterTests : IRouteView, IErrorView, IGuiStateSetter
-    {
-        private Route _route;
-        public GuiState GuiState { get; private set; }
-
-        public event EventHandler<OpenRouteEventArgs> OpenFileEvent;
-        public event EventHandler<AddStartFinishEventArgs> AddStartFinishEvent;
-        public event EventHandler<SaveRouteEventargs> SaveRouteEvent;
-        public event EventHandler<GetNearestEventArgs> GetNearestEvent;
-        public event EventHandler<AddPointEventArgs> AddPointEvent;
-        public event EventHandler DeletePointEvent;
-        public event EventHandler<SelectPointEventArgs> SelectCoursePointEvent;
-        public event EventHandler<StepEventArgs> StepEvent;
-
-        public void Apply(GuiState state)
+        private void OpenRoute()
         {
-            GuiState = state;
+            _commandSpy.SetResponse(
+                new OpenRouteResponse { Route = GetDefaultRoute() });
+
+            _gui.ClickOpenFile(
+                new OpenRouteEventArgs("some file name"));
         }
 
-        public void ShowEditCoursePointMarker(TrackPoint position)
+        private void SelectATrackPoint()
         {
-            throw new NotImplementedException();
+            _commandSpy.SetResponse(
+                new GetNearestTrackPointResponse
+                {
+                    Route = GetDefaultRoute(),
+                    Nearest = GetDefaultRoute().TrackPoints[1]
+                });
+            _gui.ClickGetNearest(
+                new GetNearestEventArgs { ReferencePoint = new Position(1, 1) });
         }
 
-        public void ShowEditTrackPointMarker(TrackPoint position)
+        private static Route GetDefaultRoute()
         {
-            throw new NotImplementedException();
+            var result = new Route();
+            result.TrackPoints.AddRange(
+                Enumerable.Range(0, 3).Select(i =>
+                new TrackPoint(i, i)
+                {
+                    TimeStamp = new DateTime(2019, 1, 1, 12, 0, i)
+                }).ToList());
+            
+            return result;
         }
 
-        public void ShowErrorMessage(string msg)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void ShowPointToEdit(TrackPoint point)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void ShowRoute(Route route)
-        {
-            _route = route;
-        }
     }
 }

@@ -200,7 +200,7 @@ namespace TcxEditor.UI
             });
         }
 
-        private void OnAddStartFinishEvent(object sender, AddStartFinishEventArgs e)
+        private void OnAddStartFinishEvent(object sender, EventArgs e)
         {
             TryCatch(() =>
             {

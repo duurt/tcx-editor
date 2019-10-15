@@ -3,7 +3,8 @@ using TcxEditor.Core.Entities;
 
 namespace TcxEditor.UI.Interfaces
 {
-    public class AddStartFinishEventArgs : EventArgs
-    {
-    }
+    // todo: remove
+    //public class AddStartFinishEventArgs : EventArgs
+    //{
+    //}
 }
