@@ -91,9 +91,17 @@ namespace TcxEditor.UI
 
         private void btnSaveRoute_Click(object sender, EventArgs e)
         {
-            // todo: get name from dialog
-            SaveRouteEvent?.Invoke(this, new SaveRouteEventargs(
-                "this file name parameter is ignored at the moment..."));
+            using (var saveFileDialog = new SaveFileDialog())
+            {
+                saveFileDialog.Filter = "TCX file|*.tcx";
+                saveFileDialog.Title = "Save the Route";
+                saveFileDialog.ShowDialog();
+
+                if (saveFileDialog.FileName != "")
+                    SaveRouteEvent?.Invoke(
+                        this, 
+                        new SaveRouteEventargs(saveFileDialog.FileName));
+            }
         }
 
         private void btnAddCoursePoint_Click(object sender, EventArgs e)
@@ -150,7 +158,7 @@ namespace TcxEditor.UI
 
         public void ShowErrorMessage(string msg)
         {
-            MessageBox.Show(msg, "Fout");
+            MessageBox.Show(msg, "Something went wrong...");
         }
 
         public void Apply(GuiState state)
