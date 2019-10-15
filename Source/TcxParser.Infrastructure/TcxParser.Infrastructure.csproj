@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{924D77B0-0FE2-4FEC-9C2F-8FE92AB743C8}</ProjectGuid>
+    <ProjectGuid>{A0BA74D7-0422-4F04-82A2-299227A0EB6D}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>TcxParser</RootNamespace>
-    <AssemblyName>TcxParser</AssemblyName>
+    <RootNamespace>TcxParser.Infrastructure</RootNamespace>
+    <AssemblyName>TcxParser.Infrastructure</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
@@ -41,16 +41,20 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="XmlParser.cs" />
+    <Compile Include="FileStreamCreator.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Xsd\tcx-v2.cs">
-      <DependentUpon>tcx-v2.xsd</DependentUpon>
-    </Compile>
+    <Compile Include="RouteSaver.cs" />
+    <Compile Include="TcxParserWrapper.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Xsd\tcx-v2.xsd">
-      <SubType>Designer</SubType>
-    </None>
+    <ProjectReference Include="..\TcxEditor.Core\TcxEditor.Core.csproj">
+      <Project>{50C00360-E2AA-4A91-AD50-83281B529CB4}</Project>
+      <Name>TcxEditor.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\TcxParser\TcxParser.csproj">
+      <Project>{924d77b0-0fe2-4fec-9c2f-8fe92ab743c8}</Project>
+      <Name>TcxParser</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

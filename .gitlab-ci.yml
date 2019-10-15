@@ -1,0 +1,29 @@
+variables:  
+  NUGET: 'C:\Tools\Nuget\nuget.exe'
+  MSBUILD: 'C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\MSBuild\15.0\Bin\msbuild.exe'
+  NUNIT: packages\NUnit.ConsoleRunner.3.10.0\tools\nunit3-console.exe
+  
+stages:
+  - build
+  - deploy
+
+build_job:
+  tags:
+    - windows
+  stage: build
+  script:
+    - '& "$env:NUGET" restore'
+    - '& "$env:MSBUILD" /p:Configuration=Release /clp:WarningsOnly /m'
+    - '& "$env:NUNIT" Source\TcxEditor.Core.Tests\bin\Release\TcxEditor.Core.Tests.dll Source\TcxParser.Tests\bin\Release\TcxParser.Tests.dll Source\TcxEditor.UI.Tests\bin\Release\TcxEditor.UI.Tests.dll'
+  artifacts:
+    paths:
+      - Source\TcxEditor.UI\bin\Release
+    expire_in: 1 week
+
+deploy_job:
+  when: manual
+  tags:
+    - windows
+  stage: deploy
+  script: 
+    - '& Copy-Item -Path Source\TcxEditor.UI\bin\Release -Destination "C:\tmp\tcx" -Recurse'
