@@ -14,7 +14,7 @@ build_job:
   script:
     - '& "$env:NUGET" restore'
     - '& "$env:MSBUILD" /p:Configuration=Release /clp:WarningsOnly /m'
-    - '& "$env:NUNIT" Source\TcxEditor.Core.Tests\bin\Release\TcxEditor.Core.Tests.dll Source\TcxParser.Tests\bin\Release\TcxParser.Tests.dll Source\TcxEditor.UI.Tests\bin\Release\TcxEditor.UI.Tests.dll'
+    - '& "$env:NUNIT" Source\TcxEditor.Core.Tests\bin\Release\TcxEditor.Core.Tests.dll Source\TcxEditor.Parser.Tests\bin\Release\TcxEditor.Parser.Tests.dll Source\TcxEditor.UI.Tests\bin\Release\TcxEditor.UI.Tests.dll'
   artifacts:
     paths:
       - Source\TcxEditor.UI\bin\Release

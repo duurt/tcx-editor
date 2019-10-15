@@ -9,8 +9,8 @@
     <ProjectGuid>{223A3C60-F5EE-45DD-81E6-4335C0DD3AD7}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>TcxParser.Tests</RootNamespace>
-    <AssemblyName>TcxParser.Tests</AssemblyName>
+    <RootNamespace>TcxEditor.Parser.Tests</RootNamespace>
+    <AssemblyName>TcxEditor.Parser.Tests</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
@@ -66,9 +66,9 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\TcxParser\TcxParser.csproj">
+    <ProjectReference Include="..\TcxEditor.Parser\TcxEditor.Parser.csproj">
       <Project>{924D77B0-0FE2-4FEC-9C2F-8FE92AB743C8}</Project>
-      <Name>TcxParser</Name>
+      <Name>TcxEditor.Parser</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

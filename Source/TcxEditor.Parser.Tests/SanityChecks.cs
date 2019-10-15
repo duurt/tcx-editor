@@ -10,7 +10,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Serialization;
 
-namespace TcxParser.Tests
+namespace TcxEditor.Parser.Tests
 {
     [TestFixture]
     public class SanityChecks
