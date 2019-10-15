@@ -7,8 +7,8 @@
     <ProjectGuid>{A0BA74D7-0422-4F04-82A2-299227A0EB6D}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>TcxParser.Infrastructure</RootNamespace>
-    <AssemblyName>TcxParser.Infrastructure</AssemblyName>
+    <RootNamespace>TcxEditor.Parser.Infrastructure</RootNamespace>
+    <AssemblyName>TcxEditor.Parser.Infrastructure</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
@@ -51,7 +51,7 @@
       <Project>{50C00360-E2AA-4A91-AD50-83281B529CB4}</Project>
       <Name>TcxEditor.Core</Name>
     </ProjectReference>
-    <ProjectReference Include="..\TcxParser\TcxEditor.Parser.csproj">
+    <ProjectReference Include="..\TcxEditor.Parser\TcxEditor.Parser.csproj">
       <Project>{924d77b0-0fe2-4fec-9c2f-8fe92ab743c8}</Project>
       <Name>TcxEditor.Parser</Name>
     </ProjectReference>
