@@ -1,4 +1,6 @@
 ﻿using Autofac;
+using System.Linq;
+using System.Reflection;
 using TcxEditor.Core;
 using TcxEditor.Core.Interfaces;
 using TcxEditor.Infrastructure;
@@ -13,19 +15,22 @@ namespace TcxEditor.UI
         {
             var builder = new ContainerBuilder();
 
-            builder.RegisterType<OpenRouteCommand>().As<IOpenRouteCommand>();
-            builder.RegisterType<AddStartFinishCommand>().As<IAddStartFinishCommand>();
-            builder.RegisterType<SaveRouteCommand>().As<ISaveRouteCommand>();
-            builder.RegisterType<GetNearestTrackPointCommand>().As<IGetNearestTrackPointCommand>();
-            builder.RegisterType<AddCoursePointCommand>().As<IAddCoursePointCommand>();
-            builder.RegisterType<DeleteCoursePointCommand>().As<IDeleteCoursePointCommand>();
+            builder.RegisterType<CommandRunner>().As<ICommandRunner>();
+
+            builder.RegisterAssemblyTypes(typeof(ITcxEditorCommand).Assembly)
+                .Where(x => x.IsAssignableTo<ITcxEditorCommand>())
+                .AsImplementedInterfaces();
 
             builder.RegisterType<FileStreamCreator>().As<IStreamCreator>();
             builder.RegisterType<TcxParserAdapter>().As<ITcxParser>();
             builder.RegisterType<RouteSaver>().As<IRouteSaver>();
 
-            builder.RegisterType<MainForm>().As<IRouteView>().SingleInstance();
-            builder.RegisterType<MainForm>().As<IErrorView>().SingleInstance();
+            builder.RegisterType<MainForm>()
+                    .As<IRouteView>()
+                    .As<IErrorView>()
+                    .As<IGuiStateSetter>()
+                .SingleInstance();
+
             builder.RegisterType<Presenter>().AsSelf().SingleInstance();
 
             return builder.Build();

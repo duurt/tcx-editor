@@ -32,7 +32,8 @@ namespace TcxEditor.UI
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.mapControl1 = new TcxEditor.UI.MapControl();
             this.panel1 = new System.Windows.Forms.Panel();
-            this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.routeDirectionsGroup = new System.Windows.Forms.GroupBox();
+            this.btnDelete = new System.Windows.Forms.Button();
             this.btnStepBck = new System.Windows.Forms.Button();
             this.btnStepFwd = new System.Windows.Forms.Button();
             this.btnAddCoursePoint = new System.Windows.Forms.Button();
@@ -42,10 +43,11 @@ namespace TcxEditor.UI
             this.cbPointType = new System.Windows.Forms.ComboBox();
             this.btnSaveRoute = new System.Windows.Forms.Button();
             this.btnAddStartFinish = new System.Windows.Forms.Button();
-            this.btnDelete = new System.Windows.Forms.Button();
+            this.grbRouteScrolling = new System.Windows.Forms.GroupBox();
             this.tableLayoutPanel1.SuspendLayout();
             this.panel1.SuspendLayout();
-            this.groupBox1.SuspendLayout();
+            this.routeDirectionsGroup.SuspendLayout();
+            this.grbRouteScrolling.SuspendLayout();
             this.SuspendLayout();
             // 
             // btnOpenRoute
@@ -83,9 +85,9 @@ namespace TcxEditor.UI
             // 
             // panel1
             // 
-            this.panel1.Controls.Add(this.groupBox1);
+            this.panel1.Controls.Add(this.grbRouteScrolling);
+            this.panel1.Controls.Add(this.routeDirectionsGroup);
             this.panel1.Controls.Add(this.btnSaveRoute);
-            this.panel1.Controls.Add(this.btnAddStartFinish);
             this.panel1.Controls.Add(this.btnOpenRoute);
             this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel1.Location = new System.Drawing.Point(3, 3);
@@ -93,26 +95,35 @@ namespace TcxEditor.UI
             this.panel1.Size = new System.Drawing.Size(137, 525);
             this.panel1.TabIndex = 1;
             // 
-            // groupBox1
+            // routeDirectionsGroup
             // 
-            this.groupBox1.Controls.Add(this.btnDelete);
-            this.groupBox1.Controls.Add(this.btnStepBck);
-            this.groupBox1.Controls.Add(this.btnStepFwd);
-            this.groupBox1.Controls.Add(this.btnAddCoursePoint);
-            this.groupBox1.Controls.Add(this.tbPointNotes);
-            this.groupBox1.Controls.Add(this.label2);
-            this.groupBox1.Controls.Add(this.label1);
-            this.groupBox1.Controls.Add(this.cbPointType);
-            this.groupBox1.Location = new System.Drawing.Point(4, 219);
-            this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(130, 297);
-            this.groupBox1.TabIndex = 4;
-            this.groupBox1.TabStop = false;
-            this.groupBox1.Text = "Add Cue Sheet Point";
+            this.routeDirectionsGroup.Controls.Add(this.btnDelete);
+            this.routeDirectionsGroup.Controls.Add(this.btnAddStartFinish);
+            this.routeDirectionsGroup.Controls.Add(this.btnAddCoursePoint);
+            this.routeDirectionsGroup.Controls.Add(this.tbPointNotes);
+            this.routeDirectionsGroup.Controls.Add(this.label2);
+            this.routeDirectionsGroup.Controls.Add(this.label1);
+            this.routeDirectionsGroup.Controls.Add(this.cbPointType);
+            this.routeDirectionsGroup.Location = new System.Drawing.Point(4, 174);
+            this.routeDirectionsGroup.Name = "routeDirectionsGroup";
+            this.routeDirectionsGroup.Size = new System.Drawing.Size(130, 342);
+            this.routeDirectionsGroup.TabIndex = 4;
+            this.routeDirectionsGroup.TabStop = false;
+            this.routeDirectionsGroup.Text = "Route directions";
+            // 
+            // btnDelete
+            // 
+            this.btnDelete.Location = new System.Drawing.Point(15, 179);
+            this.btnDelete.Name = "btnDelete";
+            this.btnDelete.Size = new System.Drawing.Size(103, 23);
+            this.btnDelete.TabIndex = 7;
+            this.btnDelete.Text = "Remove point";
+            this.btnDelete.UseVisualStyleBackColor = true;
+            this.btnDelete.Click += new System.EventHandler(this.btnDelete_Click);
             // 
             // btnStepBck
             // 
-            this.btnStepBck.Location = new System.Drawing.Point(10, 20);
+            this.btnStepBck.Location = new System.Drawing.Point(6, 19);
             this.btnStepBck.Name = "btnStepBck";
             this.btnStepBck.Size = new System.Drawing.Size(56, 23);
             this.btnStepBck.TabIndex = 6;
@@ -122,7 +133,7 @@ namespace TcxEditor.UI
             // 
             // btnStepFwd
             // 
-            this.btnStepFwd.Location = new System.Drawing.Point(68, 20);
+            this.btnStepFwd.Location = new System.Drawing.Point(68, 19);
             this.btnStepFwd.Name = "btnStepFwd";
             this.btnStepFwd.Size = new System.Drawing.Size(56, 23);
             this.btnStepFwd.TabIndex = 5;
@@ -132,7 +143,7 @@ namespace TcxEditor.UI
             // 
             // btnAddCoursePoint
             // 
-            this.btnAddCoursePoint.Location = new System.Drawing.Point(15, 180);
+            this.btnAddCoursePoint.Location = new System.Drawing.Point(15, 149);
             this.btnAddCoursePoint.Name = "btnAddCoursePoint";
             this.btnAddCoursePoint.Size = new System.Drawing.Size(103, 23);
             this.btnAddCoursePoint.TabIndex = 4;
@@ -142,7 +153,7 @@ namespace TcxEditor.UI
             // 
             // tbPointNotes
             // 
-            this.tbPointNotes.Location = new System.Drawing.Point(3, 144);
+            this.tbPointNotes.Location = new System.Drawing.Point(3, 113);
             this.tbPointNotes.Name = "tbPointNotes";
             this.tbPointNotes.Size = new System.Drawing.Size(121, 20);
             this.tbPointNotes.TabIndex = 3;
@@ -150,7 +161,7 @@ namespace TcxEditor.UI
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(7, 119);
+            this.label2.Location = new System.Drawing.Point(7, 88);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(72, 13);
             this.label2.TabIndex = 2;
@@ -159,7 +170,7 @@ namespace TcxEditor.UI
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(7, 51);
+            this.label1.Location = new System.Drawing.Point(7, 20);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(43, 13);
             this.label1.TabIndex = 1;
@@ -168,14 +179,14 @@ namespace TcxEditor.UI
             // cbPointType
             // 
             this.cbPointType.FormattingEnabled = true;
-            this.cbPointType.Location = new System.Drawing.Point(3, 76);
+            this.cbPointType.Location = new System.Drawing.Point(3, 45);
             this.cbPointType.Name = "cbPointType";
             this.cbPointType.Size = new System.Drawing.Size(121, 21);
             this.cbPointType.TabIndex = 0;
             // 
             // btnSaveRoute
             // 
-            this.btnSaveRoute.Location = new System.Drawing.Point(19, 91);
+            this.btnSaveRoute.Location = new System.Drawing.Point(19, 60);
             this.btnSaveRoute.Name = "btnSaveRoute";
             this.btnSaveRoute.Size = new System.Drawing.Size(103, 23);
             this.btnSaveRoute.TabIndex = 3;
@@ -185,7 +196,7 @@ namespace TcxEditor.UI
             // 
             // btnAddStartFinish
             // 
-            this.btnAddStartFinish.Location = new System.Drawing.Point(19, 61);
+            this.btnAddStartFinish.Location = new System.Drawing.Point(15, 237);
             this.btnAddStartFinish.Name = "btnAddStartFinish";
             this.btnAddStartFinish.Size = new System.Drawing.Size(103, 23);
             this.btnAddStartFinish.TabIndex = 2;
@@ -193,15 +204,16 @@ namespace TcxEditor.UI
             this.btnAddStartFinish.UseVisualStyleBackColor = true;
             this.btnAddStartFinish.Click += new System.EventHandler(this.btnAddStartFinish_Click);
             // 
-            // btnDelete
+            // routeScrollingGroup
             // 
-            this.btnDelete.Location = new System.Drawing.Point(15, 210);
-            this.btnDelete.Name = "btnDelete";
-            this.btnDelete.Size = new System.Drawing.Size(103, 23);
-            this.btnDelete.TabIndex = 7;
-            this.btnDelete.Text = "Remove point";
-            this.btnDelete.UseVisualStyleBackColor = true;
-            this.btnDelete.Click += new System.EventHandler(this.btnDelete_Click);
+            this.grbRouteScrolling.Controls.Add(this.btnStepBck);
+            this.grbRouteScrolling.Controls.Add(this.btnStepFwd);
+            this.grbRouteScrolling.Location = new System.Drawing.Point(9, 105);
+            this.grbRouteScrolling.Name = "routeScrollingGroup";
+            this.grbRouteScrolling.Size = new System.Drawing.Size(125, 63);
+            this.grbRouteScrolling.TabIndex = 5;
+            this.grbRouteScrolling.TabStop = false;
+            this.grbRouteScrolling.Text = "Route scrolling";
             // 
             // MainForm
             // 
@@ -214,8 +226,9 @@ namespace TcxEditor.UI
             this.Text = "Duurt\'s TCX editor";
             this.tableLayoutPanel1.ResumeLayout(false);
             this.panel1.ResumeLayout(false);
-            this.groupBox1.ResumeLayout(false);
-            this.groupBox1.PerformLayout();
+            this.routeDirectionsGroup.ResumeLayout(false);
+            this.routeDirectionsGroup.PerformLayout();
+            this.grbRouteScrolling.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -228,7 +241,7 @@ namespace TcxEditor.UI
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.Button btnAddStartFinish;
         private System.Windows.Forms.Button btnSaveRoute;
-        private System.Windows.Forms.GroupBox groupBox1;
+        private System.Windows.Forms.GroupBox routeDirectionsGroup;
         private System.Windows.Forms.Button btnAddCoursePoint;
         private System.Windows.Forms.TextBox tbPointNotes;
         private System.Windows.Forms.Label label2;
@@ -237,6 +250,7 @@ namespace TcxEditor.UI
         private System.Windows.Forms.Button btnStepFwd;
         private System.Windows.Forms.Button btnStepBck;
         private System.Windows.Forms.Button btnDelete;
+        private System.Windows.Forms.GroupBox grbRouteScrolling;
     }
 }
 

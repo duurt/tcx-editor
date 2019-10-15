@@ -1,32 +1,22 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Drawing;
-using System.Data;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
+﻿using GMap.NET;
 using GMap.NET.MapProviders;
-using GMap.NET;
 using GMap.NET.WindowsForms;
-using System.IO;
-using System.Xml.Serialization;
 using GMap.NET.WindowsForms.Markers;
-using TcxEditor.Core;
-using TcxEditor.Infrastructure;
+using System;
+using System.Data;
+using System.Drawing;
+using System.IO;
+using System.Linq;
+using System.Windows.Forms;
 using TcxEditor.Core.Entities;
 
 namespace TcxEditor.UI
 {
     public partial class MapControl : UserControl
     {
-        public Route CurrentRoute { get; internal set; }
-        public TrackPoint PointToEdit { get; internal set; }
-        public GMapMarker SelectedCoursePoint { get; private set; }
-
         public event EventHandler<MapClickEventArgs> MapClickEvent;
-
+        public event EventHandler<PointSelectEventArgs> CoursePointSelectEvent;
+        
         public MapControl()
         {
             InitializeComponent();
@@ -50,15 +40,10 @@ namespace TcxEditor.UI
         {
             if (!item.Overlay.Id.Equals("points"))
                 return;
-            // refactor; looks too much like show edit point
-            ClearEditMarkers();
-            SelectedCoursePoint = item;
 
-            GMapOverlay editOverlay = gMapControl1.Overlays.First(o => o.Id.Equals("editPoints"));
-            editOverlay.Markers.Add(
-                new GMarkerGoogle(
-                    new PointLatLng(item.Position.Lat, item.Position.Lng),
-                    GMarkerGoogleType.arrow));
+            CoursePointSelectEvent?.Invoke(
+                this,
+                new PointSelectEventArgs((DateTime)item.Tag));
         }
 
         private void OnMapClick(object sender, EventArgs e)
@@ -69,8 +54,8 @@ namespace TcxEditor.UI
 
             var latLon = gMapControl1.FromLocalToLatLng(args.X, args.Y);
             MapClickEvent?.Invoke(
-                this, 
-                new MapClickEventArgs { Lattitude = latLon.Lat, Longitude = latLon.Lng});
+                this,
+                new MapClickEventArgs { Lattitude = latLon.Lat, Longitude = latLon.Lng });
         }
 
         public void SetRoute(Route openedRoute)
@@ -96,43 +81,22 @@ namespace TcxEditor.UI
                 GMarkerGoogle marker = new GMarkerGoogle(
                     new PointLatLng(point.Lattitude, point.Longitude),
                     new Bitmap(new MemoryStream(Convert.FromBase64String("iVBORw0KGgoAAAANSUhEUgAAAA8AAAAPCAMAAAAMCGV4AAAASFBMVEX///9ISEgGBgbBwcH39/dpaWmYmJjR0dH09PSBgYGJiYnV1dV4eHh+fn7FxcVSUlJgYGDl5eWjo6Pc3Nx5eXk4ODhfX18nJycGtpgYAAAAcklEQVQImUWPWxaAIAhER83MxNKe+99pKFTzAdzDAQaA5WKmHB1Egy9j2MN4+aHhtEaOtwfiOnFFM17NBCwFv8qCvLXCWtPSlkGpd87OiUC1s+lc6e0Lp0PnlXle9wvzfrlvWXJf/TWJv89/Ef/63yH/PeORA/kIj+u1AAAAAElFTkSuQmCC"))));
-                
+
                 markerOverlay.Markers.Add(marker);
                 marker.ToolTipText = $"{point.Type}\n{point.Notes}";
+                marker.Tag = point.TimeStamp;
             }
-
-            CurrentRoute = openedRoute;
-        }
-
-        internal void StepForward() => Step(1);
-
-        internal void StepBack() => Step(-1);
-
-        private void Step(int step)
-        {
-            int maxIndex = CurrentRoute.TrackPoints.Count - 1;
-
-            int index = CurrentRoute.TrackPoints.IndexOf(PointToEdit);
-            int nextIndex = index + step;
-
-            if (nextIndex < 0 || nextIndex > maxIndex)
-                return;
-
-            PointToEdit = CurrentRoute.TrackPoints[nextIndex];
-            ShowPointToEdit(PointToEdit);
         }
 
         internal void ShowPointToEdit(TrackPoint point)
         {
             ClearEditMarkers();
 
-            PointToEdit = point;
-            
             GMapOverlay editOverlay = gMapControl1.Overlays.First(o => o.Id.Equals("editPoints"));
             editOverlay.Markers.Add(
                 new GMarkerGoogle(
-                    new PointLatLng(point.Lattitude, point.Longitude), 
-                    GMarkerGoogleType.blue));
+                    new PointLatLng(point.Lattitude, point.Longitude),
+                    GMarkerGoogleType.blue){ Tag = point.TimeStamp });
         }
 
         private void ClearCueMarkers()
@@ -145,6 +109,27 @@ namespace TcxEditor.UI
         {
             GMapOverlay editOverlay = gMapControl1.Overlays.First(o => o.Id.Equals("editPoints"));
             editOverlay.Markers.Clear();
+        }
+
+        internal void SetEditCoursePointMarker(Position position)
+        {
+            ClearEditMarkers();
+
+            GMapOverlay editOverlay = gMapControl1.Overlays.First(o => o.Id.Equals("editPoints"));
+            editOverlay.Markers.Add(
+                new GMarkerGoogle(
+                    new PointLatLng(position.Lattitude, position.Longitude),
+                    GMarkerGoogleType.arrow));
+        }
+    }
+
+    public class PointSelectEventArgs
+    {
+        public DateTime _timeStamp { get; }
+
+        public PointSelectEventArgs(DateTime timeStamp)
+        {
+            _timeStamp = timeStamp;
         }
     }
 

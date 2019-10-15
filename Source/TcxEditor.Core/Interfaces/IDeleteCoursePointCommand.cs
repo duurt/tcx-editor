@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace TcxEditor.Core.Interfaces
 {
     public interface IDeleteCoursePointCommand
+        : ITcxEditorCommand<DeleteCoursePointInput, DeleteCoursePointResponse>
     {
-        DeleteCoursePointResponse Execute(DeleteCoursePointInput input);
     }
 }

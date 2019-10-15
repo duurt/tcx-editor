@@ -16,7 +16,7 @@ namespace TcxEditor.Core
             _saver = saver;
         }
 
-        public SaveRouteResponse Execute(SaveRouteRequest input)
+        public SaveRouteResponse Execute(SaveRouteInput input)
         {
             if (input == null)
                 throw new ArgumentNullException(nameof(input));

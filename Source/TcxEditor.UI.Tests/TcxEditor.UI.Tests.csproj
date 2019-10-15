@@ -6,11 +6,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{E262E061-B299-4CC7-BC69-BB861824372F}</ProjectGuid>
+    <ProjectGuid>{03B175BF-7B12-46DA-B622-A038778EA322}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>TcxEditor.Core.Tests</RootNamespace>
-    <AssemblyName>TcxEditor.Core.Tests</AssemblyName>
+    <RootNamespace>TcxEditor.UI.Tests</RootNamespace>
+    <AssemblyName>TcxEditor.UI.Tests</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
@@ -51,24 +51,22 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AddCoursePointCommandTests.cs" />
-    <Compile Include="AddStartFinishCommandTests.cs" />
-    <Compile Include="CommandRunnerTests.cs" />
-    <Compile Include="DeleteCoursePointCommandTests.cs" />
-    <Compile Include="Entities\RouteTests.cs" />
-    <Compile Include="Entities\PositionTests.cs" />
-    <Compile Include="GetNearestTrackPointCommandTests.cs" />
+    <Compile Include="CommandRunnerSpy.cs" />
+    <Compile Include="GuiStub.cs" />
+    <Compile Include="PresenterTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="SaveRouteCommandTests.cs" />
-    <Compile Include="TestRouteBuilder.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\TcxEditor.Core\TcxEditor.Core.csproj">
-      <Project>{50C00360-E2AA-4A91-AD50-83281B529CB4}</Project>
+      <Project>{50c00360-e2aa-4a91-ad50-83281b529cb4}</Project>
       <Name>TcxEditor.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\TcxEditor.UI\TcxEditor.UI.csproj">
+      <Project>{d50b84f2-a733-414d-bbf7-c6ec9852abdf}</Project>
+      <Name>TcxEditor.UI</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

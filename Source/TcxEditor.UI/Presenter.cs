@@ -4,65 +4,107 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using TcxEditor.Core;
+using TcxEditor.Core.Entities;
 using TcxEditor.Core.Exceptions;
 using TcxEditor.Core.Interfaces;
 using TcxEditor.UI.Interfaces;
 
+
+// todo: unit tests..? Eventually the presenter will hold the state, and the actual GUI is 
+// just showing stuff. I think a selfshunt test class implementing the view interface(s) 
+// will be a nice way.
 namespace TcxEditor.UI
 {
     public class Presenter
     {
         private readonly IRouteView _routeView;
         private readonly IErrorView _errorView;
-        private readonly IOpenRouteCommand _opener;
-        private readonly IAddStartFinishCommand _startFinishAdder;
-        private readonly ISaveRouteCommand _saver;
-        private readonly IGetNearestTrackPointCommand _nearestFinder;
-        private readonly IAddCoursePointCommand _pointAdder;
-        private readonly IDeleteCoursePointCommand _pointDeleter;
+        private readonly IGuiStateSetter _guiControls;
+        private readonly ICommandRunner _commandRunner;
+
+        private Route _route = null;
+        private DateTime _selectedTimeStamp;
 
         public Presenter(
             IRouteView routeView,
             IErrorView errorView,
-            IOpenRouteCommand opener,
-            IAddStartFinishCommand startFinishAdder,
-            ISaveRouteCommand saver,
-            IGetNearestTrackPointCommand nearestFinder,
-            IAddCoursePointCommand pointAdder,
-            IDeleteCoursePointCommand pointDeleter)
+            IGuiStateSetter guiControls,
+            ICommandRunner commandRunner
+            )
         {
             _routeView = routeView;
             _errorView = errorView;
+            _guiControls = guiControls;
+            _commandRunner = commandRunner;
 
-            _opener = opener;
-            _startFinishAdder = startFinishAdder;
-            _saver = saver;
-            _nearestFinder = nearestFinder;
-            _pointAdder = pointAdder;
-            _pointDeleter = pointDeleter;
+            HookupEvents();
+            InitializeGuiState();
+        }
 
+        private void HookupEvents()
+        {
             _routeView.OpenFileEvent += OnOpenFileEvent;
             _routeView.AddStartFinishEvent += OnAddStartFinishEvent;
             _routeView.SaveRouteEvent += OnSaveRouteEvent;
             _routeView.GetNearestEvent += OnGetNearestEvent;
             _routeView.AddPointEvent += OnAddPointEvent;
             _routeView.DeletePointEvent += OnDeletePointEvent;
+            _routeView.SelectCoursePointEvent += OnSelectCoursePointEvent;
+            _routeView.StepEvent += OnStepEvent;
         }
 
-        private void OnDeletePointEvent(object sender, DeletePointEventArgs e)
+        private void InitializeGuiState()
+        {
+            _guiControls.Apply(new GuiState
+            {
+                SaveEnabled = false,
+                AddCoursePoint = false,
+                DeleteCoursePoint = false,
+                ScrollRoute = false
+            });
+        }
+
+        private void OnSelectCoursePointEvent(object sender, SelectPointEventArgs e)
+        {
+            _selectedTimeStamp = e.TimeStamp;
+            _routeView.ShowEditCoursePointMarker(
+                _route.CoursePoints.First(
+                    p => p.TimeStamp == e.TimeStamp));
+
+            _guiControls.Apply(new GuiState
+            {
+                SaveEnabled = true,
+                AddCoursePoint = false,
+                DeleteCoursePoint = true,
+                ScrollRoute = true
+            });
+        }
+
+        private void OnDeletePointEvent(object sender, EventArgs e)
         {
             TryCatch(() =>
             {
-                var result = _pointDeleter.Execute(
+                var result = _commandRunner.Execute(
                     new DeleteCoursePointInput
                     {
-                        Route = e.Route,
-                        TimeStamp = e.Route.CoursePoints.FirstOrDefault(
-                            p => p.Lattitude == e.Position.Lattitude
-                            && p.Longitude == e.Position.Longitude).TimeStamp
-                    });
+                        Route = _route,
+                        TimeStamp = _selectedTimeStamp
+                    }) as DeleteCoursePointResponse;
+
+                _route = result.Route;
 
                 _routeView.ShowRoute(result.Route);
+                _routeView.ShowPointToEdit(
+                    result.Route.TrackPoints.First(
+                        p => p.TimeStamp == _selectedTimeStamp));
+
+                _guiControls.Apply(new GuiState
+                {
+                    SaveEnabled = true,
+                    AddCoursePoint = true,
+                    DeleteCoursePoint = false,
+                    ScrollRoute = true
+                });
             });
         }
 
@@ -70,14 +112,33 @@ namespace TcxEditor.UI
         {
             TryCatch(() =>
             {
-                var result = _pointAdder.Execute(
+                var result = _commandRunner.Execute(
                     new AddCoursePointInput
                     {
-                        Route = e.Route,
-                        NewCoursePoint = e.NewPoint
-                    });
+                        Route = _route,
+                        NewCoursePoint = new CoursePoint(
+                            GetTrackPoint(_selectedTimeStamp).Lattitude, GetTrackPoint(_selectedTimeStamp).Longitude)
+                        {
+                            Name = e.Name,
+                            Notes = e.Notes,
+                            TimeStamp = _selectedTimeStamp,
+                            Type = e.PointType
+                        }
+                    }) as AddCoursePointResponse;
+                _route = result.Route;
 
                 _routeView.ShowRoute(result.Route);
+                _routeView.ShowEditCoursePointMarker(
+                    result.Route.TrackPoints.First(
+                        p => p.TimeStamp == _selectedTimeStamp));
+
+                _guiControls.Apply(new GuiState
+                {
+                    SaveEnabled = true,
+                    AddCoursePoint = false,
+                    DeleteCoursePoint = true,
+                    ScrollRoute = true
+                });
             });
         }
 
@@ -85,34 +146,69 @@ namespace TcxEditor.UI
         {
             TryCatch(() =>
             {
-                var result = _nearestFinder.Execute(
+                var result = _commandRunner.Execute(
                     new GetNearestTrackPointInput
                     {
-                        Route = e.Route,
+                        Route = _route,
                         ReferencePoint = e.ReferencePoint
-                    });
+                    }) as GetNearestTrackPointResponse;
+                _route = result.Route;
+                _selectedTimeStamp = result.Nearest.TimeStamp;
 
                 _routeView.ShowRoute(result.Route);
-                _routeView.ShowPointToEdit(result.Nearest);
+                UpdateMarkerInView(_selectedTimeStamp);
             });
+        }
+
+        private void UpdateMarkerInView(DateTime timeStamp)
+        {
+            bool hasCoursePoint = CoursePointExists(timeStamp);
+
+            if (hasCoursePoint)
+                _routeView.ShowEditCoursePointMarker(GetTrackPoint(timeStamp));
+            else
+                _routeView.ShowPointToEdit(GetTrackPoint(timeStamp));
+
+            _guiControls.Apply(new GuiState
+            {
+                SaveEnabled = true,
+                AddCoursePoint = !hasCoursePoint,
+                DeleteCoursePoint = hasCoursePoint,
+                ScrollRoute = true
+            });
+        }
+
+        private TrackPoint GetTrackPoint(DateTime timeStamp)
+        {
+            return _route.TrackPoints.First(p => p.TimeStamp == timeStamp);
+        }
+
+        private bool CoursePointExists(DateTime t)
+        {
+            return _route.CoursePoints.Any(p => p.TimeStamp == t);
         }
 
         private void OnSaveRouteEvent(object sender, SaveRouteEventargs e)
         {
             TryCatch(() =>
             {
-                var result = _saver.Execute(new SaveRouteRequest(e.Route, e.Name));
+                var result = _commandRunner.Execute(new SaveRouteInput(e.Route, e.Name))
+                    as SaveRouteResponse;
+                _route = result.Route;
 
                 _routeView.ShowRoute(result.Route);
             });
         }
 
-        private void OnAddStartFinishEvent(object sender, AddStartFinishEventargs e)
+        private void OnAddStartFinishEvent(object sender, EventArgs e)
         {
             TryCatch(() =>
             {
-                var result = _startFinishAdder.Execute(new AddStartFinishInput(e.Route));
-
+                var result = _commandRunner.Execute(new AddStartFinishInput(_route))
+                    as AddStartFinishResponse;
+                _route = result.Route;
+                // todo: should we update, or should the form NOT remove the markers every time?
+                UpdateMarkerInView(_selectedTimeStamp);
                 _routeView.ShowRoute(result.Route);
             });
         }
@@ -121,8 +217,19 @@ namespace TcxEditor.UI
         {
             TryCatch(() =>
             {
-                var result = _opener.Execute(new OpenRouteInput { Name = e.Name });
+                var result = _commandRunner.Execute(new OpenRouteInput { Name = e.Name })
+                    as OpenRouteResponse;
+                _route = result.Route;
+
                 _routeView.ShowRoute(result.Route);
+
+                _guiControls.Apply(new GuiState
+                {
+                    SaveEnabled = true,
+                    AddCoursePoint = false,
+                    DeleteCoursePoint = false,
+                    ScrollRoute = false
+                });
             });
         }
 
@@ -136,6 +243,22 @@ namespace TcxEditor.UI
             {
                 _errorView.ShowErrorMessage(ex.Message);
             }
+        }
+
+        private void OnStepEvent(object sender, StepEventArgs e)
+        {
+            int step = e.Step;
+
+            int maxIndex = _route.TrackPoints.Count - 1;
+
+            int index = _route.TrackPoints.FindIndex(p => p.TimeStamp == _selectedTimeStamp);
+            int nextIndex = index + step;
+
+            if (nextIndex < 0 || nextIndex > maxIndex)
+                return;
+
+            _selectedTimeStamp = _route.TrackPoints[nextIndex].TimeStamp;
+            UpdateMarkerInView(_selectedTimeStamp);
         }
     }
 }
