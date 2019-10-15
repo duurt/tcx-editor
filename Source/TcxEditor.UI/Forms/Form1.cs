@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Configuration;
 using System.Data;
 using System.Drawing;
 using System.Linq;
@@ -34,6 +35,7 @@ namespace TcxEditor.UI
         {
             InitializeComponent();
             InitTypesComboBox();
+            mapControl1.SetPosition(ConfigurationManager.AppSettings["Location"]);
             mapControl1.MapClickEvent += MapControl1_MapClickEvent;
             mapControl1.CoursePointSelectEvent += OnCoursePointClick;
             KeyPreview = true;

@@ -21,9 +21,7 @@ namespace TcxEditor.UI
         public MapControl()
         {
             InitializeComponent();
-            gMapControl1.MapProvider = OpenCycleLandscapeMapProvider.Instance;
             GMaps.Instance.Mode = AccessMode.ServerOnly;
-            gMapControl1.SetPositionByKeywords(ConfigurationManager.AppSettings["Location"]);
             gMapControl1.MapProvider = GoogleMapProvider.Instance;
            
             gMapControl1.Overlays.Add(new GMapOverlay("route"));
@@ -36,6 +34,13 @@ namespace TcxEditor.UI
 
             gMapControl1.Click += OnMapClick;
             gMapControl1.OnMarkerClick += OnMarkerClick;
+        }
+
+        public void SetPosition(string location)
+        {
+            gMapControl1.MapProvider = OpenCycleLandscapeMapProvider.Instance;
+            gMapControl1.SetPositionByKeywords(location);
+            gMapControl1.MapProvider = GoogleMapProvider.Instance;
         }
 
         private void OnMarkerClick(GMapMarker item, MouseEventArgs e)
