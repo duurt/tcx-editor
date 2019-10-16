@@ -32,22 +32,22 @@ namespace TcxEditor.UI
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.mapControl1 = new TcxEditor.UI.MapControl();
             this.panel1 = new System.Windows.Forms.Panel();
-            this.routeDirectionsGroup = new System.Windows.Forms.GroupBox();
-            this.btnDelete = new System.Windows.Forms.Button();
+            this.grbRouteScrolling = new System.Windows.Forms.GroupBox();
             this.btnStepBck = new System.Windows.Forms.Button();
             this.btnStepFwd = new System.Windows.Forms.Button();
+            this.routeDirectionsGroup = new System.Windows.Forms.GroupBox();
+            this.btnDelete = new System.Windows.Forms.Button();
+            this.btnAddStartFinish = new System.Windows.Forms.Button();
             this.btnAddCoursePoint = new System.Windows.Forms.Button();
             this.tbPointNotes = new System.Windows.Forms.TextBox();
             this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.cbPointType = new System.Windows.Forms.ComboBox();
             this.btnSaveRoute = new System.Windows.Forms.Button();
-            this.btnAddStartFinish = new System.Windows.Forms.Button();
-            this.grbRouteScrolling = new System.Windows.Forms.GroupBox();
             this.tableLayoutPanel1.SuspendLayout();
             this.panel1.SuspendLayout();
-            this.routeDirectionsGroup.SuspendLayout();
             this.grbRouteScrolling.SuspendLayout();
+            this.routeDirectionsGroup.SuspendLayout();
             this.SuspendLayout();
             // 
             // btnOpenRoute
@@ -63,24 +63,24 @@ namespace TcxEditor.UI
             // tableLayoutPanel1
             // 
             this.tableLayoutPanel1.ColumnCount = 2;
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 18.87287F));
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 81.12713F));
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 145F));
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel1.Controls.Add(this.mapControl1, 1, 0);
             this.tableLayoutPanel1.Controls.Add(this.panel1, 0, 0);
             this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel1.Location = new System.Drawing.Point(0, 0);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
             this.tableLayoutPanel1.RowCount = 1;
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel1.Size = new System.Drawing.Size(763, 531);
             this.tableLayoutPanel1.TabIndex = 2;
             // 
             // mapControl1
             // 
             this.mapControl1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.mapControl1.Location = new System.Drawing.Point(146, 3);
+            this.mapControl1.Location = new System.Drawing.Point(148, 3);
             this.mapControl1.Name = "mapControl1";
-            this.mapControl1.Size = new System.Drawing.Size(614, 525);
+            this.mapControl1.Size = new System.Drawing.Size(612, 525);
             this.mapControl1.TabIndex = 0;
             // 
             // panel1
@@ -92,8 +92,39 @@ namespace TcxEditor.UI
             this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel1.Location = new System.Drawing.Point(3, 3);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(137, 525);
+            this.panel1.Size = new System.Drawing.Size(139, 525);
             this.panel1.TabIndex = 1;
+            // 
+            // grbRouteScrolling
+            // 
+            this.grbRouteScrolling.Controls.Add(this.btnStepBck);
+            this.grbRouteScrolling.Controls.Add(this.btnStepFwd);
+            this.grbRouteScrolling.Location = new System.Drawing.Point(9, 105);
+            this.grbRouteScrolling.Name = "grbRouteScrolling";
+            this.grbRouteScrolling.Size = new System.Drawing.Size(125, 63);
+            this.grbRouteScrolling.TabIndex = 5;
+            this.grbRouteScrolling.TabStop = false;
+            this.grbRouteScrolling.Text = "Route scrolling";
+            // 
+            // btnStepBck
+            // 
+            this.btnStepBck.Location = new System.Drawing.Point(6, 19);
+            this.btnStepBck.Name = "btnStepBck";
+            this.btnStepBck.Size = new System.Drawing.Size(56, 23);
+            this.btnStepBck.TabIndex = 6;
+            this.btnStepBck.Text = "<";
+            this.btnStepBck.UseVisualStyleBackColor = true;
+            this.btnStepBck.Click += new System.EventHandler(this.btnStepBck_Click);
+            // 
+            // btnStepFwd
+            // 
+            this.btnStepFwd.Location = new System.Drawing.Point(68, 19);
+            this.btnStepFwd.Name = "btnStepFwd";
+            this.btnStepFwd.Size = new System.Drawing.Size(56, 23);
+            this.btnStepFwd.TabIndex = 5;
+            this.btnStepFwd.Text = ">";
+            this.btnStepFwd.UseVisualStyleBackColor = true;
+            this.btnStepFwd.Click += new System.EventHandler(this.btnStepFwd_Click);
             // 
             // routeDirectionsGroup
             // 
@@ -121,25 +152,15 @@ namespace TcxEditor.UI
             this.btnDelete.UseVisualStyleBackColor = true;
             this.btnDelete.Click += new System.EventHandler(this.btnDelete_Click);
             // 
-            // btnStepBck
+            // btnAddStartFinish
             // 
-            this.btnStepBck.Location = new System.Drawing.Point(6, 19);
-            this.btnStepBck.Name = "btnStepBck";
-            this.btnStepBck.Size = new System.Drawing.Size(56, 23);
-            this.btnStepBck.TabIndex = 6;
-            this.btnStepBck.Text = "<";
-            this.btnStepBck.UseVisualStyleBackColor = true;
-            this.btnStepBck.Click += new System.EventHandler(this.btnStepBck_Click);
-            // 
-            // btnStepFwd
-            // 
-            this.btnStepFwd.Location = new System.Drawing.Point(68, 19);
-            this.btnStepFwd.Name = "btnStepFwd";
-            this.btnStepFwd.Size = new System.Drawing.Size(56, 23);
-            this.btnStepFwd.TabIndex = 5;
-            this.btnStepFwd.Text = ">";
-            this.btnStepFwd.UseVisualStyleBackColor = true;
-            this.btnStepFwd.Click += new System.EventHandler(this.btnStepFwd_Click);
+            this.btnAddStartFinish.Location = new System.Drawing.Point(15, 237);
+            this.btnAddStartFinish.Name = "btnAddStartFinish";
+            this.btnAddStartFinish.Size = new System.Drawing.Size(103, 23);
+            this.btnAddStartFinish.TabIndex = 2;
+            this.btnAddStartFinish.Text = "Add Start + Finish";
+            this.btnAddStartFinish.UseVisualStyleBackColor = true;
+            this.btnAddStartFinish.Click += new System.EventHandler(this.btnAddStartFinish_Click);
             // 
             // btnAddCoursePoint
             // 
@@ -194,27 +215,6 @@ namespace TcxEditor.UI
             this.btnSaveRoute.UseVisualStyleBackColor = true;
             this.btnSaveRoute.Click += new System.EventHandler(this.btnSaveRoute_Click);
             // 
-            // btnAddStartFinish
-            // 
-            this.btnAddStartFinish.Location = new System.Drawing.Point(15, 237);
-            this.btnAddStartFinish.Name = "btnAddStartFinish";
-            this.btnAddStartFinish.Size = new System.Drawing.Size(103, 23);
-            this.btnAddStartFinish.TabIndex = 2;
-            this.btnAddStartFinish.Text = "Add Start + Finish";
-            this.btnAddStartFinish.UseVisualStyleBackColor = true;
-            this.btnAddStartFinish.Click += new System.EventHandler(this.btnAddStartFinish_Click);
-            // 
-            // routeScrollingGroup
-            // 
-            this.grbRouteScrolling.Controls.Add(this.btnStepBck);
-            this.grbRouteScrolling.Controls.Add(this.btnStepFwd);
-            this.grbRouteScrolling.Location = new System.Drawing.Point(9, 105);
-            this.grbRouteScrolling.Name = "routeScrollingGroup";
-            this.grbRouteScrolling.Size = new System.Drawing.Size(125, 63);
-            this.grbRouteScrolling.TabIndex = 5;
-            this.grbRouteScrolling.TabStop = false;
-            this.grbRouteScrolling.Text = "Route scrolling";
-            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -226,9 +226,9 @@ namespace TcxEditor.UI
             this.Text = "Duurt\'s TCX editor";
             this.tableLayoutPanel1.ResumeLayout(false);
             this.panel1.ResumeLayout(false);
+            this.grbRouteScrolling.ResumeLayout(false);
             this.routeDirectionsGroup.ResumeLayout(false);
             this.routeDirectionsGroup.PerformLayout();
-            this.grbRouteScrolling.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
