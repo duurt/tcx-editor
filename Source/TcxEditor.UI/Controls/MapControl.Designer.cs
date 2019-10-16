@@ -30,10 +30,8 @@
         {
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
-            this.BtnMapType = new System.Windows.Forms.Button();
             this.gMapControl1 = new GMap.NET.WindowsForms.GMapControl();
             this.tableLayoutPanel1.SuspendLayout();
-            this.flowLayoutPanel1.SuspendLayout();
             this.SuspendLayout();
             // 
             // tableLayoutPanel1
@@ -53,21 +51,11 @@
             // 
             // flowLayoutPanel1
             // 
-            this.flowLayoutPanel1.Controls.Add(this.BtnMapType);
             this.flowLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.flowLayoutPanel1.Location = new System.Drawing.Point(3, 357);
             this.flowLayoutPanel1.Name = "flowLayoutPanel1";
             this.flowLayoutPanel1.Size = new System.Drawing.Size(598, 34);
             this.flowLayoutPanel1.TabIndex = 0;
-            // 
-            // BtnMapType
-            // 
-            this.BtnMapType.Location = new System.Drawing.Point(3, 3);
-            this.BtnMapType.Name = "BtnMapType";
-            this.BtnMapType.Size = new System.Drawing.Size(75, 23);
-            this.BtnMapType.TabIndex = 0;
-            this.BtnMapType.Text = "MapType";
-            this.BtnMapType.UseVisualStyleBackColor = true;
             // 
             // gMapControl1
             // 
@@ -104,7 +92,6 @@
             this.Name = "MapControl";
             this.Size = new System.Drawing.Size(604, 394);
             this.tableLayoutPanel1.ResumeLayout(false);
-            this.flowLayoutPanel1.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -113,7 +100,6 @@
 
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
         private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel1;
-        private System.Windows.Forms.Button BtnMapType;
         private GMap.NET.WindowsForms.GMapControl gMapControl1;
     }
 }
