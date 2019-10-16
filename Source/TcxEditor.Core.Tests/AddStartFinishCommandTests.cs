@@ -156,11 +156,11 @@ namespace TcxEditor.Core.Tests
 
             result.Route.CoursePoints.First().Name.ShouldBe("start");
             result.Route.CoursePoints.First().Type.ShouldBe(CoursePoint.PointType.Generic);
-            result.Route.CoursePoints.First().Notes.ShouldBe("Go! Veel plezier!");
+            result.Route.CoursePoints.First().Notes.ShouldBe("Go! Have fun :-)");
         
             result.Route.CoursePoints.Last().Name.ShouldBe("finish");
             result.Route.CoursePoints.Last().Type.ShouldBe(CoursePoint.PointType.Generic);
-            result.Route.CoursePoints.Last().Notes.ShouldBe("Klaar! Goed gedaan!");
+            result.Route.CoursePoints.Last().Notes.ShouldBe("Finished!");
         }
 
         private void StartMustMatch1stTrackpoint(AddStartFinishResponse result)

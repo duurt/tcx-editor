@@ -49,7 +49,7 @@ namespace TcxEditor.Core
                 input.TrackPoints[0].Longitude)
             {
                 Name = "start",
-                Notes = "Go! Veel plezier!",
+                Notes = "Go! Have fun :-)",
                 TimeStamp = input.TrackPoints[0].TimeStamp,
                 Type = CoursePoint.PointType.Generic
             });
@@ -62,7 +62,7 @@ namespace TcxEditor.Core
                 route.TrackPoints.Last().Longitude)
             {
                 Name = "finish",
-                Notes = "Klaar! Goed gedaan!",
+                Notes = "Finished!",
                 TimeStamp = route.TrackPoints.Last().TimeStamp,
                 Type = CoursePoint.PointType.Generic
             });
