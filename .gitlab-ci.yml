@@ -15,6 +15,7 @@ build_job:
     - '& "$env:NUGET" restore'
     - '& "$env:MSBUILD" /p:Configuration=Release /clp:WarningsOnly /m'
     - '& "$env:NUNIT" Source\TcxEditor.Core.Tests\bin\Release\TcxEditor.Core.Tests.dll Source\TcxEditor.Parser.Tests\bin\Release\TcxEditor.Parser.Tests.dll Source\TcxEditor.UI.Tests\bin\Release\TcxEditor.UI.Tests.dll'
+    - '& Copy-Item LICENSE.txt -Destination Source\TcxEditor.UI\bin\Release'
   artifacts:
     paths:
       - Source\TcxEditor.UI\bin\Release
@@ -27,5 +28,4 @@ deploy_job:
   stage: deploy
   script: 
     - '& Copy-Item -Path Source\TcxEditor.UI\bin\Release -Destination "C:\tmp\tcx" -Recurse'
-    - '& Copy-Item LICENSE.txt -Destination "C:\tmp\tcx"'
     - '& echo "$env:CI_COMMIT_SHORT_SHA" > C:\tmp\tcx\githash.txt'
