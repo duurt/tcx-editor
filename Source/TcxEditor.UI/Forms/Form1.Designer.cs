@@ -223,7 +223,7 @@ namespace TcxEditor.UI
             this.Controls.Add(this.tableLayoutPanel1);
             this.Margin = new System.Windows.Forms.Padding(2);
             this.Name = "MainForm";
-            this.Text = "Duurt\'s TCX editor";
+            this.Text = "TCX editor";
             this.tableLayoutPanel1.ResumeLayout(false);
             this.panel1.ResumeLayout(false);
             this.grbRouteScrolling.ResumeLayout(false);
