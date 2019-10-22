@@ -9,7 +9,7 @@ using System.Xml.Serialization;
 using TcxEditor.Core.Entities;
 using TcxEditor.Core.Interfaces;
 
-namespace TcxParser.Infrastructure
+namespace TcxEditor.Parser.Infrastructure
 {
     public class RouteSaver : IRouteSaver
     {

@@ -5,6 +5,7 @@ using System.Configuration;
 using System.Data;
 using System.Drawing;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -12,9 +13,6 @@ using TcxEditor.Core;
 using TcxEditor.Core.Entities;
 using TcxEditor.Core.Interfaces;
 using TcxEditor.UI.Interfaces;
-
-// This is the code for your desktop app.
-// Press Ctrl+F5 (or go to Debug > Start Without Debugging) to run your app.
 
 namespace TcxEditor.UI
 {
@@ -35,10 +33,18 @@ namespace TcxEditor.UI
         {
             InitializeComponent();
             InitTypesComboBox();
+            AddVersionToWindowTitle();
+
             mapControl1.SetPosition(ConfigurationManager.AppSettings["Location"]);
             mapControl1.MapClickEvent += MapControl1_MapClickEvent;
             mapControl1.CoursePointSelectEvent += OnCoursePointClick;
             KeyPreview = true;
+        }
+
+        private void AddVersionToWindowTitle()
+        {
+            Version v = Assembly.GetEntryAssembly().GetName().Version;
+            base.Text += $" - version {v.Major}.{v.Minor}.{v.Build}";
         }
 
         private void OnCoursePointClick(object sender, PointSelectEventArgs e)

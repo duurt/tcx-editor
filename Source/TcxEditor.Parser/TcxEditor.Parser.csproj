@@ -7,8 +7,8 @@
     <ProjectGuid>{924D77B0-0FE2-4FEC-9C2F-8FE92AB743C8}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>TcxParser</RootNamespace>
-    <AssemblyName>TcxParser</AssemblyName>
+    <RootNamespace>TcxEditor.Parser</RootNamespace>
+    <AssemblyName>TcxEditor.Parser</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>

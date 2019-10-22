@@ -1,11 +1,11 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.28307.421
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29324.140
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TcxParser", "Source\TcxParser\TcxParser.csproj", "{924D77B0-0FE2-4FEC-9C2F-8FE92AB743C8}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TcxEditor.Parser", "Source\TcxEditor.Parser\TcxEditor.Parser.csproj", "{924D77B0-0FE2-4FEC-9C2F-8FE92AB743C8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TcxParser.Tests", "Source\TcxParser.Tests\TcxParser.Tests.csproj", "{223A3C60-F5EE-45DD-81E6-4335C0DD3AD7}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TcxEditor.Parser.Tests", "Source\TcxEditor.Parser.Tests\TcxEditor.Parser.Tests.csproj", "{223A3C60-F5EE-45DD-81E6-4335C0DD3AD7}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TcxEditor.UI", "Source\TcxEditor.UI\TcxEditor.UI.csproj", "{D50B84F2-A733-414D-BBF7-C6EC9852ABDF}"
 EndProject
@@ -18,7 +18,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "CICD", "CICD", "{9FB0CD3E-9
 		.gitlab-ci.yml = .gitlab-ci.yml
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TcxParser.Infrastructure", "Source\TcxParser.Infrastructure\TcxParser.Infrastructure.csproj", "{A0BA74D7-0422-4F04-82A2-299227A0EB6D}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TcxEditor.Parser.Infrastructure", "Source\TcxEditor.Parser.Infrastructure\TcxEditor.Parser.Infrastructure.csproj", "{A0BA74D7-0422-4F04-82A2-299227A0EB6D}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TcxEditor.UI.Tests", "Source\TcxEditor.UI.Tests\TcxEditor.UI.Tests.csproj", "{03B175BF-7B12-46DA-B622-A038778EA322}"
 EndProject
