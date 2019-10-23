@@ -19,7 +19,7 @@ namespace TcxEditor.Core
                     throw new ArgumentNullException(nameof(input));
 
             if(!input.Route.TrackPoints.Any())
-                throw new TcxCoreException("Fout!!");
+                throw new TcxCoreException("The route contains no track points");
 
             TrackPoint nearestPoint = GetNearest(input.Route.TrackPoints, input.ReferencePoint);
 
