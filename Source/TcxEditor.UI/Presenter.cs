@@ -11,8 +11,7 @@ using TcxEditor.UI.Interfaces;
 
 
 // todo: unit tests..? Eventually the presenter will hold the state, and the actual GUI is 
-// just showing stuff. I think a selfshunt test class implementing the view interface(s) 
-// will be a nice way.
+// just showing stuff
 namespace TcxEditor.UI
 {
     public class Presenter
@@ -23,7 +22,7 @@ namespace TcxEditor.UI
         private readonly ICommandRunner _commandRunner;
         private string _openedRoutePath;
 
-        private Route _route = null;
+        private Route _route = new Route();
         private DateTime _selectedTimeStamp;
 
         public Presenter(
@@ -145,6 +144,9 @@ namespace TcxEditor.UI
 
         private void OnGetNearestEvent(object sender, GetNearestEventArgs e)
         {
+            if (_route == null)
+                return;
+
             TryCatch(() =>
             {
                 var result = _commandRunner.Execute(
