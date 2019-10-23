@@ -1,4 +1,5 @@
 # Hello, and Welcome to the TCX Editor project!
+(Scroll down for user manual...)
 ## Why this TCX Editor?
 I wanted to be able to have turn-by-turn navigation instructions on my Wahoo Elemnt Bolt (a bike computer) for routes that are created with the Strava route builder. This is not supported by default, but this app allows you to add the navigation cues, or any other points of interest on the route yourself.
 
