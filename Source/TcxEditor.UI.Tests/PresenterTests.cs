@@ -104,6 +104,20 @@ namespace TcxEditor.UI.Tests
             _gui.GuiState.DeleteCoursePoint.ShouldBe(false);
         }
 
+        [Test]
+        public void AddCoursePointEvent_show_error_message_when_no_point_selected()
+        {
+            OpenRoute();
+            _gui.ClickAddPoint(
+                new AddPointEventArgs { 
+                    Name ="name", Notes = "notes", PointType = CoursePoint.PointType.Food 
+                });
+
+            _gui.ErrorMessage.ShouldNotBeNullOrEmpty();
+        }
+
+
+
         private void OpenRoute()
         {
             _commandSpy.SetResponse(

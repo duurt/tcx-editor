@@ -9,6 +9,7 @@ namespace TcxEditor.UI.Tests
         public Route Route { get; set; }
         public GuiState GuiState { get; private set; }
         public TrackPoint EditPoint { get; private set; }
+        public string ErrorMessage { get; private set; }
 
         public event EventHandler<OpenRouteEventArgs> OpenFileEvent;
         public event EventHandler AddStartFinishEvent;
@@ -43,7 +44,7 @@ namespace TcxEditor.UI.Tests
 
         public void ShowErrorMessage(string msg)
         {
-            throw new NotImplementedException();
+            ErrorMessage = msg;
         }
 
         public void ShowPointToEdit(TrackPoint point)

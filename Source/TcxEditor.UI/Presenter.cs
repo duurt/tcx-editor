@@ -110,6 +110,13 @@ namespace TcxEditor.UI
 
         private void OnAddPointEvent(object sender, AddPointEventArgs e)
         {
+            var trackPoint = GetTrackPoint(_selectedTimeStamp);
+            if (trackPoint == null)
+            {
+                _errorView.ShowErrorMessage("Please select a point first");
+                return;
+            }
+
             TryCatch(() =>
             {
                 var result = _commandRunner.Execute(
@@ -117,7 +124,7 @@ namespace TcxEditor.UI
                     {
                         Route = _route,
                         NewCoursePoint = new CoursePoint(
-                            GetTrackPoint(_selectedTimeStamp).Lattitude, GetTrackPoint(_selectedTimeStamp).Longitude)
+                            trackPoint.Lattitude, trackPoint.Longitude)
                         {
                             Name = e.Name,
                             Notes = e.Notes,
@@ -183,7 +190,7 @@ namespace TcxEditor.UI
 
         private TrackPoint GetTrackPoint(DateTime timeStamp)
         {
-            return _route.TrackPoints.First(p => p.TimeStamp == timeStamp);
+            return _route.TrackPoints.FirstOrDefault(p => p.TimeStamp == timeStamp);
         }
 
         private bool CoursePointExists(DateTime t)
