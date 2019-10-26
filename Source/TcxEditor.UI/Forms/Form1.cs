@@ -35,7 +35,7 @@ namespace TcxEditor.UI
             InitTypesComboBox();
             AddVersionToWindowTitle();
 
-            mapControl1.SetPosition(ConfigurationManager.AppSettings["Location"]);
+            mapControl1.SetLocation(ConfigurationManager.AppSettings["Location"]);
             mapControl1.MapClickEvent += MapControl1_MapClickEvent;
             mapControl1.CoursePointSelectEvent += OnCoursePointClick;
             KeyPreview = true;
