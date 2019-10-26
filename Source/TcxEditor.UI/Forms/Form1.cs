@@ -61,6 +61,12 @@ namespace TcxEditor.UI
                 RaiseAddPointEvent("Right", CoursePoint.PointType.Right);
             else if (e.KeyCode == Keys.Up)
                 RaiseAddPointEvent("Straight", CoursePoint.PointType.Straight);
+            else if (e.KeyCode == Keys.M)
+                RaiseAddPointEvent("MAP", CoursePoint.PointType.Generic);
+            else if (e.KeyCode == Keys.A)
+                RaiseStepEvent(1);
+            else if (e.KeyCode == Keys.Z)
+                RaiseStepEvent(-1);
         }
 
         private void InitTypesComboBox()
@@ -107,7 +113,7 @@ namespace TcxEditor.UI
 
                 if (saveFileDialog.FileName != "")
                     SaveRouteEvent?.Invoke(
-                        this, 
+                        this,
                         new SaveRouteEventargs(saveFileDialog.FileName));
             }
         }
@@ -149,12 +155,17 @@ namespace TcxEditor.UI
 
         private void btnStepFwd_Click(object sender, EventArgs e)
         {
-            StepEvent?.Invoke(this, new StepEventArgs(1));
+            RaiseStepEvent(1);
         }
 
         private void btnStepBck_Click(object sender, EventArgs e)
         {
-            StepEvent?.Invoke(this, new StepEventArgs(-1));
+            RaiseStepEvent(-1);
+        }
+
+        private void RaiseStepEvent(int step)
+        {
+            StepEvent?.Invoke(this, new StepEventArgs(step));
         }
 
         private void btnDelete_Click(object sender, EventArgs e)
