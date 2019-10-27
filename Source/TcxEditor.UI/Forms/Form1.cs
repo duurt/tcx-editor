@@ -22,7 +22,7 @@ namespace TcxEditor.UI
 
         public event EventHandler<OpenRouteEventArgs> OpenFileEvent;
         public event EventHandler AddStartFinishEvent;
-        public event EventHandler<SaveRouteEventargs> SaveRouteEvent;
+        public event EventHandler<SaveRouteEventArgs> SaveRouteEvent;
         public event EventHandler<GetNearestEventArgs> GetNearestEvent;
         public event EventHandler<AddPointEventArgs> AddPointEvent;
         public event EventHandler DeletePointEvent;
@@ -114,7 +114,7 @@ namespace TcxEditor.UI
                 if (saveFileDialog.FileName != "")
                     SaveRouteEvent?.Invoke(
                         this,
-                        new SaveRouteEventargs(saveFileDialog.FileName));
+                        new SaveRouteEventArgs(saveFileDialog.FileName));
             }
         }
 

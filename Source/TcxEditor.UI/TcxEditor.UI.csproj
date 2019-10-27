@@ -69,7 +69,7 @@
     </Compile>
     <Compile Include="Forms\IErrorView.cs" />
     <Compile Include="Forms\IGuiControls.cs" />
-    <Compile Include="Forms\SaveRouteEventargs.cs" />
+    <Compile Include="Forms\SaveRouteEventArgs.cs" />
     <Compile Include="Interfaces\AddPointEventArgs.cs" />
     <Compile Include="Interfaces\AddStartFinishEventArgs.cs" />
     <Compile Include="Interfaces\GetNearestEventArgs.cs" />

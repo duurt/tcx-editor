@@ -28,7 +28,7 @@ namespace TcxEditor.UI.Tests
             // is enough. 
             new Presenter(_gui, _gui, _gui, _commandSpy);
         }
-        
+
         [Test]
         public void Ctor_sets_initial_GUI_state()
         {
@@ -65,12 +65,12 @@ namespace TcxEditor.UI.Tests
             _commandSpy.SetResponse(
                 new OpenRouteResponse { Route = testRoute });
 
-            _gui.ClickOpenFile(
+            _gui.RaiseOpenFileEvent(
                 new OpenRouteEventArgs("some file name"));
 
             _gui.Route.ShouldBeSameAs(testRoute);
         }
-        
+
         [Test]
         public void AddStartFinishEvent_calls_CommandRunner()
         {
@@ -80,8 +80,8 @@ namespace TcxEditor.UI.Tests
             int routeId = _gui.Route.GetHashCode();
             _commandSpy.SetResponse(
                 new AddStartFinishResponse(GetDefaultRoute()));
-            
-            _gui.ClickAddStartFinish();
+
+            _gui.RaiseAddStartFinishEvent();
 
             AddStartFinishInput commandInput = (_commandSpy.LastCall as AddStartFinishInput);
             commandInput.Route.GetHashCode().ShouldBe(routeId);
@@ -96,7 +96,7 @@ namespace TcxEditor.UI.Tests
             _commandSpy.SetResponse(
                 new AddStartFinishResponse(GetDefaultRoute()));
 
-            _gui.ClickAddStartFinish();
+            _gui.RaiseAddStartFinishEvent();
 
             _gui.GuiState.AddCoursePoint.ShouldBe(true);
             _gui.GuiState.SaveEnabled.ShouldBe(true);
@@ -105,25 +105,55 @@ namespace TcxEditor.UI.Tests
         }
 
         [Test]
-        public void AddCoursePointEvent_show_error_message_when_no_point_selected()
+        public void These_events_show_error_message_when_no_route_loaded()
+        {
+            TestErrorMessageAndNoCommand(() =>
+                _gui.RaiseClickSaveRouteEvent(new SaveRouteEventArgs("filename...")));
+            TestErrorMessageAndNoCommand(() =>
+                _gui.RaiseAddPointEvent(GetDefaultAddPointEventArgs()));
+            TestErrorMessageAndNoCommand(() =>
+                _gui.RaiseGetNearestEvent(GetDefaultGetNearestEventArgs()));
+            TestErrorMessageAndNoCommand(() =>
+                _gui.RaiseAddStartFinishEvent());
+            TestErrorMessageAndNoCommand(() =>
+                _gui.RaiseDeletePointEvent());
+            //TODO: add test for step event.
+        }
+
+        [Test]
+        public void These_events_show_error_message_when_no_point_selected()
         {
             OpenRoute();
-            _gui.ClickAddPoint(
-                new AddPointEventArgs { 
-                    Name ="name", Notes = "notes", PointType = CoursePoint.PointType.Food 
+            _commandSpy.LastCall = null;
+
+            TestErrorMessageAndNoCommand(() =>
+                _gui.RaiseAddPointEvent(GetDefaultAddPointEventArgs()));
+            TestErrorMessageAndNoCommand(() =>
+                _gui.RaiseDeletePointEvent());
+        }
+
+        [Test]
+        public void AddCoursePointEvent_shows_error_message_when_no_point_selected()
+        {
+            OpenRoute();
+            _gui.RaiseAddPointEvent(
+                new AddPointEventArgs
+                {
+                    Name = "name",
+                    Notes = "notes",
+                    PointType = CoursePoint.PointType.Food
                 });
 
             _gui.ErrorMessage.ShouldNotBeNullOrEmpty();
+            _commandSpy.LastCall.ShouldBeOfType(typeof(OpenRouteInput));
         }
-
-
 
         private void OpenRoute()
         {
             _commandSpy.SetResponse(
                 new OpenRouteResponse { Route = GetDefaultRoute() });
 
-            _gui.ClickOpenFile(
+            _gui.RaiseOpenFileEvent(
                 new OpenRouteEventArgs("some file name"));
         }
 
@@ -135,7 +165,7 @@ namespace TcxEditor.UI.Tests
                     Route = GetDefaultRoute(),
                     Nearest = GetDefaultRoute().TrackPoints[1]
                 });
-            _gui.ClickGetNearest(
+            _gui.RaiseGetNearestEvent(
                 new GetNearestEventArgs { ReferencePoint = new Position(1, 1) });
         }
 
@@ -148,9 +178,31 @@ namespace TcxEditor.UI.Tests
                 {
                     TimeStamp = new DateTime(2019, 1, 1, 12, 0, i)
                 }).ToList());
-            
+
             return result;
         }
 
+        private static GetNearestEventArgs GetDefaultGetNearestEventArgs()
+        {
+            return new GetNearestEventArgs { ReferencePoint = new Position(1, 1) };
+        }
+
+        private static AddPointEventArgs GetDefaultAddPointEventArgs()
+        {
+            return new AddPointEventArgs
+            {
+                Name = "name",
+                Notes = "notes",
+                PointType = CoursePoint.PointType.Food
+            };
+        }
+
+        private void TestErrorMessageAndNoCommand(Action action)
+        {
+            action.Invoke();
+
+            _gui.ErrorMessage.ShouldNotBeNullOrEmpty();
+            _commandSpy.LastCall.ShouldBeNull();
+        }
     }
 }

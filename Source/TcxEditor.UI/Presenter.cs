@@ -22,7 +22,7 @@ namespace TcxEditor.UI
         private readonly ICommandRunner _commandRunner;
         private string _openedRoutePath;
 
-        private Route _route = new Route();
+        private Route _route = null;
         private DateTime _selectedTimeStamp;
 
         public Presenter(
@@ -82,6 +82,19 @@ namespace TcxEditor.UI
 
         private void OnDeletePointEvent(object sender, EventArgs e)
         {
+            if (_route == null)
+            {
+                _errorView.ShowErrorMessage("Please load route first.");
+                return;
+            }
+
+            var trackPoint = GetTrackPoint(_selectedTimeStamp);
+            if (trackPoint == null)
+            {
+                _errorView.ShowErrorMessage("Please select a point first");
+                return;
+            }
+
             TryCatch(() =>
             {
                 var result = _commandRunner.Execute(
@@ -110,6 +123,12 @@ namespace TcxEditor.UI
 
         private void OnAddPointEvent(object sender, AddPointEventArgs e)
         {
+            if (_route ==null)
+            {
+                _errorView.ShowErrorMessage("Please load route first.");
+                return;
+            }
+
             var trackPoint = GetTrackPoint(_selectedTimeStamp);
             if (trackPoint == null)
             {
@@ -152,7 +171,10 @@ namespace TcxEditor.UI
         private void OnGetNearestEvent(object sender, GetNearestEventArgs e)
         {
             if (_route == null)
+            {
+                _errorView.ShowErrorMessage("Please load a route first");
                 return;
+            }
 
             TryCatch(() =>
             {
@@ -198,10 +220,14 @@ namespace TcxEditor.UI
             return _route.CoursePoints.Any(p => p.TimeStamp == t);
         }
 
-        private void OnSaveRouteEvent(object sender, SaveRouteEventargs e)
+        private void OnSaveRouteEvent(object sender, SaveRouteEventArgs e)
         {
-            // todo: check that route is not null? 
-            // How about explcitily working with states..?
+            if (_route == null)
+            {
+                _errorView.ShowErrorMessage("Please load a route first.");
+                return;
+            }
+
             TryCatch(() =>
             {
                 var result = _commandRunner.Execute(
@@ -215,6 +241,12 @@ namespace TcxEditor.UI
 
         private void OnAddStartFinishEvent(object sender, EventArgs e)
         {
+            if (_route == null)
+            {
+                _errorView.ShowErrorMessage("Please load a route first");
+                return;
+            }
+
             TryCatch(() =>
             {
                 var result = _commandRunner.Execute(new AddStartFinishInput(_route))
