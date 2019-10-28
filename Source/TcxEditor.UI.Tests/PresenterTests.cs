@@ -117,7 +117,10 @@ namespace TcxEditor.UI.Tests
                 _gui.RaiseAddStartFinishEvent());
             TestErrorMessageAndNoCommand(() =>
                 _gui.RaiseDeletePointEvent());
-            //TODO: add test for step event.
+            TestErrorMessageAndNoCommand(() =>
+                _gui.RaiseStepEvent(-1));
+            TestErrorMessageAndNoCommand(() =>
+                _gui.RaiseStepEvent(1));
         }
 
         [Test]

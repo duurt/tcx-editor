@@ -26,6 +26,7 @@ namespace TcxEditor.UI.Tests
         public void RaiseGetNearestEvent(GetNearestEventArgs args) => GetNearestEvent.Invoke(this, args);
         public void RaiseAddPointEvent(AddPointEventArgs args) => AddPointEvent.Invoke(this, args);
         public void RaiseDeletePointEvent() => DeletePointEvent.Invoke(this, EventArgs.Empty);
+        public void RaiseStepEvent(int step) => StepEvent.Invoke(this, new StepEventArgs(step));
 
         public void Apply(GuiState state)
         {
@@ -56,5 +57,6 @@ namespace TcxEditor.UI.Tests
         {
             Route = route;
         }
+
     }
 }

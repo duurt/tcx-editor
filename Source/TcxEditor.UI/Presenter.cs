@@ -293,6 +293,13 @@ namespace TcxEditor.UI
 
         private void OnStepEvent(object sender, StepEventArgs e)
         {
+            // todo: this block is repeated everywhere.
+            if (_route == null)
+            {
+                _errorView.ShowErrorMessage("Please load a route first");
+                return;
+            }
+
             int step = e.Step;
 
             int maxIndex = _route.TrackPoints.Count - 1;
