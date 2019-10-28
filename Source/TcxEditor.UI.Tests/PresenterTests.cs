@@ -13,6 +13,7 @@ namespace TcxEditor.UI.Tests
 {
 
     // Todo: these tests were created after Presenter was written; not yet complete
+    // todo: add tests to check that state is kept correctly by presenter (route and selected points)
     public partial class PresenterTests
     {
         private GuiStub _gui;
@@ -102,6 +103,22 @@ namespace TcxEditor.UI.Tests
             _gui.GuiState.SaveEnabled.ShouldBe(true);
             _gui.GuiState.ScrollRoute.ShouldBe(true);
             _gui.GuiState.DeleteCoursePoint.ShouldBe(false);
+        }
+
+        [Test]
+        public void AddStartFinishEvent_show_route_in_gui()
+        {
+            OpenRoute();
+            SelectATrackPoint();
+
+            Route route = GetDefaultRoute();
+            _commandSpy.SetResponse(
+                new AddStartFinishResponse(route));
+            _gui.Route = null;
+
+            _gui.RaiseAddStartFinishEvent();
+
+            _gui.Route.ShouldBeSameAs(route);
         }
 
         [Test]
