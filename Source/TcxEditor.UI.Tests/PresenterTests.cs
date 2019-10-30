@@ -153,40 +153,69 @@ namespace TcxEditor.UI.Tests
         }
 
         [Test]
-        public void AddCoursePointEvent_shows_error_message_when_no_point_selected()
+        public void SaveRouteEvent_calls_commandRunner()
         {
-            OpenRoute();
-            _gui.RaiseAddPointEvent(
-                new AddPointEventArgs
-                {
-                    Name = "name",
-                    Notes = "notes",
-                    PointType = CoursePoint.PointType.Food
-                });
+            var route = OpenRoute();
 
-            _gui.ErrorMessage.ShouldNotBeNullOrEmpty();
-            _commandSpy.LastCall.ShouldBeOfType(typeof(OpenRouteInput));
+            _commandSpy.SetResponse(new SaveRouteResponse { Route = GetDefaultRoute() });
+            _gui.RaiseClickSaveRouteEvent(new SaveRouteEventArgs("some name"));
+
+            SaveRouteInput commandInput = (_commandSpy.LastCall as SaveRouteInput);
+            commandInput.DestinationPath.ShouldBe("some name");
+            commandInput.Route.ShouldBeSameAs(route);
         }
 
-        private void OpenRoute()
+        [Test]
+        public void SaveRouteEvent_shows_route_in_gui()
         {
+            OpenRoute();
+            Route routeAfterSave = GetDefaultRoute();
+            _commandSpy.SetResponse(new SaveRouteResponse { Route = routeAfterSave });
+            
+            _gui.RaiseClickSaveRouteEvent(new SaveRouteEventArgs("some name"));
+
+            _gui.Route.ShouldBeSameAs(routeAfterSave);
+        }
+
+        [Test]
+        public void SaveRouteEvent_does_NOT_update_gui_state()
+        {
+            OpenRoute();
+
+            var guiStateBefore = _gui.GuiState.GetHashCode();
+            _commandSpy.SetResponse(new SaveRouteResponse { Route = GetDefaultRoute() });
+
+            _gui.RaiseClickSaveRouteEvent(new SaveRouteEventArgs("some name"));
+
+            var guiStateAfter =_gui.GuiState.GetHashCode();
+            guiStateAfter.ShouldBe(guiStateBefore);
+        }
+
+        private Route OpenRoute()
+        {
+            Route route = GetDefaultRoute();
             _commandSpy.SetResponse(
-                new OpenRouteResponse { Route = GetDefaultRoute() });
+                new OpenRouteResponse { Route = route });
 
             _gui.RaiseOpenFileEvent(
                 new OpenRouteEventArgs("some file name"));
+
+            return route;
         }
 
-        private void SelectATrackPoint()
+        private TrackPoint SelectATrackPoint()
         {
+            TrackPoint nearestPoint = GetDefaultRoute().TrackPoints[1];
             _commandSpy.SetResponse(
                 new GetNearestTrackPointResponse
                 {
                     Route = GetDefaultRoute(),
-                    Nearest = GetDefaultRoute().TrackPoints[1]
+                    Nearest = nearestPoint
                 });
             _gui.RaiseGetNearestEvent(
                 new GetNearestEventArgs { ReferencePoint = new Position(1, 1) });
+
+            return nearestPoint;
         }
 
         private static Route GetDefaultRoute()
