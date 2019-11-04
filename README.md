@@ -36,16 +36,18 @@ At every point of the route where you need directions, for instance "turn left",
 
 ## Shortcuts
 **Default navigation cues**
-* LEFT / RIGHT: Left or** right
+* LEFT / RIGHT: Left or right
 * UP: straight
-* M: For "MAP" (I use this for tricky situations where I need to look at the map)
+* M: For "MAP" (I use this as a reminder to look on the map; useful for confusing situations)
   
-**Other**
+**Stepping through the route**
 * A: Step forward through the route
 * Z: Step backward through the route
+* S: Step forward through the route, fast
+* X: Step backward through the route, fast
 
 ## Update a navigation cue
-This is not yet supported. However, you can simply remove a point and add it again.
+This is not (yet) supported. However, you can simply remove a point and add it again.
 
 ## Remove a navigation cue
 Click on a point you want to remove, and click the `Remove point`.
