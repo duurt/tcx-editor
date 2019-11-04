@@ -67,6 +67,10 @@ namespace TcxEditor.UI
                 RaiseStepEvent(1);
             else if (e.KeyCode == Keys.Z)
                 RaiseStepEvent(-1);
+            else if (e.KeyCode == Keys.S)
+                RaiseStepEvent(10);
+            else if (e.KeyCode == Keys.X)
+                RaiseStepEvent(-10);
         }
 
         private void InitTypesComboBox()

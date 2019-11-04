@@ -57,6 +57,5 @@ namespace TcxEditor.UI.Tests
         {
             Route = route;
         }
-
     }
 }

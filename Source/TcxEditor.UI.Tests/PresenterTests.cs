@@ -191,6 +191,74 @@ namespace TcxEditor.UI.Tests
             guiStateAfter.ShouldBe(guiStateBefore);
         }
 
+        [Test]
+        public void GetNearestEvent_calls_commandRunner()
+        {
+            var openedRoute = OpenRoute();
+            
+            _commandSpy.SetResponse(new GetNearestTrackPointResponse { 
+                Route = GetDefaultRoute(), 
+                Nearest =  new TrackPoint(2,2) });
+
+            TrackPoint refPoint = new TrackPoint(3, 3);
+            _gui.RaiseGetNearestEvent(new GetNearestEventArgs { ReferencePoint = refPoint });
+
+            var commandInput = _commandSpy.LastCall as GetNearestTrackPointInput;
+            commandInput.ReferencePoint.ShouldBeSameAs(refPoint);
+            commandInput.Route.ShouldBeSameAs(openedRoute);
+        }
+
+        [Test]
+        public void GetNearestEvent_shows_route_in_gui()
+        {
+            OpenRoute();
+            Route returnedRoute = GetDefaultRoute();
+            _commandSpy.SetResponse(new GetNearestTrackPointResponse
+            {
+                Route = returnedRoute,
+                Nearest = new TrackPoint(2, 2)
+            });
+            
+            _gui.RaiseGetNearestEvent(new GetNearestEventArgs { ReferencePoint = new TrackPoint(3, 3) });
+
+            _gui.Route.ShouldBeSameAs(returnedRoute);
+        }
+
+        [Test]
+        public void GetNearestEvent_sets_edit_marker_in_view()
+        {
+            OpenRoute();
+            Route returnedRoute = GetDefaultRoute();
+            TrackPoint returnedPoint = returnedRoute.TrackPoints[1];
+            _commandSpy.SetResponse(new GetNearestTrackPointResponse
+            {
+                Route = returnedRoute,
+                Nearest = returnedPoint
+            });
+
+            _gui.RaiseGetNearestEvent(new GetNearestEventArgs { ReferencePoint = new TrackPoint(1,2) });
+
+            _gui.EditPoint.ShouldBeSameAs(returnedPoint);
+        }
+
+        [Test]
+        public void GetNearestEvent_sets_gui_state()
+        {
+            OpenRoute();
+            _commandSpy.SetResponse(new GetNearestTrackPointResponse
+            {
+                Route = GetDefaultRoute(),
+                Nearest = GetDefaultRoute().TrackPoints[1]
+            });
+
+            _gui.RaiseGetNearestEvent(new GetNearestEventArgs { ReferencePoint = new TrackPoint(1, 2) });
+
+            _gui.GuiState.AddCoursePoint.ShouldBe(true);
+            _gui.GuiState.SaveEnabled.ShouldBe(true);
+            _gui.GuiState.ScrollRoute.ShouldBe(true);
+            _gui.GuiState.DeleteCoursePoint.ShouldBe(false);
+        }
+
         private Route OpenRoute()
         {
             Route route = GetDefaultRoute();
