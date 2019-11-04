@@ -1,13 +1,13 @@
-﻿using TcxEditor.Core.Entities;
+﻿using System;
+using TcxEditor.Core.Entities;
 
 namespace TcxEditor.UI
 {
-    public class SaveRouteEventargs
+    public class SaveRouteEventArgs : EventArgs
     {
-       // public Route Route { get; }
         public string DestinationPath { get; set; }
 
-        public SaveRouteEventargs(string name)
+        public SaveRouteEventArgs(string name)
         {
             DestinationPath = name;
         }

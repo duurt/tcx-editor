@@ -72,7 +72,7 @@ namespace TcxEditor.Core.Tests
         }
 
         [Test]
-        public void Execute_Should_throw_error_if_cp_already_exists_at_same_t_and_xy()
+        public void Execute_Should_throw_error_if_cp_already_exists_at_same_t()
         {
             double lat1 = 1;
             double lon1 = 2;
@@ -152,6 +152,30 @@ namespace TcxEditor.Core.Tests
             result.Route.CoursePoints[2].TimeStamp.ShouldBe(TestRouteBuilder.GetTimeStamp(2));
         }
 
+        [Test]
+        public void Execute_Can_deal_with_space_overlapping_points()
+        {
+            var inputRoute = new TestRouteBuilder()
+                .WithTrackPointCount(3)
+                .WithCoursePointsAt(0)
+                .Build();
+            var tLast = TestRouteBuilder.GetTimeStamp(3);
+            inputRoute.TrackPoints.Add(TestRouteBuilder.GetTrackPoint(0));
+            inputRoute.TrackPoints.Last().TimeStamp = tLast;
+
+            var newPoint = TestRouteBuilder.GetCoursePoint(0);
+            newPoint.TimeStamp = tLast;
+            var result = _sut.Execute(
+                new AddCoursePointInput
+                {
+                    Route = inputRoute,
+                    NewCoursePoint = newPoint
+                });
+
+            result.Route.CoursePoints.Count.ShouldBe(2);
+            result.Route.CoursePoints[0].TimeStamp.ShouldBe(TestRouteBuilder.GetTimeStamp(0));
+            result.Route.CoursePoints[1].TimeStamp.ShouldBe(tLast);
+        }
 
         private static void VerifyCoursePoint(CoursePoint coursePoint, double lat1, double lon1, DateTime t1)
         {

@@ -5,7 +5,7 @@ namespace TcxEditor.UI.Tests
     internal class CommandRunnerSpy : ICommandRunner
     {
         private IOutput _response;
-        public IInput LastCall { get; private set; }
+        public IInput LastCall { get; set; }
 
         public IOutput Execute(IInput input)
         {

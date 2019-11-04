@@ -135,7 +135,7 @@ namespace TcxEditor.UI
         }
     }
 
-    public class PointSelectEventArgs
+    public class PointSelectEventArgs : EventArgs
     {
         public DateTime _timeStamp { get; }
 

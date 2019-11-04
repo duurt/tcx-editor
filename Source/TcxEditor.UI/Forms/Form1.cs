@@ -22,7 +22,7 @@ namespace TcxEditor.UI
 
         public event EventHandler<OpenRouteEventArgs> OpenFileEvent;
         public event EventHandler AddStartFinishEvent;
-        public event EventHandler<SaveRouteEventargs> SaveRouteEvent;
+        public event EventHandler<SaveRouteEventArgs> SaveRouteEvent;
         public event EventHandler<GetNearestEventArgs> GetNearestEvent;
         public event EventHandler<AddPointEventArgs> AddPointEvent;
         public event EventHandler DeletePointEvent;
@@ -61,6 +61,16 @@ namespace TcxEditor.UI
                 RaiseAddPointEvent("Right", CoursePoint.PointType.Right);
             else if (e.KeyCode == Keys.Up)
                 RaiseAddPointEvent("Straight", CoursePoint.PointType.Straight);
+            else if (e.KeyCode == Keys.M)
+                RaiseAddPointEvent("MAP", CoursePoint.PointType.Generic);
+            else if (e.KeyCode == Keys.A)
+                RaiseStepEvent(1);
+            else if (e.KeyCode == Keys.Z)
+                RaiseStepEvent(-1);
+            else if (e.KeyCode == Keys.S)
+                RaiseStepEvent(10);
+            else if (e.KeyCode == Keys.X)
+                RaiseStepEvent(-10);
         }
 
         private void InitTypesComboBox()
@@ -107,8 +117,8 @@ namespace TcxEditor.UI
 
                 if (saveFileDialog.FileName != "")
                     SaveRouteEvent?.Invoke(
-                        this, 
-                        new SaveRouteEventargs(saveFileDialog.FileName));
+                        this,
+                        new SaveRouteEventArgs(saveFileDialog.FileName));
             }
         }
 
@@ -149,12 +159,17 @@ namespace TcxEditor.UI
 
         private void btnStepFwd_Click(object sender, EventArgs e)
         {
-            StepEvent?.Invoke(this, new StepEventArgs(1));
+            RaiseStepEvent(1);
         }
 
         private void btnStepBck_Click(object sender, EventArgs e)
         {
-            StepEvent?.Invoke(this, new StepEventArgs(-1));
+            RaiseStepEvent(-1);
+        }
+
+        private void RaiseStepEvent(int step)
+        {
+            StepEvent?.Invoke(this, new StepEventArgs(step));
         }
 
         private void btnDelete_Click(object sender, EventArgs e)

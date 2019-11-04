@@ -1,8 +1,9 @@
-﻿using TcxEditor.Core.Entities;
+﻿using System;
+using TcxEditor.Core.Entities;
 
 namespace TcxEditor.UI.Interfaces
 {
-    public class AddPointEventArgs
+    public class AddPointEventArgs : EventArgs
     {
         public string Name { get; set; }
         public string Notes { get; set; }
