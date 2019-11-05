@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using TcxEditor.Core;
 using TcxEditor.Core.Entities;
 using TcxEditor.Core.Exceptions;
@@ -10,8 +7,6 @@ using TcxEditor.Core.Interfaces;
 using TcxEditor.UI.Interfaces;
 
 
-// todo: unit tests..? Eventually the presenter will hold the state, and the actual GUI is 
-// just showing stuff
 namespace TcxEditor.UI
 {
     public class Presenter
