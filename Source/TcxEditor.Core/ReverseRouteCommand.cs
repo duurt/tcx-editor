@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using TcxEditor.Core.Entities;
 using TcxEditor.Core.Interfaces;
 
@@ -14,6 +12,7 @@ namespace TcxEditor.Core
         {
             ReversePoints(input.Route.TrackPoints);
             ReversePoints(input.Route.CoursePoints);
+            TransformCoursePoints(input.Route);
 
             return new ReverseRouteResponse(input.Route);
         }
@@ -37,6 +36,40 @@ namespace TcxEditor.Core
         {
             for (int i = 0; i < tpTimeStamps.Length; i++)
                 points[i].TimeStamp = tpTimeStamps[i];
+        }
+
+        private void TransformCoursePoints(Route route)
+        {
+            route.CoursePoints.ForEach(Map);
+        }
+
+        private void Map(CoursePoint cp)
+        {
+            cp.Type = Map(cp.Type);
+            cp.Name = Map(cp.Name);
+            cp.Notes = Map(cp.Notes);
+        }
+
+        private static CoursePoint.PointType Map(CoursePoint.PointType input)
+        {
+            switch (input)
+            {
+                case CoursePoint.PointType.Left: return CoursePoint.PointType.Right;
+                case CoursePoint.PointType.Right: return CoursePoint.PointType.Left;
+                
+                default: return input;
+            }
+        }
+
+        private string Map(string input)
+        {
+            switch (input)
+            {
+                case "Right": return "Left";
+                case "Left": return "Right";
+
+                default: return input;
+            }
         }
     }
 

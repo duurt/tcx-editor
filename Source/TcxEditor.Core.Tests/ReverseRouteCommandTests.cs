@@ -3,8 +3,6 @@ using Shouldly;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using TcxEditor.Core.Entities;
 
 namespace TcxEditor.Core.Tests
@@ -57,6 +55,53 @@ namespace TcxEditor.Core.Tests
             AssertPositions(
                 reversedRoute.CoursePoints,
                 TestRouteBuilder.GetDefaultPositions(coursePointIndeces).Reverse());
+        }
+
+        [TestCase(CoursePoint.PointType.Undefined, CoursePoint.PointType.Undefined)]
+        [TestCase(CoursePoint.PointType.Left, CoursePoint.PointType.Right)]
+        [TestCase(CoursePoint.PointType.Right, CoursePoint.PointType.Left)]
+        [TestCase(CoursePoint.PointType.Straight, CoursePoint.PointType.Straight)]
+        [TestCase(CoursePoint.PointType.Food, CoursePoint.PointType.Food)]
+        [TestCase(CoursePoint.PointType.Generic, CoursePoint.PointType.Generic)]
+        [TestCase(CoursePoint.PointType.Sprint, CoursePoint.PointType.Sprint)]
+        [TestCase(CoursePoint.PointType.ClimbCat4, CoursePoint.PointType.ClimbCat4)]
+        [TestCase(CoursePoint.PointType.ClimbCat3, CoursePoint.PointType.ClimbCat3)]
+        [TestCase(CoursePoint.PointType.ClimbCat2, CoursePoint.PointType.ClimbCat2)]
+        [TestCase(CoursePoint.PointType.ClimbCat1, CoursePoint.PointType.ClimbCat1)]
+        [TestCase(CoursePoint.PointType.ClimbCatHors, CoursePoint.PointType.ClimbCatHors)]
+        [TestCase(CoursePoint.PointType.Summit, CoursePoint.PointType.Summit)]
+        [TestCase(CoursePoint.PointType.Valley, CoursePoint.PointType.Valley)]
+        [TestCase(CoursePoint.PointType.Danger, CoursePoint.PointType.Danger)]
+        [TestCase(CoursePoint.PointType.FirstAid, CoursePoint.PointType.FirstAid)]
+        public void Execute_should_update_the_coursePoint_type(
+            CoursePoint.PointType typeBefore, 
+            CoursePoint.PointType expectedTypeAfter) 
+        {
+            var inputRoute = new TestRouteBuilder()
+                .WithTrackPointCount(1)
+                .WithCoursePointsAt(0).Build();
+            inputRoute.CoursePoints[0].Type = typeBefore;
+
+            var reversedRoute = ReverseRoute(inputRoute);
+
+            reversedRoute.CoursePoints[0].Type.ShouldBe(expectedTypeAfter);
+        }
+
+        [TestCase("Left", "Right")]
+        [TestCase("Right", "Left")]
+        public void Execute_should_update_name_and_notes(string before, string expectedAfter)
+        {
+            var inputRoute = new TestRouteBuilder()
+                .WithTrackPointCount(1)
+                .WithCoursePointsAt(0).Build();
+            inputRoute.CoursePoints[0].Type = CoursePoint.PointType.Right;
+            inputRoute.CoursePoints[0].Name = before;
+            inputRoute.CoursePoints[0].Notes = before;
+
+            var reversedRoute = ReverseRoute(inputRoute);
+
+            reversedRoute.CoursePoints[0].Name.ShouldBe(expectedAfter);
+            reversedRoute.CoursePoints[0].Notes.ShouldBe(expectedAfter);
         }
 
         private static void AssertPositions<T>(
