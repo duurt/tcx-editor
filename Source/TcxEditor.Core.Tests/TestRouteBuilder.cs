@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using TcxEditor.Core.Entities;
 
@@ -21,7 +22,7 @@ namespace TcxEditor.Core.Tests
 
         public TestRouteBuilder WithCoursePointsAt(params int[] coursePointIndices)
         {
-            if(!_route.TrackPoints.Any())
+            if (!_route.TrackPoints.Any())
                 throw new InvalidOperationException("TrackPoints are not yet set. You must set them before you can add course points.");
 
             if (_route.CoursePoints.Any())
@@ -68,9 +69,24 @@ namespace TcxEditor.Core.Tests
             return $"name {i}";
         }
 
+        public static Position[] GetDefaultPositions(int count)
+            => GetDefaultPositions(Enumerable.Range(0, count));
+
+        public static Position[] GetDefaultPositions(IEnumerable<int> indices)
+            => indices.Select(i => GetPosition(i)).ToArray();
+
+        private static Position GetPosition(int i) 
+            => new Position(GetLat(i), GetLon(i));
+
         public static double GetLat(int i) => 10 + 0.1 * i;
 
         public static double GetLon(int i) => 20 + 0.1 * i;
+
+        public static DateTime[] GetDefaultTimeStamps(int count)
+            => GetDefaultTimeStamps(Enumerable.Range(0, count));
+
+        public static DateTime[] GetDefaultTimeStamps(IEnumerable<int> indices)
+            => indices.Select(GetTimeStamp).ToArray();
 
         public static DateTime GetTimeStamp(int i) => new DateTime(2019, 8, 21, 12, 0, 0).AddSeconds(i);
 

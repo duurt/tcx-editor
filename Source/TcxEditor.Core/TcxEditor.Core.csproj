@@ -75,6 +75,7 @@
     <Compile Include="OpenRouteResponse.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Exceptions\TcxCoreException.cs" />
+    <Compile Include="ReverseRouteCommand.cs" />
     <Compile Include="SaveRouteCommand.cs" />
     <Compile Include="SaveRouteInput.cs" />
     <Compile Include="SaveRouteResponse.cs" />
