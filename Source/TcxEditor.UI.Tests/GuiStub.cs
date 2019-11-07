@@ -19,6 +19,7 @@ namespace TcxEditor.UI.Tests
         public event EventHandler DeletePointEvent;
         public event EventHandler<SelectPointEventArgs> SelectCoursePointEvent;
         public event EventHandler<StepEventArgs> StepEvent;
+        public event EventHandler ReverseRoute;
 
         public void RaiseOpenFileEvent(OpenRouteEventArgs args) => OpenFileEvent.Invoke(this, args);
         public void RaiseAddStartFinishEvent() => AddStartFinishEvent.Invoke(this, EventArgs.Empty);
@@ -56,6 +57,11 @@ namespace TcxEditor.UI.Tests
         public void ShowRoute(Route route)
         {
             Route = route;
+        }
+
+        internal void RaiseReverseRouteEvent()
+        {
+            ReverseRoute.Invoke(this, EventArgs.Empty);
         }
     }
 }

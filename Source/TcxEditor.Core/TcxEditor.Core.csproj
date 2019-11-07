@@ -60,6 +60,7 @@
     <Compile Include="GetNearestTrackPointInput.cs" />
     <Compile Include="GetNearestTrackPointResponse.cs" />
     <Compile Include="Interfaces\IAddCoursePointCommand.cs" />
+    <Compile Include="Interfaces\IReverseRouteCommand.cs" />
     <Compile Include="Interfaces\IAddStartFinishCommand.cs" />
     <Compile Include="Interfaces\ICommandRunner.cs" />
     <Compile Include="Interfaces\IDeleteCoursePointCommand.cs" />

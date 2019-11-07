@@ -20,6 +20,7 @@ namespace TcxEditor.UI
         public event EventHandler DeletePointEvent;
         public event EventHandler<SelectPointEventArgs> SelectCoursePointEvent;
         public event EventHandler<StepEventArgs> StepEvent;
+        public event EventHandler ReverseRoute;
 
         public MainForm()
         {
@@ -197,6 +198,11 @@ namespace TcxEditor.UI
         public void ShowEditTrackPointMarker(TrackPoint position)
         {
             mapControl1.ShowPointToEdit(position);
+        }
+
+        private void btnReverseRoute_Click(object sender, EventArgs e)
+        {
+            ReverseRoute?.Invoke(this, EventArgs.Empty);
         }
     }
 

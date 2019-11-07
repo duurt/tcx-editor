@@ -135,6 +135,8 @@ namespace TcxEditor.UI.Tests
                 _gui.RaiseStepEvent(-1));
             TestErrorMessageAndNoCommand(() =>
                 _gui.RaiseStepEvent(1));
+            TestErrorMessageAndNoCommand(() =>
+                _gui.RaiseReverseRouteEvent());
         }
 
         [Test]
@@ -254,6 +256,30 @@ namespace TcxEditor.UI.Tests
             _gui.GuiState.SaveEnabled.ShouldBe(true);
             _gui.GuiState.ScrollRoute.ShouldBe(true);
             _gui.GuiState.DeleteCoursePoint.ShouldBe(false);
+        }
+
+        [Test]
+        public void ReverseRouteEvent_calls_commandRunner()
+        {
+            var openedRoute = OpenRoute();
+            _commandSpy.SetResponse(new ReverseRouteResponse(GetDefaultRoute()));
+
+            _gui.RaiseReverseRouteEvent();
+
+            var commandInput = _commandSpy.LastCall as ReverseRouteInput;
+            commandInput.Route.ShouldBe(openedRoute);
+        }
+
+        [Test]
+        public void ReverseRouteEvent_shows_route_in_gui()
+        {
+            OpenRoute();
+            Route newRoute = GetDefaultRoute();
+            _commandSpy.SetResponse(new ReverseRouteResponse(newRoute));
+
+            _gui.RaiseReverseRouteEvent();
+
+            _gui.Route.ShouldBe(newRoute);
         }
 
         private Route OpenRoute()

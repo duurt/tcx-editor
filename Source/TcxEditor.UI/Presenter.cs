@@ -46,6 +46,7 @@ namespace TcxEditor.UI
             _routeView.DeletePointEvent += OnDeletePointEvent;
             _routeView.SelectCoursePointEvent += OnSelectCoursePointEvent;
             _routeView.StepEvent += OnStepEvent;
+            _routeView.ReverseRoute += OnReverseRoute;
         }
 
         private void InitializeGuiState()
@@ -57,6 +58,21 @@ namespace TcxEditor.UI
                 DeleteCoursePoint = false,
                 ScrollRoute = false
             });
+        }
+
+        private void OnReverseRoute(object sender, EventArgs e)
+        {
+            if (_route == null)
+            {
+                _errorView.ShowErrorMessage("Please load route first.");
+                return;
+            }
+
+            var result =
+                _commandRunner.Execute(
+                    new ReverseRouteInput(_route)) as ReverseRouteResponse;
+
+            _routeView.ShowRoute(result.Route);
         }
 
         private void OnSelectCoursePointEvent(object sender, SelectPointEventArgs e)
@@ -124,6 +140,7 @@ namespace TcxEditor.UI
                 return;
             }
 
+            //todo: this is repeated in a few places
             var trackPoint = GetTrackPoint(_selectedTimeStamp);
             if (trackPoint == null)
             {

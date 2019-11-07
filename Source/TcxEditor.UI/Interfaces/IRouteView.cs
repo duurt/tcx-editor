@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using TcxEditor.Core.Entities;
 
 namespace TcxEditor.UI.Interfaces
@@ -22,5 +18,6 @@ namespace TcxEditor.UI.Interfaces
         event EventHandler DeletePointEvent;
         event EventHandler<SelectPointEventArgs> SelectCoursePointEvent;
         event EventHandler<StepEventArgs> StepEvent;
+        event EventHandler ReverseRoute;
     }
 }

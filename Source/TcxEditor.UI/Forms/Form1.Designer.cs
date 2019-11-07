@@ -36,6 +36,7 @@ namespace TcxEditor.UI
             this.btnStepBck = new System.Windows.Forms.Button();
             this.btnStepFwd = new System.Windows.Forms.Button();
             this.routeDirectionsGroup = new System.Windows.Forms.GroupBox();
+            this.btnReverseRoute = new System.Windows.Forms.Button();
             this.btnDelete = new System.Windows.Forms.Button();
             this.btnAddStartFinish = new System.Windows.Forms.Button();
             this.btnAddCoursePoint = new System.Windows.Forms.Button();
@@ -128,6 +129,7 @@ namespace TcxEditor.UI
             // 
             // routeDirectionsGroup
             // 
+            this.routeDirectionsGroup.Controls.Add(this.btnReverseRoute);
             this.routeDirectionsGroup.Controls.Add(this.btnDelete);
             this.routeDirectionsGroup.Controls.Add(this.btnAddStartFinish);
             this.routeDirectionsGroup.Controls.Add(this.btnAddCoursePoint);
@@ -141,6 +143,16 @@ namespace TcxEditor.UI
             this.routeDirectionsGroup.TabIndex = 4;
             this.routeDirectionsGroup.TabStop = false;
             this.routeDirectionsGroup.Text = "Route directions";
+            // 
+            // btnReverseRoute
+            // 
+            this.btnReverseRoute.Location = new System.Drawing.Point(15, 276);
+            this.btnReverseRoute.Name = "btnReverseRoute";
+            this.btnReverseRoute.Size = new System.Drawing.Size(103, 23);
+            this.btnReverseRoute.TabIndex = 8;
+            this.btnReverseRoute.Text = "Reverse route";
+            this.btnReverseRoute.UseVisualStyleBackColor = true;
+            this.btnReverseRoute.Click += new System.EventHandler(this.btnReverseRoute_Click);
             // 
             // btnDelete
             // 
@@ -251,6 +263,7 @@ namespace TcxEditor.UI
         private System.Windows.Forms.Button btnStepBck;
         private System.Windows.Forms.Button btnDelete;
         private System.Windows.Forms.GroupBox grbRouteScrolling;
+        private System.Windows.Forms.Button btnReverseRoute;
     }
 }
 

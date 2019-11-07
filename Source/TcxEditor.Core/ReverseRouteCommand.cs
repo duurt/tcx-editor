@@ -6,7 +6,8 @@ using TcxEditor.Core.Interfaces;
 
 namespace TcxEditor.Core
 {
-    public class ReverseRouteCommand : ITcxEditorCommand<ReverseRouteInput, ReverseRouteResponse>
+    // todo: do we need the 'intermediate' interfaces? (here: IReverseRouteCommand)
+    public class ReverseRouteCommand : IReverseRouteCommand
     {
         public ReverseRouteResponse Execute(ReverseRouteInput input)
         {

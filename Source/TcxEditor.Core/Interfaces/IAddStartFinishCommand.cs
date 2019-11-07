@@ -9,6 +9,5 @@ namespace TcxEditor.Core.Interfaces
     public interface IAddStartFinishCommand : 
         ITcxEditorCommand<AddStartFinishInput, AddStartFinishResponse>
     {
-        //AddStartFinishResponse Execute(AddStartFinishInput input);
     }
 }
