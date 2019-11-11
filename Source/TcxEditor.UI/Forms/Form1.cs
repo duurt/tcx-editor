@@ -1,17 +1,9 @@
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
 using System.Configuration;
-using System.Data;
-using System.Drawing;
 using System.Linq;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using TcxEditor.Core;
 using TcxEditor.Core.Entities;
-using TcxEditor.Core.Interfaces;
 using TcxEditor.UI.Interfaces;
 
 namespace TcxEditor.UI

@@ -1,10 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using Duurt.TcxParser.Xsd.Generated;
+using System;
 using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Duurt.TcxParser.Xsd.Generated;
 using TcxEditor.Core.Entities;
 using TcxEditor.Core.Interfaces;
 

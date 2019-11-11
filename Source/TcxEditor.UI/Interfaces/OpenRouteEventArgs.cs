@@ -10,6 +10,5 @@ namespace TcxEditor.UI.Interfaces
         {
             Name = name;
         }
-
     }
 }
