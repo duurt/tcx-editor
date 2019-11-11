@@ -118,7 +118,7 @@ namespace TcxEditor.UI
 
         private void OnAddPointEvent(object sender, AddPointEventArgs e)
         {
-            if (_route ==null)
+            if (_route == null)
             {
                 _errorView.ShowErrorMessage("Please load route first.");
                 return;

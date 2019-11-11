@@ -10,7 +10,7 @@ namespace TcxEditor.Core
     {
         private readonly IRouteSaver _saver;
 
-        public SaveRouteCommand(IRouteSaver saver) 
+        public SaveRouteCommand(IRouteSaver saver)
         {
             _saver = saver;
         }
@@ -28,7 +28,7 @@ namespace TcxEditor.Core
                     "The route does not contain any navigation ques or special points. You can only save a route after these are added.");
 
             _saver.SaveCoursePoints(
-                input.Route.CoursePoints, 
+                input.Route.CoursePoints,
                 input.SourceName,
                 input.DestinationPath);
 

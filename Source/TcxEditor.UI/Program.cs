@@ -5,10 +5,10 @@ using TcxEditor.UI.Interfaces;
 
 namespace TcxEditor.UI
 {
-    static class Program
+    internal static class Program
     {
         [STAThread]
-        static void Main()
+        private static void Main()
         {
             var container = new StartUp().CreateIocContainer();
 

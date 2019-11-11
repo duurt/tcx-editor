@@ -5,6 +5,6 @@ namespace TcxEditor.Core
 {
     public class DeleteCoursePointResponse : IOutput
     {
-        public Route Route{ get; set; }
+        public Route Route { get; set; }
     }
 }

@@ -55,7 +55,7 @@ namespace TcxEditor.Core.Tests
         public void Execute_should_pass_input_to_saver()
         {
             Route routeInput = new Route();
-            routeInput.CoursePoints.Add(new CoursePoint (1,1));
+            routeInput.CoursePoints.Add(new CoursePoint(1, 1));
 
             var result = _sut.Execute(new SaveRouteInput(routeInput, "source", "dest"));
 
@@ -75,7 +75,7 @@ namespace TcxEditor.Core.Tests
         public string DestinationPath { get; private set; }
 
         public void SaveCoursePoints(
-            List<CoursePoint> points, 
+            List<CoursePoint> points,
             string sourcePath,
             string destinationPath)
         {

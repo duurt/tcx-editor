@@ -72,7 +72,7 @@ namespace TcxEditor.Core.Tests
 
     public class InputA : IInput { }
     public class OutputA : IOutput { public string Val { get; set; } }
- 
+
     public class InputB : IInput { }
     public class OutputB : IOutput { public string Val { get; set; } }
 

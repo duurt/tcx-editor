@@ -10,7 +10,7 @@ namespace TcxEditor.Core.Tests
 {
     public class AddStartFinishCommandTests
     {
-        private static DateTime _t0 = new DateTime(2019, 8, 5, 12, 45, 59);
+        private static readonly DateTime _t0 = new DateTime(2019, 8, 5, 12, 45, 59);
         private readonly double[] _la = new double[] { 1, 2, 3, 4 };
         private readonly double[] _lo = new double[] { 10, 20, 30, 40 };
         private readonly DateTime[] _times = new DateTime[]
@@ -34,7 +34,7 @@ namespace TcxEditor.Core.Tests
         {
             return new AddStartFinishCommand();
         }
-        
+
         private IEnumerable<TrackPoint> Get4TrackPoints()
         {
             return Enumerable.Range(0, 4).Select(
@@ -130,7 +130,7 @@ namespace TcxEditor.Core.Tests
                 .Add(new CoursePoint(_la[0], _lo[0]) { TimeStamp = _times[0] });
 
             Assert.Throws<TcxCoreException>(
-                () =>  _sut.Execute(_input));
+                () => _sut.Execute(_input));
         }
 
         [Test]
@@ -155,7 +155,7 @@ namespace TcxEditor.Core.Tests
             result.Route.CoursePoints.First().Name.ShouldBe("start");
             result.Route.CoursePoints.First().Type.ShouldBe(CoursePoint.PointType.Generic);
             result.Route.CoursePoints.First().Notes.ShouldBe("Go! Have fun :-)");
-        
+
             result.Route.CoursePoints.Last().Name.ShouldBe("finish");
             result.Route.CoursePoints.Last().Type.ShouldBe(CoursePoint.PointType.Generic);
             result.Route.CoursePoints.Last().Notes.ShouldBe("Finished!");

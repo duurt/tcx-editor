@@ -4,7 +4,7 @@
     {
     }
 
-    public interface ITcxEditorCommand<TIn, TOut> : ITcxEditorCommand 
+    public interface ITcxEditorCommand<TIn, TOut> : ITcxEditorCommand
         where TIn : IInput
         where TOut : IOutput
     {
