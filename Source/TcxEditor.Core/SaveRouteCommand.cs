@@ -5,7 +5,8 @@ using TcxEditor.Core.Interfaces;
 
 namespace TcxEditor.Core
 {
-    public class SaveRouteCommand : ISaveRouteCommand
+    public class SaveRouteCommand :
+        ITcxEditorCommand<SaveRouteInput, SaveRouteResponse>
     {
         private readonly IRouteSaver _saver;
 

@@ -5,7 +5,8 @@ using TcxEditor.Core.Interfaces;
 
 namespace TcxEditor.Core
 {
-    public class DeleteCoursePointCommand : IDeleteCoursePointCommand
+    public class DeleteCoursePointCommand :
+        ITcxEditorCommand<DeleteCoursePointInput, DeleteCoursePointResponse>
     {
         public DeleteCoursePointResponse Execute(DeleteCoursePointInput input)
         {

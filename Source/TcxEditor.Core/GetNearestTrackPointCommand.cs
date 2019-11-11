@@ -7,7 +7,8 @@ using TcxEditor.Core.Interfaces;
 
 namespace TcxEditor.Core
 {
-    public class GetNearestTrackPointCommand : IGetNearestTrackPointCommand
+    public class GetNearestTrackPointCommand :
+        ITcxEditorCommand<GetNearestTrackPointInput, GetNearestTrackPointResponse>
     {
         public GetNearestTrackPointResponse Execute(GetNearestTrackPointInput input)
         {

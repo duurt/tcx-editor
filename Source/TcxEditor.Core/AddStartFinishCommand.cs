@@ -6,7 +6,8 @@ using TcxEditor.Core.Interfaces;
 
 namespace TcxEditor.Core
 {
-    public class AddStartFinishCommand : IAddStartFinishCommand
+    public class AddStartFinishCommand :
+        ITcxEditorCommand<AddStartFinishInput, AddStartFinishResponse>
     {
         public AddStartFinishResponse Execute(AddStartFinishInput input)
         {

@@ -7,7 +7,8 @@ using TcxEditor.Core.Interfaces;
 
 namespace TcxEditor.Core
 {
-    public class AddCoursePointCommand : IAddCoursePointCommand
+    public class AddCoursePointCommand : 
+        ITcxEditorCommand<AddCoursePointInput, AddCoursePointResponse>
     {
         public AddCoursePointResponse Execute(AddCoursePointInput input)
         {

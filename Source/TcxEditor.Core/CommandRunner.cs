@@ -55,7 +55,7 @@ namespace TcxEditor.Core
         {
             var interfaces = c.GetType().GetInterfaces();
 
-            return interfaces[1]
+            return interfaces[0]
                 .GenericTypeArguments[0].Name
                 .Equals(input.GetType().Name);
         }
