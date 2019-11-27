@@ -168,7 +168,7 @@ namespace TcxEditor.UI.Tests
             OpenRoute();
             Route routeAfterSave = GetDefaultRoute();
             _commandSpy.SetResponse(new SaveRouteResponse { Route = routeAfterSave });
-            
+
             _gui.RaiseClickSaveRouteEvent(new SaveRouteEventArgs("some name"));
 
             _gui.Route.ShouldBeSameAs(routeAfterSave);
@@ -184,7 +184,7 @@ namespace TcxEditor.UI.Tests
 
             _gui.RaiseClickSaveRouteEvent(new SaveRouteEventArgs("some name"));
 
-            var guiStateAfter =_gui.GuiState.GetHashCode();
+            var guiStateAfter = _gui.GuiState.GetHashCode();
             guiStateAfter.ShouldBe(guiStateBefore);
         }
 
@@ -192,10 +192,12 @@ namespace TcxEditor.UI.Tests
         public void GetNearestEvent_calls_commandRunner()
         {
             var openedRoute = OpenRoute();
-            
-            _commandSpy.SetResponse(new GetNearestTrackPointResponse { 
-                Route = GetDefaultRoute(), 
-                Nearest =  new TrackPoint(2,2) });
+
+            _commandSpy.SetResponse(new GetNearestTrackPointResponse
+            {
+                Route = GetDefaultRoute(),
+                Nearest = new TrackPoint(2, 2)
+            });
 
             TrackPoint refPoint = new TrackPoint(3, 3);
             _gui.RaiseGetNearestEvent(new GetNearestEventArgs { ReferencePoint = refPoint });
@@ -215,7 +217,7 @@ namespace TcxEditor.UI.Tests
                 Route = returnedRoute,
                 Nearest = new TrackPoint(2, 2)
             });
-            
+
             _gui.RaiseGetNearestEvent(new GetNearestEventArgs { ReferencePoint = new TrackPoint(3, 3) });
 
             _gui.Route.ShouldBeSameAs(returnedRoute);
@@ -233,7 +235,7 @@ namespace TcxEditor.UI.Tests
                 Nearest = returnedPoint
             });
 
-            _gui.RaiseGetNearestEvent(new GetNearestEventArgs { ReferencePoint = new TrackPoint(1,2) });
+            _gui.RaiseGetNearestEvent(new GetNearestEventArgs { ReferencePoint = new TrackPoint(1, 2) });
 
             _gui.EditPoint.ShouldBeSameAs(returnedPoint);
         }

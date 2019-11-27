@@ -71,7 +71,6 @@
     <Compile Include="Forms\IGuiControls.cs" />
     <Compile Include="Forms\SaveRouteEventArgs.cs" />
     <Compile Include="Interfaces\AddPointEventArgs.cs" />
-    <Compile Include="Interfaces\AddStartFinishEventArgs.cs" />
     <Compile Include="Interfaces\GetNearestEventArgs.cs" />
     <Compile Include="Interfaces\IRouteView.cs" />
     <Compile Include="Interfaces\OpenRouteEventArgs.cs" />

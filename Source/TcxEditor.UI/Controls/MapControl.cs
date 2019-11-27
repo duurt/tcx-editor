@@ -3,8 +3,6 @@ using GMap.NET.MapProviders;
 using GMap.NET.WindowsForms;
 using GMap.NET.WindowsForms.Markers;
 using System;
-using System.Configuration;
-using System.Data;
 using System.Drawing;
 using System.IO;
 using System.Linq;

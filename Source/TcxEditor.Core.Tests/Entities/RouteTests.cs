@@ -1,10 +1,5 @@
 ﻿using NUnit.Framework;
 using Shouldly;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using TcxEditor.Core.Entities;
 
 namespace TcxEditor.Core.Tests.Entities
@@ -22,7 +17,7 @@ namespace TcxEditor.Core.Tests.Entities
         [Test]
         public void CoursePoint_constructor_creates_empty_string_for_notes()
         {
-            var p = new CoursePoint(1,1);
+            var p = new CoursePoint(1, 1);
             p.Notes.ShouldBe("");
         }
 

@@ -59,14 +59,8 @@
     <Compile Include="GetNearestTrackPointCommand.cs" />
     <Compile Include="GetNearestTrackPointInput.cs" />
     <Compile Include="GetNearestTrackPointResponse.cs" />
-    <Compile Include="Interfaces\IAddCoursePointCommand.cs" />
-    <Compile Include="Interfaces\IAddStartFinishCommand.cs" />
     <Compile Include="Interfaces\ICommandRunner.cs" />
-    <Compile Include="Interfaces\IDeleteCoursePointCommand.cs" />
-    <Compile Include="Interfaces\IGetNearestTrackPointCommand.cs" />
-    <Compile Include="Interfaces\ISaveRouteCommand.cs" />
     <Compile Include="Interfaces\IRouteSaver.cs" />
-    <Compile Include="Interfaces\IOpenRouteCommand.cs" />
     <Compile Include="Interfaces\IStreamCreator.cs" />
     <Compile Include="Interfaces\ITcxParser.cs" />
     <Compile Include="Interfaces\TcxEditorCommand.cs" />

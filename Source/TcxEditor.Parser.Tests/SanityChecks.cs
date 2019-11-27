@@ -1,13 +1,9 @@
 ﻿using Duurt.TcxParser.Xsd.Generated;
 using NUnit.Framework;
 using Shouldly;
-using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 using System.Xml.Serialization;
 
 namespace TcxEditor.Parser.Tests
@@ -15,10 +11,10 @@ namespace TcxEditor.Parser.Tests
     [TestFixture]
     public class SanityChecks
     {
-        private static string _exeDir = Path.GetDirectoryName(Assembly.GetExecutingAssembly().GetName().CodeBase).Replace(@"file:\", "");
+        private static readonly string _exeDir = Path.GetDirectoryName(Assembly.GetExecutingAssembly().GetName().CodeBase).Replace(@"file:\", "");
         private readonly string _pathTcx1 = Path.Combine(
             _exeDir,
-            "TestData", 
+            "TestData",
             "0- tcx_Test_ORIG.tcx");
         private readonly string _pathTcx2 = Path.Combine(
             _exeDir,
@@ -47,7 +43,7 @@ namespace TcxEditor.Parser.Tests
             var serializer = new XmlSerializer(typeof(TrainingCenterDatabase_t));
             var x = serializer.Deserialize(tcxStream) as TrainingCenterDatabase_t;
 
-            foreach(var cue in x.Courses[0].CoursePoint)
+            foreach (var cue in x.Courses[0].CoursePoint)
             {
                 Assert.True(x.Courses[0].Track.Any(tp => tp.Time.Equals(cue.Time)));
                 Assert.True(x.Courses[0].Track.Any(

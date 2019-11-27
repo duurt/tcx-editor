@@ -2,8 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 using TcxEditor.Core.Exceptions;
 using TcxEditor.Core.Interfaces;
 
@@ -57,7 +55,7 @@ namespace TcxEditor.Core
         {
             var interfaces = c.GetType().GetInterfaces();
 
-            return interfaces[1]
+            return interfaces[0]
                 .GenericTypeArguments[0].Name
                 .Equals(input.GetType().Name);
         }

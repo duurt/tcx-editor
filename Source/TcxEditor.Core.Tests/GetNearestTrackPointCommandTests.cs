@@ -1,10 +1,6 @@
 ﻿using NUnit.Framework;
 using Shouldly;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using TcxEditor.Core.Entities;
 using TcxEditor.Core.Exceptions;
 
@@ -29,8 +25,11 @@ namespace TcxEditor.Core.Tests
             Assert.Throws<ArgumentNullException>(
                 () => _sut.Execute(new GetNearestTrackPointInput { Route = null }));
             Assert.Throws<ArgumentNullException>(
-                () => _sut.Execute(new GetNearestTrackPointInput {
-                    Route = new Route(), ReferencePoint = null }));
+                () => _sut.Execute(new GetNearestTrackPointInput
+                {
+                    Route = new Route(),
+                    ReferencePoint = null
+                }));
         }
 
         [Test]
@@ -41,7 +40,7 @@ namespace TcxEditor.Core.Tests
                    new GetNearestTrackPointInput
                    {
                        Route = new Route(),
-                       ReferencePoint = new Position(1,1)
+                       ReferencePoint = new Position(1, 1)
                    }));
         }
 

@@ -1,15 +1,13 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using TcxEditor.Core.Entities;
 using TcxEditor.Core.Exceptions;
 using TcxEditor.Core.Interfaces;
 
 namespace TcxEditor.Core
 {
-    public class AddStartFinishCommand : IAddStartFinishCommand
+    public class AddStartFinishCommand :
+        ITcxEditorCommand<AddStartFinishInput, AddStartFinishResponse>
     {
         public AddStartFinishResponse Execute(AddStartFinishInput input)
         {

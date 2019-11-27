@@ -1,10 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using Duurt.TcxParser.Xsd.Generated;
+using System;
 using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Duurt.TcxParser.Xsd.Generated;
 using TcxEditor.Core.Entities;
 using TcxEditor.Core.Interfaces;
 
@@ -22,7 +19,7 @@ namespace TcxEditor.Parser.Infrastructure
                 parsedRoute.Courses[0].Track.Select(x => Map(x)));
 
             result.CoursePoints.AddRange(
-                parsedRoute.Courses[0].CoursePoint?.Select(x => Map(x)) 
+                parsedRoute.Courses[0].CoursePoint?.Select(x => Map(x))
                 ?? new CoursePoint[0]);
 
             return result;
@@ -41,11 +38,11 @@ namespace TcxEditor.Parser.Infrastructure
             return new CoursePoint(
                 x.Position.LatitudeDegrees,
                 x.Position.LongitudeDegrees)
-                {
-                    TimeStamp = x.Time,
-                    Type = Map(x.PointType),
-                    Notes = x.Notes
-                };
+            {
+                TimeStamp = x.Time,
+                Type = Map(x.PointType),
+                Notes = x.Notes
+            };
         }
 
         private static CoursePoint.PointType Map(CoursePointType_t pointType)
