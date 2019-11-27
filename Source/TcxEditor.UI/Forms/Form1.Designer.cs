@@ -199,6 +199,7 @@ namespace TcxEditor.UI
             // 
             // cbPointType
             // 
+            this.cbPointType.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cbPointType.FormattingEnabled = true;
             this.cbPointType.Location = new System.Drawing.Point(3, 45);
             this.cbPointType.Name = "cbPointType";
