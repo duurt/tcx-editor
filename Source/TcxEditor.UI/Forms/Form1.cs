@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
 using System.Reflection;
@@ -21,11 +22,19 @@ namespace TcxEditor.UI
         public event EventHandler<SelectPointEventArgs> SelectCoursePointEvent;
         public event EventHandler<StepEventArgs> StepEvent;
 
+        private readonly List<Control> _controlsThatSuppressShortCuts;
+
         public MainForm()
         {
             InitializeComponent();
             InitTypesComboBox();
             AddVersionToWindowTitle();
+
+            _controlsThatSuppressShortCuts = new List<Control>
+                {
+                    tbPointNotes,
+                    cbPointType
+                };
 
             mapControl1.SetLocation(ConfigurationManager.AppSettings["Location"]);
             mapControl1.MapClickEvent += MapControl1_MapClickEvent;
@@ -46,7 +55,12 @@ namespace TcxEditor.UI
 
         protected override void OnKeyUp(KeyEventArgs e)
         {
+            if (ShouldSuppressShortCut())
+                return;
+
+            // prevent keypress from being passed to underlying control
             e.SuppressKeyPress = true;
+
             if (e.KeyCode == Keys.Left)
                 RaiseAddPointEvent("Left", CoursePoint.PointType.Left);
             else if (e.KeyCode == Keys.Right)
@@ -63,6 +77,11 @@ namespace TcxEditor.UI
                 RaiseStepEvent(10);
             else if (e.KeyCode == Keys.X)
                 RaiseStepEvent(-10);
+        }
+
+        private bool ShouldSuppressShortCut()
+        {
+            return _controlsThatSuppressShortCuts.Any(c => c.Focused);
         }
 
         private void InitTypesComboBox()
