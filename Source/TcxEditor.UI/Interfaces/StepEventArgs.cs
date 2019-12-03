@@ -1,6 +1,8 @@
-﻿namespace TcxEditor.UI.Interfaces
+﻿using System;
+
+namespace TcxEditor.UI.Interfaces
 {
-    public class StepEventArgs
+    public class StepEventArgs : EventArgs
     {
         public int Step { get; }
 

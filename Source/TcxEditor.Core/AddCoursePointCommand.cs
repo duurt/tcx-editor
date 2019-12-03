@@ -1,15 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using TcxEditor.Core.Entities;
 using TcxEditor.Core.Exceptions;
 using TcxEditor.Core.Interfaces;
 
 namespace TcxEditor.Core
 {
-    public class AddCoursePointCommand : IAddCoursePointCommand
+    public class AddCoursePointCommand :
+        ITcxEditorCommand<AddCoursePointInput, AddCoursePointResponse>
     {
         public AddCoursePointResponse Execute(AddCoursePointInput input)
         {

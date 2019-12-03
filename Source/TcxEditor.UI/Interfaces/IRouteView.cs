@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using TcxEditor.Core.Entities;
 
 namespace TcxEditor.UI.Interfaces
@@ -16,7 +12,7 @@ namespace TcxEditor.UI.Interfaces
 
         event EventHandler<OpenRouteEventArgs> OpenFileEvent;
         event EventHandler AddStartFinishEvent;
-        event EventHandler<SaveRouteEventargs> SaveRouteEvent;
+        event EventHandler<SaveRouteEventArgs> SaveRouteEvent;
         event EventHandler<GetNearestEventArgs> GetNearestEvent;
         event EventHandler<AddPointEventArgs> AddPointEvent;
         event EventHandler DeletePointEvent;

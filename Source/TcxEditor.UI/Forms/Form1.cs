@@ -1,17 +1,10 @@
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Configuration;
-using System.Data;
-using System.Drawing;
 using System.Linq;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using TcxEditor.Core;
 using TcxEditor.Core.Entities;
-using TcxEditor.Core.Interfaces;
 using TcxEditor.UI.Interfaces;
 
 namespace TcxEditor.UI
@@ -22,12 +15,14 @@ namespace TcxEditor.UI
 
         public event EventHandler<OpenRouteEventArgs> OpenFileEvent;
         public event EventHandler AddStartFinishEvent;
-        public event EventHandler<SaveRouteEventargs> SaveRouteEvent;
+        public event EventHandler<SaveRouteEventArgs> SaveRouteEvent;
         public event EventHandler<GetNearestEventArgs> GetNearestEvent;
         public event EventHandler<AddPointEventArgs> AddPointEvent;
         public event EventHandler DeletePointEvent;
         public event EventHandler<SelectPointEventArgs> SelectCoursePointEvent;
         public event EventHandler<StepEventArgs> StepEvent;
+
+        private readonly List<Control> _controlsThatSuppressShortCuts;
 
         public MainForm()
         {
@@ -35,7 +30,13 @@ namespace TcxEditor.UI
             InitTypesComboBox();
             AddVersionToWindowTitle();
 
-            mapControl1.SetPosition(ConfigurationManager.AppSettings["Location"]);
+            _controlsThatSuppressShortCuts = new List<Control>
+                {
+                    tbPointNotes,
+                    cbPointType
+                };
+
+            mapControl1.SetLocation(ConfigurationManager.AppSettings["Location"]);
             mapControl1.MapClickEvent += MapControl1_MapClickEvent;
             mapControl1.CoursePointSelectEvent += OnCoursePointClick;
             KeyPreview = true;
@@ -54,13 +55,33 @@ namespace TcxEditor.UI
 
         protected override void OnKeyUp(KeyEventArgs e)
         {
+            if (ShouldSuppressShortCut())
+                return;
+
+            // prevent keypress from being passed to underlying control
             e.SuppressKeyPress = true;
+
             if (e.KeyCode == Keys.Left)
                 RaiseAddPointEvent("Left", CoursePoint.PointType.Left);
             else if (e.KeyCode == Keys.Right)
                 RaiseAddPointEvent("Right", CoursePoint.PointType.Right);
             else if (e.KeyCode == Keys.Up)
                 RaiseAddPointEvent("Straight", CoursePoint.PointType.Straight);
+            else if (e.KeyCode == Keys.M)
+                RaiseAddPointEvent("MAP", CoursePoint.PointType.Generic);
+            else if (e.KeyCode == Keys.A)
+                RaiseStepEvent(1);
+            else if (e.KeyCode == Keys.Z)
+                RaiseStepEvent(-1);
+            else if (e.KeyCode == Keys.S)
+                RaiseStepEvent(10);
+            else if (e.KeyCode == Keys.X)
+                RaiseStepEvent(-10);
+        }
+
+        private bool ShouldSuppressShortCut()
+        {
+            return _controlsThatSuppressShortCuts.Any(c => c.Focused);
         }
 
         private void InitTypesComboBox()
@@ -107,8 +128,8 @@ namespace TcxEditor.UI
 
                 if (saveFileDialog.FileName != "")
                     SaveRouteEvent?.Invoke(
-                        this, 
-                        new SaveRouteEventargs(saveFileDialog.FileName));
+                        this,
+                        new SaveRouteEventArgs(saveFileDialog.FileName));
             }
         }
 
@@ -149,12 +170,17 @@ namespace TcxEditor.UI
 
         private void btnStepFwd_Click(object sender, EventArgs e)
         {
-            StepEvent?.Invoke(this, new StepEventArgs(1));
+            RaiseStepEvent(1);
         }
 
         private void btnStepBck_Click(object sender, EventArgs e)
         {
-            StepEvent?.Invoke(this, new StepEventArgs(-1));
+            RaiseStepEvent(-1);
+        }
+
+        private void RaiseStepEvent(int step)
+        {
+            StepEvent?.Invoke(this, new StepEventArgs(step));
         }
 
         private void btnDelete_Click(object sender, EventArgs e)

@@ -32,12 +32,22 @@ To zoom in and out, simply scroll with the mouse wheel or touchpad. Note that th
 At every point of the route where you need directions, for instance "turn left", you can add them in the following way:
 
 1. Click on the map near the position you want to add a cue to; a blue pinpoint will appear.
-2. Press one of the arrow keys to add a que: LEFT for left, RIGHT for right, UP for straight.
-   OR
-   Choose a Type and write a custom Description. Finally, click `Add`.
+2. Press one of shortcut keys (see last part of this section) to add a default navigation cue *OR* Choose a Type by hand and write a custom Description. Finally, click `Add`.
+
+## Shortcuts
+**Default navigation cues**
+* LEFT / RIGHT: Left or right
+* UP: straight
+* M: For "MAP" (I use this as a reminder to look on the map; useful for confusing situations)
+  
+**Stepping through the route**
+* A: Step forward through the route
+* Z: Step backward through the route
+* S: Step forward through the route, fast
+* X: Step backward through the route, fast
 
 ## Update a navigation cue
-This is not yeet supported. However, you can simply remove a point and add it again.
+This is not (yet) supported. However, you can simply remove a point and add it again.
 
 ## Remove a navigation cue
 Click on a point you want to remove, and click the `Remove point`.

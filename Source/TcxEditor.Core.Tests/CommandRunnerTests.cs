@@ -1,11 +1,6 @@
 ﻿using NUnit.Framework;
 using Shouldly;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using TcxEditor.Core;
 using TcxEditor.Core.Exceptions;
 using TcxEditor.Core.Interfaces;
 
@@ -75,14 +70,13 @@ namespace TcxEditor.Core.Tests
         }
     }
 
-    public interface ICommandA : ITcxEditorCommand<InputA, OutputA> { }
     public class InputA : IInput { }
     public class OutputA : IOutput { public string Val { get; set; } }
-    public interface ICommandB : ITcxEditorCommand<InputB, OutputB> { }
+
     public class InputB : IInput { }
     public class OutputB : IOutput { public string Val { get; set; } }
 
-    public class CommandA : ICommandA
+    public class CommandA : ITcxEditorCommand<InputA, OutputA>
     {
         private int _callCount = 1;
         public InputA LastInput { get; private set; }
@@ -95,7 +89,7 @@ namespace TcxEditor.Core.Tests
         }
     }
 
-    public class CommandB : ICommandB
+    public class CommandB : ITcxEditorCommand<InputB, OutputB>
     {
         private int _callCount = 1;
 

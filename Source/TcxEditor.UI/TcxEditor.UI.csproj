@@ -32,8 +32,8 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Autofac, Version=4.9.3.0, Culture=neutral, PublicKeyToken=17863af14b0044da, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Autofac.4.9.3\lib\net45\Autofac.dll</HintPath>
+    <Reference Include="Autofac, Version=4.9.4.0, Culture=neutral, PublicKeyToken=17863af14b0044da, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Autofac.4.9.4\lib\net45\Autofac.dll</HintPath>
     </Reference>
     <Reference Include="GMap.NET.Core, Version=1.7.5.0, Culture=neutral, PublicKeyToken=b85b9027b614afef, processorArchitecture=MSIL">
       <HintPath>..\..\packages\GMap.NET.WindowsForms.1.7.5\lib\net40\GMap.NET.Core.dll</HintPath>
@@ -69,9 +69,8 @@
     </Compile>
     <Compile Include="Forms\IErrorView.cs" />
     <Compile Include="Forms\IGuiControls.cs" />
-    <Compile Include="Forms\SaveRouteEventargs.cs" />
+    <Compile Include="Forms\SaveRouteEventArgs.cs" />
     <Compile Include="Interfaces\AddPointEventArgs.cs" />
-    <Compile Include="Interfaces\AddStartFinishEventArgs.cs" />
     <Compile Include="Interfaces\GetNearestEventArgs.cs" />
     <Compile Include="Interfaces\IRouteView.cs" />
     <Compile Include="Interfaces\OpenRouteEventArgs.cs" />

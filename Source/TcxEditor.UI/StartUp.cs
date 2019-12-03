@@ -1,6 +1,5 @@
 ﻿using Autofac;
 using System.Linq;
-using System.Reflection;
 using TcxEditor.Core;
 using TcxEditor.Core.Interfaces;
 using TcxEditor.Parser.Infrastructure;

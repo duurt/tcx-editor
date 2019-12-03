@@ -21,7 +21,7 @@ namespace TcxEditor.Core.Tests
 
         public TestRouteBuilder WithCoursePointsAt(params int[] coursePointIndices)
         {
-            if(!_route.TrackPoints.Any())
+            if (!_route.TrackPoints.Any())
                 throw new InvalidOperationException("TrackPoints are not yet set. You must set them before you can add course points.");
 
             if (_route.CoursePoints.Any())
