@@ -69,7 +69,17 @@ namespace TcxEditor.UI
                 RaiseAddPointEvent("Straight", CoursePoint.PointType.Straight);
             else if (e.KeyCode == Keys.M)
                 RaiseAddPointEvent("MAP", CoursePoint.PointType.Generic);
-            else if (e.KeyCode == Keys.A)
+        }
+
+        protected override void OnKeyDown(KeyEventArgs e)
+        {
+            if (ShouldSuppressShortCut())
+                return;
+
+            // prevent keypress from being passed to underlying control
+            e.SuppressKeyPress = true;
+
+            if (e.KeyCode == Keys.A)
                 RaiseStepEvent(1);
             else if (e.KeyCode == Keys.Z)
                 RaiseStepEvent(-1);
