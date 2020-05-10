@@ -1,6 +1,7 @@
 ﻿using NUnit.Framework;
 using Shouldly;
 using System;
+using System.Reflection;
 using TcxEditor.Core.Exceptions;
 using TcxEditor.Core.Interfaces;
 
@@ -68,6 +69,29 @@ namespace TcxEditor.Core.Tests
             result4.Val.ShouldBe("B2");
             result5.Val.ShouldBe("B3");
         }
+
+        [Test]
+        public void Execute_should_throw_TcxCoreExpception_from_command()
+        {
+            var sut = new CommandRunner(
+                new ITcxEditorCommand[] { new CommandThrowingException(new TcxCoreException("xyz")) });
+
+            Should.Throw<TcxCoreException>(() => sut.Execute(new InputC()))
+                .Message.ShouldBe("xyz");
+        }
+
+        [Test]
+        public void Execute_should_rethrow_TargetInvocationException_for_any_other_type_of_Expception_from_command()
+        {
+            var sut = new CommandRunner(
+                new ITcxEditorCommand[] { new CommandThrowingException(new ArithmeticException("xyz")) });
+
+            var actualException = Should.Throw<TargetInvocationException>(
+                () => sut.Execute(new InputC()));
+            
+            actualException.InnerException.ShouldBeOfType<ArithmeticException>();
+            actualException.InnerException.Message.ShouldBe("xyz");
+        }
     }
 
     public class InputA : IInput { }
@@ -75,6 +99,9 @@ namespace TcxEditor.Core.Tests
 
     public class InputB : IInput { }
     public class OutputB : IOutput { public string Val { get; set; } }
+
+    public class InputC : IInput { }
+    public class OutputC : IOutput { public string Val { get; set; } }
 
     public class CommandA : ITcxEditorCommand<InputA, OutputA>
     {
@@ -96,6 +123,21 @@ namespace TcxEditor.Core.Tests
         public OutputB Execute(InputB input)
         {
             return new OutputB { Val = "B" + _callCount++ };
+        }
+    }
+
+    public class CommandThrowingException : ITcxEditorCommand<InputC, OutputC>
+    {
+        private readonly Exception _exception;
+
+        public CommandThrowingException(Exception exToThrow)
+        {
+            _exception = exToThrow;
+        }
+
+        public OutputC Execute(InputC input)
+        {
+            throw _exception;
         }
     }
 }
