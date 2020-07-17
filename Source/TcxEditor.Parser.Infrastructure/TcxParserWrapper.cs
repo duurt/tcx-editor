@@ -65,6 +65,9 @@ namespace TcxEditor.Parser.Infrastructure
                 case CoursePointType_t.Item4thCategory: return CoursePoint.PointType.ClimbCat4;
                 case CoursePointType_t.HorsCategory: return CoursePoint.PointType.ClimbCatHors;
 
+                case CoursePointType_t.SlightRight: return CoursePoint.PointType.SlightRight;
+                case CoursePointType_t.SlightLeft: return CoursePoint.PointType.SlightLeft;
+
                 default: throw new ArgumentOutOfRangeException(nameof(pointType), pointType.ToString());
             }
         }

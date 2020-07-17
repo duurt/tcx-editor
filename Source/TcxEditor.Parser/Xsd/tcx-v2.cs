@@ -518,6 +518,14 @@ namespace Duurt.TcxParser.Xsd.Generated {
         
         /// <remarks/>
         Sprint,
+
+        /// <remarks/>
+        [System.Xml.Serialization.XmlEnumAttribute("right")]
+        SlightRight,
+
+        /// <remarks/>
+        [System.Xml.Serialization.XmlEnumAttribute("left")]
+        SlightLeft,
     }
     
     /// <remarks/>

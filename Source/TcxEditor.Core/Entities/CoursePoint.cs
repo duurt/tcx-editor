@@ -28,6 +28,8 @@
             Water,
             Danger,
             FirstAid,
+            SlightRight,
+            SlightLeft,
         }
     }
 }
